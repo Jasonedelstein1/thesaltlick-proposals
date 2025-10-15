@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brookside Dental Care - Meta Ads Performance Audit</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+        :root {
+            --primary-bg: #f8f3de;
+            --secondary-bg: #0a0a0d;
+            --primary: #1a6aff;
+            --secondary: #fc5130;
+            --primary-bg-alpha: rgba(248, 243, 222, 0.9);
+            --secondary-bg-alpha: rgba(10, 10, 13, 0.1);
+            --shadow-light: rgba(10, 10, 13, 0.1);
+            --shadow-medium: rgba(10, 10, 13, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--primary-bg);
+            color: var(--secondary-bg);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            padding: 40px 0;
+        }
+
+        .section-divider {
+            border: none;
+            height: 1px;
+            background: linear-gradient(135deg, rgba(10, 10, 13, 0.1), rgba(10, 10, 13, 0.05));
+            margin: 40px 0;
+        }
+
+        .heading_h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 1000;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .heading_h2 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .heading_h3 {
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .heading_h4 {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .body-text {
+            font-size: 1rem;
+            font-weight: 400;
+            margin-bottom: 15px;
+        }
+
+        .highlight {
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .ui-label {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .hero-content {
+            margin-bottom: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: rgba(10, 10, 13, 0.03);
+            border: 1px solid rgba(10, 10, 13, 0.15);
+            border-radius: 6px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 1000;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--secondary-bg);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .campaign-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .campaign-card {
+            background: var(--primary-bg);
+            border: 1px solid rgba(10, 10, 13, 0.15);
+            border-radius: 6px;
+            box-shadow: 0 2px 8px var(--shadow-light);
+            padding: 25px;
+        }
+
+        .campaign-card.winner {
+            border: 2px solid var(--primary);
+            box-shadow: 0 4px 12px var(--shadow-medium);
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .tag.is-accent-primary {
+            background-color: var(--primary);
+            color: var(--primary-bg);
+        }
+
+        .tag.secondary {
+            background-color: var(--secondary);
+            color: var(--primary-bg);
+        }
+
+        .tag.success {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .tag.warning {
+            background-color: #f59e0b;
+            color: white;
+        }
+
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: var(--primary-bg);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px var(--shadow-light);
+        }
+
+        .pricing-table th {
+            background: rgba(10, 10, 13, 0.05);
+            padding: 15px;
+            text-align: left;
+            font-weight: 800;
+            color: var(--secondary-bg);
+            border-bottom: 2px solid rgba(10, 10, 13, 0.2);
+        }
+
+        .pricing-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(10, 10, 13, 0.1);
+        }
+
+        .pricing-table tr:nth-child(even) {
+            background: rgba(10, 10, 13, 0.02);
+        }
+
+        .pricing-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .insight-box {
+            background: rgba(26, 106, 255, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+
+        .warning-box {
+            background: rgba(252, 81, 48, 0.1);
+            border-left: 4px solid var(--secondary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(10, 10, 13, 0.1);
+        }
+
+        .metric-row:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            font-weight: 500;
+            color: var(--secondary-bg);
+        }
+
+        .metric-value {
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .recommendations-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .recommendations-list li {
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(10, 10, 13, 0.03);
+            border-left: 3px solid var(--secondary);
+            border-radius: 6px;
+        }
+
+        .recommendations-list li strong {
+            color: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            .section {
+                padding: 25px 0;
+            }
+
+            .campaign-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-table {
+                font-size: 0.9rem;
+            }
+
+            .pricing-table th,
+            .pricing-table td {
+                padding: 10px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <section class="section" id="hero">
+            <div class="hero-content">
+                <h1 class="heading_h1">Brookside Dental Care</h1>
+                <h2 class="heading_h2" style="color: var(--secondary); margin-top: 5px;">Meta Ads Performance Audit</h2>
+                <p class="body-text">
+                    Comprehensive analysis of <span class="highlight">129 leads generated</span> across three campaigns with a total ad spend of <span class="highlight">$8,266.42</span> over the past 6 months.
+                </p>
+                <p class="body-text">
+                    <strong>Analysis Period:</strong> April 29, 2025 - October 15, 2025
+                </p>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section class="section" id="executive-summary">
+            <h2 class="heading_h2">Executive Summary</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">$64.08</div>
+                    <div class="stat-label">Overall CPL</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">129</div>
+                    <div class="stat-label">Total Leads</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$20.21</div>
+                    <div class="stat-label">Overall CPM</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">409K</div>
+                    <div class="stat-label">Impressions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">52,944</div>
+                    <div class="stat-label">Reach</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">21.90%</div>
+                    <div class="stat-label">Avg Hook Rate</div>
+                </div>
+            </div>
+
+            <div class="success-box">
+                <h3 class="heading_h3">Key Wins</h3>
+                <p class="body-text">
+                    The <span class="highlight">"Free Toothbrush" campaign</span> achieved the lowest cost per lead at <span class="highlight">$58.49</span>, generating 95 leads (74% of total leads). Hook rates across all campaigns exceeded the 10% industry benchmark, with the Crowns campaign achieving an impressive 29.94% average hook rate.
+                </p>
+            </div>
+
+            <div class="warning-box">
+                <h3 class="heading_h3">Critical Issues</h3>
+                <p class="body-text">
+                    All three campaigns are showing signs of <span class="highlight">ad fatigue</span> with frequencies exceeding 8x. The Free Toothbrush campaign has reached a maximum frequency of 14.25x, which is contributing to declining performance. The Implants & Dentures campaign has the highest CPL at $72.34, indicating this high-value service needs creative refresh.
+                </p>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section class="section" id="campaign-breakdown">
+            <h2 class="heading_h2">Campaign-by-Campaign Analysis</h2>
+
+            <div class="campaign-grid">
+                <div class="campaign-card winner">
+                    <span class="tag success">BEST PERFORMER</span>
+                    <h3 class="heading_h3">Free Toothbrush - Cheyenne Broad</h3>
+                    <p class="ui-label" style="margin-bottom: 15px;">"Book your cleaning & get a FREE Sonicare!"</p>
+                    
+                    <div class="metric-row">
+                        <span class="metric-label">Total Spend</span>
+                        <span class="metric-value">$5,556.20</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Leads Generated</span>
+                        <span class="metric-value">95</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Cost per Lead</span>
+                        <span class="metric-value">$58.49</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Hook Rate</span>
+                        <span class="metric-value">23.01%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">CPM</span>
+                        <span class="metric-value">$17.13</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Avg Frequency</span>
+                        <span class="metric-value">7.39x</span>
+                    </div>
+                </div>
+
+                <div class="campaign-card">
+                    <span class="tag warning">NEEDS OPTIMIZATION</span>
+                    <h3 class="heading_h3">Implants & Dentures</h3>
+                    <p class="ui-label" style="margin-bottom: 15px;">"Book your implant exam today 👉"</p>
+                    
+                    <div class="metric-row">
+                        <span class="metric-label">Total Spend</span>
+                        <span class="metric-value">$2,170.30</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Leads Generated</span>
+                        <span class="metric-value">30</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Cost per Lead</span>
+                        <span class="metric-value">$72.34</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Hook Rate</span>
+                        <span class="metric-value">16.75%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">CPM</span>
+                        <span class="metric-value">$32.61</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Avg Frequency</span>
+                        <span class="metric-value">6.52x</span>
+                    </div>
+                </div>
+
+                <div class="campaign-card">
+                    <span class="tag secondary">HIGHEST HOOK RATE</span>
+                    <h3 class="heading_h3">Crowns</h3>
+                    <p class="ui-label" style="margin-bottom: 15px;">"Will your crowns be covered?👑"</p>
+                    
+                    <div class="metric-row">
+                        <span class="metric-label">Total Spend</span>
+                        <span class="metric-value">$539.92</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Leads Generated</span>
+                        <span class="metric-value">4</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Cost per Lead</span>
+                        <span class="metric-value">$134.98</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Hook Rate</span>
+                        <span class="metric-value">29.94%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">CPM</span>
+                        <span class="metric-value">$29.85</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Avg Frequency</span>
+                        <span class="metric-value">3.97x</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section class="section" id="demographic-analysis">
+            <h2 class="heading_h2">Demographic Performance Analysis</h2>
+
+            <h3 class="heading_h3">Top 10 Best Performing Demographics by CPL</h3>
+            
+            <table class="pricing-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Campaign</th>
+                        <th>Demographic</th>
+                        <th>Leads</th>
+                        <th>CPL</th>
+                        <th>Hook Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td>Free Toothbrush</td>
+                        <td>Unknown 65+</td>
+                        <td>1</td>
+                        <td><strong>$1.89</strong></td>
+                        <td>29.79%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td>Free Toothbrush</td>
+                        <td>Unknown 25-34</td>
+                        <td>1</td>
+                        <td><strong>$13.95</strong></td>
+                        <td>14.49%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td>Crowns</td>
+                        <td>Male 35-44</td>
+                        <td>1</td>
+                        <td><strong>$19.11</strong></td>
+                        <td>21.02%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4</strong></td>
+                        <td>Implants & Dentures</td>
+                        <td>Male 25-34</td>
+                        <td>2</td>
+                        <td><strong>$38.66</strong></td>
+                        <td>12.24%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5</strong></td>
+                        <td>Crowns</td>
+                        <td>Female 65+</td>
+                        <td>2</td>
+                        <td><strong>$46.95</strong></td>
+                        <td>41.50%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>6</strong></td>
+                        <td>Free Toothbrush</td>
+                        <td>Female 35-44</td>
+                        <td>23</td>
+                        <td><strong>$48.47</strong></td>
+                        <td>16.59%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>7</strong></td>
+                        <td>Implants & Dentures</td>
+                        <td>Female 45-54</td>
+                        <td>6</td>
+                        <td><strong>$51.53</strong></td>
+                        <td>14.78%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>8</strong></td>
+                        <td>Free Toothbrush</td>
+                        <td>Female 25-34</td>
+                        <td>23</td>
+                        <td><strong>$51.88</strong></td>
+                        <td>13.12%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>9</strong></td>
+                        <td>Free Toothbrush</td>
+                        <td>Male 65+</td>
+                        <td>3</td>
+                        <td><strong>$51.93</strong></td>
+                        <td>32.86%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>10</strong></td>
+                        <td>Implants & Dentures</td>
+                        <td>Female 25-34</td>
+                        <td>2</td>
+                        <td><strong>$51.99</strong></td>
+                        <td>13.85%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="insight-box">
+                <h4 class="heading_h4">Gender Insights</h4>
+                <div class="metric-row">
+                    <span class="metric-label">Female - Total Leads</span>
+                    <span class="metric-value">92 (71%)</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Female - Avg CPL</span>
+                    <span class="metric-value">$59.69</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Female - Hook Rate</span>
+                    <span class="metric-value">22.60%</span>
+                </div>
+                <div style="height: 15px;"></div>
+                <div class="metric-row">
+                    <span class="metric-label">Male - Total Leads</span>
+                    <span class="metric-value">35 (27%)</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Male - Avg CPL</span>
+                    <span class="metric-value">$67.74</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Male - Hook Rate</span>
+                    <span class="metric-value">18.47%</span>
+                </div>
+            </div>
+
+            <h3 class="heading_h3">Performance by Age Group</h3>
+            
+            <table class="pricing-table">
+                <thead>
+                    <tr>
+                        <th>Age Group</th>
+                        <th>Total Leads</th>
+                        <th>Avg CPL</th>
+                        <th>% of Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>25-34</strong></td>
+                        <td>37</td>
+                        <td><strong>$52.24</strong></td>
+                        <td>28.7%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>35-44</strong></td>
+                        <td>36</td>
+                        <td><strong>$58.86</strong></td>
+                        <td>27.9%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>45-54</strong></td>
+                        <td>24</td>
+                        <td><strong>$61.01</strong></td>
+                        <td>18.6%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>65+</strong></td>
+                        <td>17</td>
+                        <td><strong>$63.79</strong></td>
+                        <td>13.2%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>55-64</strong></td>
+                        <td>15</td>
+                        <td><strong>$85.20</strong></td>
+                        <td>11.6%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="insight-box">
+                <h4 class="heading_h4">Key Demographic Insights</h4>
+                <p class="body-text">
+                    <strong>Sweet Spot:</strong> The <span class="highlight">25-44 age range</span> accounts for 56.6% of all leads with the lowest average CPL ($52.24-$58.86). This demographic should be prioritized in future campaigns.
+                </p>
+                <p class="body-text">
+                    <strong>Female Dominance:</strong> Female audiences generate <span class="highlight">71% of all leads</span> with better hook rates (22.60% vs 18.47%) and lower CPL than males.
+                </p>
+                <p class="body-text">
+                    <strong>Avoid:</strong> The 55-64 age group shows the highest CPL at $85.20, suggesting this demographic may not be as responsive to the current creative approach.
+                </p>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section class="section" id="creative-analysis">
+            <h2 class="heading_h2">Creative Performance & Hook Rate Analysis</h2>
+
+            <h3 class="heading_h3">Headline Performance Comparison</h3>
+
+            <div class="campaign-grid">
+                <div class="campaign-card">
+                    <span class="tag success">WINNER</span>
+                    <h4 class="heading_h4">"Book your cleaning & get a FREE Sonicare!"</h4>
+                    <div class="metric-row">
+                        <span class="metric-label">Total Leads</span>
+                        <span class="metric-value">95</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Avg CPL</span>
+                        <span class="metric-value">$58.13</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Hook Rate</span>
+                        <span class="metric-value">21.95%</span>
+                    </div>
+                </div>
+
+                <div class="campaign-card">
+                    <span class="tag is-accent-primary">MODERATE</span>
+                    <h4 class="heading_h4">"Book your implant exam today 👉"</h4>
+                    <div class="metric-row">
+                        <span class="metric-label">Total Leads</span>
+                        <span class="metric-value">30</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Avg CPL</span>
+                        <span class="metric-value">$71.91</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Hook Rate</span>
+                        <span class="metric-value">16.55%</span>
+                    </div>
+                </div>
+
+                <div class="campaign-card">
+                    <span class="tag secondary">HIGHEST HOOK</span>
+                    <h4 class="heading_h4">"Will your crowns be covered?👑"</h4>
+                    <div class="metric-row">
+                        <span class="metric-label">Total Leads</span>
+                        <span class="metric-value">4</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Avg CPL</span>
+                        <span class="metric-value">$49.87</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Hook Rate</span>
+                        <span class="metric-value">29.93%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="success-box">
+                <h4 class="heading_h4">What's Working in Creatives</h4>
+                <p class="body-text">
+                    <strong>1. Question-based hooks:</strong> The Crowns campaign's interrogative headline ("Will your crowns be covered?") achieved the <span class="highlight">highest hook rate at 29.93%</span>, demonstrating that question-based hooks create curiosity and engagement.
+                </p>
+                <p class="body-text">
+                    <strong>2. Value-first messaging:</strong> The "FREE Sonicare" offer in the Free Toothbrush campaign proves that <span class="highlight">tangible incentives drive conversions</span> with the lowest CPL and highest lead volume.
+                </p>
+                <p class="body-text">
+                    <strong>3. Visual elements:</strong> Emojis (👉, 👑) appear in successful headlines, suggesting visual breaks and emotional cues enhance engagement.
+                </p>
+            </div>
+
+            <div class="warning-box">
+                <h4 class="heading_h4">Creative Fatigue Indicators</h4>
+                <p class="body-text">
+                    <strong>All campaigns show ad fatigue:</strong> With frequencies between 6.52x and 14.25x, audiences have seen these ads too many times. Industry best practice suggests refreshing creative when frequency exceeds 4-5x to maintain performance.
+                </p>
+                <p class="body-text">
+                    <strong>Hook rate ranges:</strong> While all campaigns exceed the 10% benchmark, the Crowns campaign's 48.01% maximum hook rate (vs 11.11% minimum) shows <span class="highlight">creative quality variance</span> within the same campaign, indicating some creatives are far superior to others.
+                </p>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section class="section" id="recommendations">
+            <h2 class="heading_h2">Strategic Recommendations for Next Creative Batch</h2>
+
+            <h3 class="heading_h3">Messages to Double Down On</h3>
+            
+            <ul class="recommendations-list">
+                <li>
+                    <strong>Free/Value-First Offers:</strong> The "FREE Sonicare" approach generated 95 leads at $58.49 CPL. Continue leading with tangible value propositions. Test variations like "Free Whitening Kit," "Free First Exam," or "Free Consultation."
+                </li>
+                <li>
+                    <strong>Question-Based Hooks:</strong> The Crowns campaign's question format achieved the highest engagement. Develop more interrogative hooks such as: "Is your dental insurance covering what you need?" or "When was your last dental cleaning?"
+                </li>
+                <li>
+                    <strong>Insurance/Coverage Angle:</strong> The "Will your crowns be covered?" message resonated despite low lead volume. This suggests financial concerns are a major consideration. Expand this angle across all services.
+                </li>
+                <li>
+                    <strong>Target Female 25-44:</strong> This demographic has proven to be the highest ROI segment. Create creatives that speak directly to their concerns: family health, preventive care, cosmetic improvements.
+                </li>
+                <li>
+                    <strong>Low-Barrier Entry Services:</strong> Cleanings with incentives outperformed high-value services significantly. Use cleanings as the gateway to upsell higher-value services.
+                </li>
+            </ul>
+
+            <h3 class="heading_h3">New Creative Directions to Test</h3>
+
+            <ul class="recommendations-list">
+                <li>
+                    <strong>Urgency & Scarcity:</strong> Test headlines like "Last Chance: Free Sonicare Ending Soon" or "Only 10 Appointments Left This Month"
+                </li>
+                <li>
+                    <strong>Problem-Solution Format:</strong> Address pain points directly: "Embarrassed by Your Smile? We Can Help" or "Dental Pain Keeping You Up? Same-Day Appointments Available"
+                </li>
+                <li>
+                    <strong>Social Proof:</strong> Leverage testimonials and ratings: "Why 500+ Cheyenne Families Trust Brookside Dental" or "5-Star Rated Dental Care in Cheyenne"
+                </li>
+                <li>
+                    <strong>Service-Specific Offers:</strong> Since implants/dentures had higher CPL, create targeted offers: "Implant Consultation + 3D Scan - Only $99" to lower barrier to entry
+                </li>
+                <li>
+                    <strong>Before/After Visual Storytelling:</strong> The Crowns campaign's high hook rate suggests visual interest. Test before/after imagery with captions like "Real Patients, Real Results"
+                </li>
+                <li>
+                    <strong>Seasonal/Timely Hooks:</strong> "New Year, New Smile - Book Your Cleaning Before February" or "Back to School Dental Checkups"
+                </li>
+            </ul>
+
+            <h3 class="heading_h3">Creative Refresh Strategy</h3>
+
+            <div class="insight-box">
+                <h4 class="heading_h4">Immediate Actions (Next 30 Days)</h4>
+                <p class="body-text">
+                    <strong>1. Pause & Refresh Free Toothbrush Campaign:</strong> With 14.25x frequency, this campaign needs immediate creative rotation. Maintain the free offer but refresh visuals and copy angles.
+                </p>
+                <p class="body-text">
+                    <strong>2. Scale Crowns Creative Approach:</strong> The question-based format proved most engaging. Create 3-5 variations of question-based hooks for all services.
+                </p>
+                <p class="body-text">
+                    <strong>3. Increase Implants/Dentures Budget with Lower Barrier Offer:</strong> The high CPL suggests the direct "book exam" CTA is too aggressive. Test a softer approach with free consultation or educational content.
+                </p>
+            </div>
+
+            <div class="warning-box">
+                <h4 class="heading_h4">Creative Production Priorities</h4>
+                <p class="body-text">
+                    <strong>Shoot Day 1 - Cleaning/Preventive Care (3-5 creatives):</strong>
+                </p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Hook: "How long has it been?" - patient guilt angle</li>
+                    <li>Hook: "Free Sonicare + Clean Teeth = Best Day Ever" - enthusiasm</li>
+                    <li>Hook: "Your insurance covers 2 cleanings a year. Are you using them?" - insurance angle</li>
+                </ul>
+                <p class="body-text" style="margin-top: 15px;">
+                    <strong>Shoot Day 2 - High-Value Services (3-5 creatives):</strong>
+                </p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Hook: "Missing teeth? You have options." - educational angle</li>
+                    <li>Hook: "Implants covered by insurance? Let's find out." - insurance concern</li>
+                    <li>Hook: "Crown broke? Same-day appointments available." - urgency</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section class="section" id="kpis">
+            <h2 class="heading_h2">Success Metrics for Next Campaign</h2>
+
+            <div class="campaign-grid">
+                <div class="campaign-card">
+                    <h4 class="heading_h4">Target CPL Goals</h4>
+                    <div class="metric-row">
+                        <span class="metric-label">Cleaning Services</span>
+                        <span class="metric-value">&lt; $50</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Mid-Tier (Crowns, Fillings)</span>
+                        <span class="metric-value">&lt; $65</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">High-Value (Implants)</span>
+                        <span class="metric-value">&lt; $100</span>
+                    </div>
+                </div>
+
+                <div class="campaign-card">
+                    <h4 class="heading_h4">Engagement Benchmarks</h4>
+                    <div class="metric-row">
+                        <span class="metric-label">Minimum Hook Rate</span>
+                        <span class="metric-value">&gt; 15%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Max Frequency Before Refresh</span>
+                        <span class="metric-value">&lt; 5x</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Target CPM</span>
+                        <span class="metric-value">&lt; $20</span>
+                    </div>
+                </div>
+
+                <div class="campaign-card">
+                    <h4 class="heading_h4">Volume Goals</h4>
+                    <div class="metric-row">
+                        <span class="metric-label">Monthly Lead Target</span>
+                        <span class="metric-value">150+</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">High-Value Leads/Month</span>
+                        <span class="metric-value">25+</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">New Creatives Per Quarter</span>
+                        <span class="metric-value">10-15</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="section-divider">
+
+        <section class="section" id="conclusion">
+            <h2 class="heading_h2">Conclusion & Next Steps</h2>
+
+            <div class="success-box">
+                <p class="body-text">
+                    The current campaigns have established a <span class="highlight">strong foundation with 129 leads at $64.08 CPL</span>, but are showing clear signs of creative fatigue. The data reveals that <span class="highlight">value-driven offers, question-based hooks, and targeting female audiences aged 25-44</span> are the winning formula.
+                </p>
+                <p class="body-text">
+                    The immediate priority is to <span class="highlight">refresh all creative assets</span> while maintaining the proven messaging frameworks. By implementing the recommendations above, we can reduce CPL by 15-20% while increasing lead volume by 30%+ over the next 90 days.
+                </p>
+            </div>
+
+            <h3 class="heading_h3">Action Items</h3>
+            
+            <ul class="recommendations-list">
+                <li><strong>Week 1:</strong> Pause highest frequency campaigns (Free Toothbrush), plan creative shoot with new angles</li>
+                <li><strong>Week 2-3:</strong> Produce 8-10 new creative variations across all service categories</li>
+                <li><strong>Week 4:</strong> Launch refreshed campaigns with tighter frequency caps (max 5x) and demographic targeting refinements</li>
+                <li><strong>Ongoing:</strong> Monitor performance weekly, rotate out creatives that exceed 5x frequency, test new angles monthly</li>
+            </ul>
+        </section>
+    </div>
+</body>
+</html>

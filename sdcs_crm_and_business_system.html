@@ -1229,7 +1229,7 @@
             });
         });
 
-        // Accordion functionality
+      // Accordion functionality
         document.querySelectorAll('.accordion_toggle').forEach(toggle => {
             toggle.addEventListener('click', function() {
                 const accordion = this.closest('.accordion');
@@ -1239,4 +1239,18 @@
                 accordion.classList.toggle('active');
                 
                 // Toggle content visibility
-                if (accordion.class
+                if (accordion.classList.contains('active')) {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                } else {
+                    content.style.maxHeight = '0';
+                }
+            });
+        });
+
+        // Disable hover effects on mobile
+        if ('ontouchstart' in window) {
+            document.body.classList.add('touch-device');
+        }
+    </script>
+</body>
+</html>

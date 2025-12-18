@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Victor Towle: Live Session Videos Proposal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+        :root {
+            --primary-bg: #f8f3de;
+            --secondary-bg: #0a0a0d;
+            --primary: #1a6aff;
+            --secondary: #fc5130;
+            --shadow-light: rgba(10, 10, 13, 0.1);
+            --shadow-medium: rgba(10, 10, 13, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--secondary-bg);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: var(--primary-bg);
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(10, 10, 13, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .company-name {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--secondary-bg);
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            padding: 40px 0;
+        }
+
+        .section-divider {
+            border: none;
+            height: 1px;
+            background: linear-gradient(135deg, rgba(10, 10, 13, 0.1), rgba(10, 10, 13, 0.05));
+            margin: 40px 0;
+        }
+
+        .heading_h1 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 1000;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .heading_h2 {
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+
+        .heading_h3 {
+            font-size: clamp(20px, 3vw, 28px);
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .body-text {
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .highlight {
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .hero-content {
+            margin-bottom: 30px;
+        }
+
+        .deliverable-card {
+            background: var(--primary-bg);
+            border: 1px solid rgba(10, 10, 13, 0.15);
+            border-radius: 6px;
+            box-shadow: 0 2px 8px var(--shadow-light);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .ui-label {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--secondary-bg);
+            margin-top: 15px;
+            display: block;
+        }
+
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: var(--primary-bg);
+            border: 1px solid rgba(10, 10, 13, 0.15);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .pricing-table th {
+            background: rgba(10, 10, 13, 0.05);
+            padding: 15px;
+            text-align: left;
+            font-weight: 800;
+            color: var(--secondary-bg);
+            border-bottom: 2px solid rgba(10, 10, 13, 0.2);
+        }
+
+        .pricing-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(10, 10, 13, 0.1);
+        }
+
+        .pricing-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .pricing-table td:last-child {
+            text-align: right;
+            font-weight: 800;
+        }
+
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), #0d4fb3);
+            color: var(--primary-bg);
+            font-weight: 800;
+            border-radius: 6px;
+            padding: 14px 28px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px var(--shadow-medium);
+            margin-right: 15px;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px var(--shadow-medium);
+        }
+
+        .button.secondary {
+            background: linear-gradient(135deg, var(--secondary), #d63814);
+        }
+
+        .cta-section {
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .section {
+                padding: 25px 0;
+            }
+
+            .button {
+                display: block;
+                margin-right: 0;
+                margin-bottom: 15px;
+                text-align: center;
+            }
+
+            .pricing-table {
+                font-size: 14px;
+            }
+
+            .pricing-table th,
+            .pricing-table td {
+                padding: 10px;
+            }
+
+            .button:hover {
+                transform: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+
+        input:focus,
+        button:focus,
+        a:focus {
+            outline: 2px solid var(--secondary);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-container">
+                <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="90" fill="#1a6aff"/>
+                    <path d="M60 80 L100 120 L140 80" stroke="#f8f3de" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="company-name">The Salt Lick Denver</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="container">
+            <section class="section" id="hero">
+                <div class="hero-content">
+                    <h1 class="heading_h1">Live Session Videos for Your Album</h1>
+                    <h2 class="heading_h2" style="color: var(--secondary); margin-top: 5px;">Professional Studio Recording & Multi-Camera Filming</h2>
+                    <p class="body-text">
+                        Capture the <span class="highlight">energy and authenticity</span> of your new album with professional live session videos filmed in our studio.
+                    </p>
+                </div>
+            </section>
+
+            <hr class="section-divider">
+
+            <section class="section" id="deliverables">
+                <h2 class="heading_h2">What's Included</h2>
+                
+                <div class="deliverable-card">
+                    <h3 class="heading_h3">2 Songs Recorded & Filmed</h3>
+                    <p class="body-text">We'll record and film two songs from your album in our studio with multi-camera coverage for dynamic, engaging visuals.</p>
+                    <p class="ui-label">Includes: Multi-camera recording, color correction, editing, 4K delivery, and audio files</p>
+                </div>
+
+                <div class="deliverable-card">
+                    <h3 class="heading_h3">Audio Files Included</h3>
+                    <p class="body-text">You'll receive the raw audio files with a rough master mixed into the edit. Take these files to your mastering engineer, and when you receive the final masters, we'll replace the audio in your videos at no additional cost.</p>
+                </div>
+            </section>
+
+            <hr class="section-divider">
+
+            <section class="section" id="investment">
+                <h2 class="heading_h2">Investment</h2>
+                
+                <table class="pricing-table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Details</th>
+                            <th>Investment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Live Session Videos</strong></td>
+                            <td>2 songs, multi-camera, 4K, color correction, editing, audio files</td>
+                            <td>$1,500</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <hr class="section-divider">
+
+            <section class="section" id="contact">
+                <div class="cta-section">
+                    <h2 class="heading_h2">Let's Get Started</h2>
+                    <p class="body-text">Ready to bring your music to life with professional live session videos?</p>
+                    
+                    <a href="mailto:jason@thesaltlickdenver.com?subject=Victor Towle - Live Session Videos" class="button">Get In Touch</a>
+                    <a href="https://calendly.com/thesaltlickdenver" class="button secondary" target="_blank">Schedule a Call</a>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peak Renovations: Ongoing Video Marketing Retainer</title>
+  <link rel="stylesheet" href="https://use.typekit.net/kja2umf.css">
+    <style>
+        /* Design Tokens */
+        :root {
+            /* Colors */
+            --text-primary: #ffffff;
+            --text-secondary: #fff9e9;
+            --bg-white: #091800;
+            --bg-alt: #1d1d1f;
+            --cta-blue: #c85c4f;
+            --cta-blue-hover: #8e3f32;
+            --accent-blue: #63a0e2;
+            --terracotta: #d4775e;
+            --sage-green: #7d9b76;
+            --status-green: #5fd068;
+            --status-red: #e85d4e;
+            --bg-warm-white: #fff9e9;
+            --bg-pure-white: #ffffff;
+            
+            /* Typography */
+            --font-primary: neue-haas-grotesk-text, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            
+            /* Border Radius */
+            --radius-small: 10px;
+            --radius-medium: 12px;
+            --radius-large: 16px;
+            --radius-pill: 12px;
+            
+            /* Spacing */
+            --section-vertical: 5vh;
+            --section-mobile: 60px;
+            --container-horizontal: 22px;
+            --gap-small: 16px;
+            --gap-medium: 24px;
+            --gap-large: 32px;
+            --gap-xl: 60px;
+            
+            /* Layout */
+            --max-width-content: 1400px;
+            --nav-height: 65px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--bg-white);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Glass Navigation */
+        .glass-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: var(--nav-height);
+            border-bottom: 0.5px solid rgba(139, 139, 136, 0.2);
+            background: hsla(60, 16.67%, 97.65%, 0.59);
+            backdrop-filter: blur(5px) saturate(180%);
+        }
+
+        .nav-content {
+            display: flex;
+            max-width: var(--max-width-content);
+            margin: 0 auto;
+            padding: 0 var(--container-horizontal);
+            height: 100%;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.1em;
+            color: var(--bg-white);
+        }
+
+        .logo img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        /* Client Logo in Header */
+        .client-logo-container {
+            margin-bottom: 32px;
+        }
+
+        .client-logo {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            border-radius: var(--radius-medium);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .text-nav {
+            color: var(--bg-white);
+            font-size: 14px;
+            font-weight: 400;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .text-nav:hover {
+            opacity: 0.7;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--bg-white);
+        }
+
+        /* Layout */
+        .container-max-width {
+            max-width: var(--max-width-content);
+            margin: 0 auto;
+            padding: 0 var(--container-horizontal);
+        }
+
+        .spacing-section {
+            padding: var(--section-vertical) 0;
+        }
+
+        .spacing-section.bg-warm-white {
+            background: var(--bg-warm-white);
+        }
+
+        .spacing-section.bg-pure-white {
+            background: var(--bg-pure-white);
+        }
+
+        /* Typography */
+        .heading-h1-hero {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 700;
+            line-height: 0.85;
+            letter-spacing: -0.008em;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .heading-h2-section {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 700;
+            line-height: 1.08;
+            letter-spacing: -0.003em;
+            margin-bottom: 24px;
+        }
+
+        .heading-h3-subsection {
+            font-size: clamp(24px, 4vw, 32px);
+            font-weight: 700;
+            line-height: 1.12;
+            margin-bottom: 16px;
+        }
+
+        .heading-h4-card {
+            font-size: 21px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 12px;
+        }
+
+        .text-eyebrow {
+            font-size: 16px;
+            font-weight: 400;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .body-large {
+            font-size: 19px;
+            font-weight: 400;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .body-large.body-bold {
+            font-weight: 700;
+        }
+
+        .body-standard {
+            font-size: 17px;
+            font-weight: 400;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .body-small {
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .gradient-text-blue {
+            background: linear-gradient(135deg, var(--accent-blue), var(--cta-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .color-text-secondary {
+            color: var(--text-secondary);
+        }
+
+        .color-accent-blue {
+            color: var(--accent-blue);
+        }
+
+        .color-terracotta {
+            color: var(--terracotta);
+        }
+
+        .color-sage {
+            color: var(--sage-green);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: var(--radius-small);
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--cta-blue);
+            color: var(--text-primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--cta-blue-hover);
+            transform: scale(1.02);
+        }
+
+        .callout-button {
+            display: inline-flex;
+            padding: 12px 24px;
+            border-radius: 50px;
+            background: var(--status-green);
+            color: var(--bg-white);
+            font-size: 15px;
+            font-weight: 600;
+            gap: 8px;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .callout-button:hover {
+            background: #4ec45a;
+            box-shadow: 0 8px 24px rgba(95, 208, 104, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-large);
+            background: rgba(11, 26, 10, 0.8);
+            backdrop-filter: blur(30px) saturate(150%);
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-card-clear {
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-medium);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card-clear:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card-clear.green {
+            border-color: rgba(125, 155, 118, 0.3);
+        }
+
+        .glass-card-clear.blue {
+            border-color: rgba(99, 160, 226, 0.3);
+        }
+
+        .glass-card-clear.orange {
+            border-color: rgba(212, 119, 94, 0.3);
+        }
+
+        /* Package Cards */
+        .package-card {
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-large);
+            background: rgba(11, 26, 10, 0.9);
+            backdrop-filter: blur(30px) saturate(150%);
+            padding: 40px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .package-card.featured {
+            border-color: var(--accent-blue);
+            border-width: 3px;
+        }
+
+        .package-card.featured::before {
+            content: "RECOMMENDED";
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--accent-blue);
+            color: var(--bg-white);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .package-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .package-price {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+
+        .package-period {
+            font-size: 17px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .package-features {
+            list-style: none;
+            padding: 0;
+            margin: 24px 0;
+        }
+
+        .package-features li {
+            padding: 10px 0;
+            padding-left: 28px;
+            position: relative;
+            font-size: 17px;
+            color: var(--text-secondary);
+        }
+
+        .package-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--status-green);
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        /* Grids */
+        .grid-3-col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--gap-medium);
+        }
+
+        .grid-2-col {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--gap-large);
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+            background: rgba(11, 26, 10, 0.6);
+            border-radius: var(--radius-large);
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        .comparison-table thead {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .comparison-table th {
+            padding: 20px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 17px;
+            color: var(--text-primary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comparison-table td {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .comparison-table td strong {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        /* Accordion */
+        .accordion {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-medium);
+            background: rgba(255, 255, 255, 0.03);
+            margin-bottom: 16px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .accordion-toggle {
+            width: 100%;
+            padding: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+            transition: background 0.3s ease;
+            color: var(--text-primary);
+            font-family: var(--font-primary);
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .accordion-toggle:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .accordion-icon {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            transition: transform 0.3s ease;
+        }
+
+        .accordion.expanded .accordion-icon {
+            transform: rotate(45deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 20px;
+        }
+
+        .accordion.expanded .accordion-content {
+            max-height: 1000px;
+            padding: 0 20px 20px 20px;
+        }
+
+        .accordion-content p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        /* Pricing Detail Rows */
+        .pricing-row {
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .pricing-row:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .expand-icon {
+            float: right;
+            font-weight: 700;
+            color: var(--accent-blue);
+            transition: transform 0.3s ease;
+            font-size: 20px;
+        }
+
+        .pricing-row.expanded .expand-icon {
+            transform: rotate(45deg);
+        }
+
+        .pricing-details {
+            display: none;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .pricing-details.visible {
+            display: table-row;
+        }
+
+        .pricing-details td {
+            padding: 20px 40px;
+        }
+
+        .pricing-details ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .pricing-details li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        .pricing-details li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--terracotta);
+            font-weight: 700;
+        }
+
+        /* Stats */
+        .stat-card {
+            text-align: center;
+            padding: 24px;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 17px;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+
+        /* Tag/Badge */
+        .tag {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .tag.green {
+            background: rgba(95, 208, 104, 0.2);
+            color: var(--status-green);
+        }
+
+        .tag.blue {
+            background: rgba(99, 160, 226, 0.2);
+            color: var(--accent-blue);
+        }
+
+        .tag.orange {
+            background: rgba(212, 119, 94, 0.2);
+            color: var(--terracotta);
+        }
+
+        /* Spacing Utilities */
+        .margin-bottom-small {
+            margin-bottom: 12px;
+        }
+
+        .margin-bottom-medium {
+            margin-bottom: 24px;
+        }
+
+        .margin-bottom-large {
+            margin-bottom: 40px;
+        }
+
+        .margin-top-large {
+            margin-top: 40px;
+        }
+
+        .gap-large {
+            gap: var(--gap-large);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            padding: 80px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 991px) {
+            .grid-3-col {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-2-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: var(--nav-height);
+                left: 0;
+                right: 0;
+                background: hsla(60, 16.67%, 97.65%, 0.95);
+                padding: 20px;
+                backdrop-filter: blur(10px);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .grid-3-col {
+                grid-template-columns: 1fr;
+            }
+
+            .spacing-section {
+                padding: var(--section-mobile) 0;
+            }
+
+            .cta-group {
+                flex-direction: column;
+            }
+
+            .btn,
+            .callout-button {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .comparison-table {
+                font-size: 14px;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 12px;
+            }
+
+            .client-logo {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="glass-nav">
+        <div class="nav-content">
+            <div class="logo">
+                <img src="https://msgsndr-private.storage.googleapis.com/companyPhotos/c69c4761-0041-40e8-8136-e2b969f6622f.png" alt="The Salt Lick Denver">
+                <span>The Salt Lick Denver</span>
+            </div>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#packages" class="text-nav">Packages</a></li>
+                <li><a href="#deliverables" class="text-nav">What's Included</a></li>
+                <li><a href="#investment" class="text-nav">Investment</a></li>
+                <li><a href="#next-steps" class="text-nav">Get Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="spacing-section hero-section">
+        <div class="container-max-width">
+            <div class="client-logo-container">
+                <img src="https://d3p2r6ofnvoe67.cloudfront.net/fit-in/320x320/filters:strip_exif()/filters:no_upscale()/filters:format(webp)/media/b832c7ad-f308-406c-80f3-0c65e90ba268.jpeg" alt="Peak Renovations" class="client-logo">
+            </div>
+            <h1 class="heading-h1-hero">Peak Renovations<br>Monthly Video Advertising Package</h1>
+            <p class="body-large body-bold color-text-secondary">Monthly Video Production, Ads Management & Performance Optimization</p>
+        </div>
+    </section>
+
+    <section class="spacing-section" id="packages">
+        <div class="container-max-width">
+            <p class="text-eyebrow color-accent-blue">Choose Your Cadence</p>
+            <h2 class="heading-h2-section">Two Retainer Options</h2>
+            <p class="body-large color-text-secondary margin-bottom-large">Both packages include full ads management, quarterly static creatives, CRM integration for ROAS tracking, and a free video creative in exchange for your testimonial.</p>
+
+            <div class="grid-2-col">
+                <div class="package-card featured">
+                    <div class="package-name">Bi-Monthly Production</div>
+                    <div class="package-price">$3,233</div>
+                    <div class="package-period">per month / $38,796 annually</div>
+                    <ul class="package-features">
+                        <li>Video production every 2 months (6 sessions/year)</li>
+                        <li>3 new video ads per session (18 videos annually)</li>
+                        <li>Full ads management monthly ($750 value)</li>
+                        <li>12 static retargeting ads per year (quarterly batches)</li>
+                        <li>CRM → Ads Manager integration (ROAS tracking)</li>
+                        <li>Campaign optimization & audience management</li>
+                        <li>Budget adjustments & performance reporting</li>
+                        <li>1 free video creative for testimonial</li>
+                    </ul>
+                    <span class="tag green">Best for Aggressive Growth</span>
+                </div>
+
+                <div class="package-card">
+                    <div class="package-name">Quarterly Production</div>
+                    <div class="package-price">$2,816</div>
+                    <div class="package-period">per month / $33,792 annually</div>
+                    <ul class="package-features">
+                        <li>Video production every 3 months (4 sessions/year)</li>
+                        <li>3 new video ads per session (12 videos annually)</li>
+                        <li>Full ads management monthly ($750 value)</li>
+                        <li>12 static retargeting ads per year (quarterly batches)</li>
+                        <li>CRM → Ads Manager integration (ROAS tracking)</li>
+                        <li>Campaign optimization & audience management</li>
+                        <li>Budget adjustments & performance reporting</li>
+                        <li>1 free video creative for testimonial</li>
+                    </ul>
+                    <span class="tag blue">Sustainable Growth Pace</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="spacing-section" id="deliverables">
+        <div class="container-max-width">
+            <p class="text-eyebrow color-terracotta">What You Get</p>
+            <h2 class="heading-h2-section">Deliverables Breakdown</h2>
+            
+            <div class="grid-3-col gap-large">
+                <div class="glass-card">
+                    <span class="tag green margin-bottom-small">Video Production</span>
+                    <h3 class="heading-h4-card">Professional Video Ad Creation</h3>
+                    <p class="body-small color-text-secondary">
+                        Each production session yields 3 complete video ads optimized for all Meta placements (feed, stories, reels). We handle scripting, filming, editing, and delivery in all required formats.
+                    </p>
+                </div>
+
+                <div class="glass-card">
+                    <span class="tag green margin-bottom-small">Ads Management</span>
+                    <h3 class="heading-h4-card">Monthly Campaign Management</h3>
+                    <p class="body-small color-text-secondary">
+                        Continuous optimization of all active campaigns. Management stays at a flat $750/month rate regardless of campaign count—meaning your ROI improves as we scale.
+                    </p>
+                </div>
+
+                <div class="glass-card">
+                    <span class="tag blue margin-bottom-small">Static Creatives</span>
+                    <h3 class="heading-h4-card">Retargeting Ad Graphics</h3>
+                    <p class="body-small color-text-secondary">
+                        Quarterly batches of 3 static ads designed to retarget viewers who watched your videos but didn't convert. These capture warm leads who intended to return but got distracted.
+                    </p>
+                </div>
+
+                <div class="glass-card">
+                    <span class="tag blue margin-bottom-small">Technical Integration</span>
+                    <h3 class="heading-h4-card">CRM → Ads Manager Connection</h3>
+                    <p class="body-small color-text-secondary">
+                        We'll connect your HousePro CRM to Meta's Conversions API so closed deals feed back into Ads Manager. This enables true ROAS reporting and helps Meta's algorithm optimize for revenue.
+                    </p>
+                </div>
+
+                <div class="glass-card">
+                    <span class="tag orange margin-bottom-small">Bonus Value</span>
+                    <h3 class="heading-h4-card">Free Testimonial Video</h3>
+                    <p class="body-small color-text-secondary">
+                        During one of our production sessions, we'll capture your video testimonial. In exchange, you'll receive one additional video ad creative at no charge.
+                    </p>
+                </div>
+
+                <div class="glass-card">
+                    <span class="tag orange margin-bottom-small">Optional Add-On</span>
+                    <h3 class="heading-h4-card">Recruitment Campaign</h3>
+                    <p class="body-small color-text-secondary">
+                        Dedicate one production session to recruitment ads targeting skilled tile, framing, and drywall professionals to help you staff those 3 crews.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="spacing-section" id="investment">
+        <div class="container-max-width">
+            <p class="text-eyebrow color-accent-blue">Transparent Pricing</p>
+            <h2 class="heading-h2-section">Investment Breakdown</h2>
+            <p class="body-large color-text-secondary margin-bottom-large">Monthly payments remain consistent regardless of whether it's a production month. Management fees stay flat even as your campaign count grows.</p>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Service Component</th>
+                        <th>Description</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="pricing-row" id="production-row">
+                        <td><strong>Video Production Sessions</strong><span class="expand-icon">+</span></td>
+                        <td>Professional video ad creation with all deliverables</td>
+                        <td>$2,500/session</td>
+                    </tr>
+                    <tr class="pricing-details" id="production-details">
+                        <td colspan="3">
+                            <ul>
+                                <li>Pre-production consultation and script development</li>
+                                <li>On-site filming with multi-camera setup</li>
+                                <li>Professional editing and post-production</li>
+                                <li>3 complete video ads per session</li>
+                                <li>All placement formats (feed, stories, reels)</li>
+                                <li>Caption files and accessibility features</li>
+                                <li>Bi-Monthly Package: 6 sessions annually ($15,000 value)</li>
+                                <li>Quarterly Package: 4 sessions annually ($10,000 value)</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+                    <tr class="pricing-row" id="management-row">
+                        <td><strong>Monthly Ads Management</strong><span class="expand-icon">+</span></td>
+                        <td>Continuous campaign optimization and support</td>
+                        <td>$750/month</td>
+                    </tr>
+                    <tr class="pricing-details" id="management-details">
+                        <td colspan="3">
+                            <ul>
+                                <li>Daily campaign performance monitoring</li>
+                                <li>Budget optimization and reallocation</li>
+                                <li>Audience targeting refinement</li>
+                                <li>A/B testing of ad creatives and copy</li>
+                                <li>Service area and demographic adjustments</li>
+                                <li>Monthly performance reporting</li>
+                                <li>Ongoing strategic consultation</li>
+                                <li>Flat rate regardless of campaign count</li>
+                                <li>Annual value: $9,000</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+                    <tr class="pricing-row" id="statics-row">
+                        <td><strong>Static Retargeting Ads</strong><span class="expand-icon">+</span></td>
+                        <td>Quarterly batches of static ad graphics</td>
+                        <td>$400 per creative</td>
+                    </tr>
+                    <tr class="pricing-details" id="statics-details">
+                        <td colspan="3">
+                            <ul>
+                                <li>Custom graphic design for retargeting campaigns</li>
+                                <li>Professionally written ad copy</li>
+                                <li>All placement sizes and formats</li>
+                                <li>Retargeting audience setup and configuration</li>
+                                <li>3 static ads per quarter (12 annually)</li>
+                                <li>Annual value: $4,800</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+                    <tr class="pricing-row" id="crm-row">
+                        <td><strong>CRM Integration</strong><span class="expand-icon">+</span></td>
+                        <td>HousePro → Meta Conversions API connection</td>
+                        <td>Included</td>
+                    </tr>
+                    <tr class="pricing-details" id="crm-details">
+                        <td colspan="3">
+                            <ul>
+                                <li>Technical integration setup and configuration</li>
+                                <li>Conversion event mapping from HousePro to Meta</li>
+                                <li>Testing and validation of data flow</li>
+                                <li>Enables accurate ROAS tracking in Ads Manager</li>
+                                <li>Allows Meta's algorithm to optimize for revenue</li>
+                                <li>Ongoing data sync maintenance</li>
+                                <li>Typical value: $2,500 one-time setup</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="heading-h3-subsection margin-top-large">Package Comparison</h3>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>Bi-Monthly Package</th>
+                        <th>Quarterly Package</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Monthly Investment</strong></td>
+                        <td>$3,233</td>
+                        <td>$2,816</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Annual Investment</strong></td>
+                        <td>$38,796</td>
+                        <td>$33,792</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Production Sessions</strong></td>
+                        <td>6 per year (every 2 months)</td>
+                        <td>4 per year (every 3 months)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total Video Ads</strong></td>
+                        <td>18 new videos annually</td>
+                        <td>12 new videos annually</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ads Management</strong></td>
+                        <td>Monthly ($9,000 annual value)</td>
+                        <td>Monthly ($9,000 annual value)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Static Retargeting Ads</strong></td>
+                        <td>12 annually (quarterly batches)</td>
+                        <td>12 annually (quarterly batches)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Best For</strong></td>
+                        <td>Aggressive scaling to 6 employees</td>
+                        <td>Steady growth with seasonal flexibility</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="spacing-section" id="roi">
+        <div class="container-max-width">
+            <p class="text-eyebrow color-sage">Performance Projections</p>
+            <h2 class="heading-h2-section">Projected Performance at Scale</h2>
+
+            <div class="grid-3-col gap-large">
+                <div class="glass-card-clear">
+                    <h3 class="heading-h4-card">Current Performance</h3>
+                    <div class="stat-card">
+                        <div class="stat-number">12X</div>
+                        <div class="stat-label">ROI on Investment</div>
+                    </div>
+                    <p class="body-small color-text-secondary">
+                        <strong>Ad Spend:</strong> $300/month ($10/day)<br>
+                        <strong>Lead Volume:</strong> 12-15 leads/month<br>
+                        <strong>Closed Deals:</strong> 5-6 with $75K+ profit pipeline
+                    </p>
+                </div>
+
+                <div class="glass-card-clear green">
+                    <h3 class="heading-h4-card">Bi-Monthly Package Scale</h3>
+                    <div class="stat-card">
+                        <div class="stat-number">60-100+</div>
+                        <div class="stat-label">Expected Leads/Month</div>
+                    </div>
+                    <p class="body-small color-text-secondary">
+                        <strong>Monthly Investment:</strong> $3,233<br>
+                        <strong>Recommended Ad Spend:</strong> $6,000-8,000/month<br>
+                        <strong>Total Monthly Marketing:</strong> $9,233-11,233<br>
+                        <strong>Expected Annual Profit:</strong> $300K-500K+
+                    </p>
+                </div>
+
+                <div class="glass-card-clear blue">
+                    <h3 class="heading-h4-card">Quarterly Package Scale</h3>
+                    <div class="stat-card">
+                        <div class="stat-number">50-80+</div>
+                        <div class="stat-label">Expected Leads/Month</div>
+                    </div>
+                    <p class="body-small color-text-secondary">
+                        <strong>Monthly Investment:</strong> $2,816<br>
+                        <strong>Recommended Ad Spend:</strong> $5,000-7,000/month<br>
+                        <strong>Total Monthly Marketing:</strong> $7,816-9,816<br>
+                        <strong>Expected Annual Profit:</strong> $250K-400K+
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="spacing-section" id="how-it-works">
+        <div class="container-max-width">
+            <p class="text-eyebrow color-terracotta">Details</p>
+            <h2 class="heading-h2-section">How the Retainer Works</h2>
+            
+            <div class="accordion">
+                <button class="accordion-toggle">
+                    <span>Payment Schedule & Billing</span>
+                    <span class="accordion-icon">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p>
+                        Monthly payments remain consistent year-round, regardless of whether it's a production month or not. This makes budgeting simple and predictable. Payments are due on the 1st of each month via ACH or credit card. First month payment initiates the contract and schedules your first production session.
+                    </p>
+                    <p>
+                        <strong>Bi-Monthly Package:</strong> $3,233/month for 12 months ($38,796 annually)<br>
+                        <strong>Quarterly Package:</strong> $2,816/month for 12 months ($33,792 annually)
+                    </p>
+                  <p>"Monthly payments are due on the 1st of each month. ACH/bank transfer 
+is our standard payment method at the rates quoted above. Credit card 
+payment is available with a 3% convenience fee to cover processing costs 
+(Bi-Monthly: $3,330/month, Quarterly: $2,900/month)."</p>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-toggle">
+                    <span>Production Session Scheduling</span>
+                    <span class="accordion-icon">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p>
+                        <strong>Bi-Monthly Package:</strong> Production sessions in months 1, 3, 5, 7, 9, 11 (6 total annually)<br>
+                        <strong>Quarterly Package:</strong> Production sessions in months 1, 4, 7, 10 (4 total annually)
+                    </p>
+                    <p>
+                        Each session is scheduled 2-3 weeks in advance to coordinate your availability and any job sites we want to feature. Sessions typically take 2-4 hours on-site and yield 3 complete video ads delivered within 7-10 days of filming.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-toggle">
+                    <span>Ads Management Process</span>
+                    <span class="accordion-icon">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p>
+                        Management is continuous and happens every month regardless of production schedule. I monitor all active campaigns daily, make strategic adjustments weekly, and provide monthly performance reports. As new video ads are delivered, I integrate them into your campaigns with proper A/B testing against existing winners.
+                    </p>
+                    <p>
+                        You'll have direct access to me via phone and email for budget adjustments, service area changes, or strategic consultation. Management fee remains flat at $750/month regardless of how many campaigns we're running.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-toggle">
+                    <span>Static Creative Delivery</span>
+                    <span class="accordion-icon">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p>
+                        Static retargeting ads are delivered quarterly in batches of 3 (Q1, Q2, Q3, Q4). These are designed to capture warm leads who watched your videos but didn't convert immediately. I handle all design, copywriting, technical setup of retargeting audiences, and campaign configuration.
+                    </p>
+                    <p>
+                        Static ads run continuously alongside video campaigns and typically show to users 3-7 days after they've engaged with your video content.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-toggle">
+                    <span>CRM Integration Timeline</span>
+                    <span class="accordion-icon">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p>
+                        The HousePro to Meta Conversions API integration happens during Month 1 and typically takes 1-2 weeks to complete. I'll need admin access to your HousePro account and Facebook Business Manager to configure the connection properly.
+                    </p>
+                    <p>
+                        Once live, every time you mark a deal as "closed" in HousePro, that conversion data feeds back to Meta with the deal value. This enables true ROAS reporting and helps Meta's algorithm optimize campaigns for revenue instead of just lead volume.
+                    </p>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-toggle">
+                    <span>Contract Terms & Cancellation</span>
+                    <span class="accordion-icon">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p>
+                        This is a 12-month retainer agreement with monthly payments. You can cancel with 30 days written notice. Monthly retainer payments are non-refundable but cover work delivered cumulatively throughout the contract period.
+                    </p>
+                    <p>
+                        Upon cancellation, final accounting is calculated as: (Productions Completed × $2,500) + (Months of Management × $750) + (Static Batches Delivered × $1,200). If cumulative payments exceed delivered value, no refund is issued due to administrative and opportunity costs. If delivered value exceeds payments collected, you owe the difference.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="spacing-section" id="next-steps">
+        <div class="container-max-width">
+            <p class="text-eyebrow color-status-green">Ready to Scale</p>
+            <h2 class="heading-h2-section">Next Steps</h2>
+            <p class="body-large color-text-secondary margin-bottom-medium">
+                Choose your package and let's schedule your first production session. Have questions about which option fits your timeline or want to discuss the recruitment campaign? Let's talk.
+            </p>
+            
+            <div class="cta-group">
+                <a href="mailto:jason@thesaltlickdenver.com?subject=Peak Renovations Retainer - Ready to Start" class="btn btn-primary">Email to Get Started</a>
+                <a href="https://calendly.com/thesaltlickdenver/30min" class="callout-button">
+                    <span>Schedule Call</span>
+                    <span>→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById('navLinks').classList.remove('active');
+                }
+            });
+        });
+
+        // Accordion functionality
+        document.querySelectorAll('.accordion-toggle').forEach(button => {
+            button.addEventListener('click', function() {
+                const accordion = this.parentElement;
+                const wasExpanded = accordion.classList.contains('expanded');
+                
+                // Close all accordions
+                document.querySelectorAll('.accordion').forEach(acc => {
+                    acc.classList.remove('expanded');
+                });
+                
+                // Open clicked accordion if it wasn't already open
+                if (!wasExpanded) {
+                    accordion.classList.add('expanded');
+                }
+            });
+        });
+
+        // Pricing table dropdown functionality
+        document.querySelectorAll('.pricing-row').forEach(row => {
+            row.addEventListener('click', function() {
+                const detailsId = this.id.replace('-row', '-details');
+                const details = document.getElementById(detailsId);
+                
+                if (details) {
+                    this.classList.toggle('expanded');
+                    details.classList.toggle('visible');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

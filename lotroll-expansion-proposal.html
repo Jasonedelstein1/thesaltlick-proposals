@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Salt Lick × LotRoll — Expansion Proposal</title>
+<style>
+@import url('https://use.typekit.net/csj2hfl.css');
+
+:root {
+  --bg-gray: #e0dbd3;
+  --bg-cream: #f0ebe2;
+  --bg-white: #ffffff;
+  --accent: #c85c4f;
+  --accent-dark: #9e4535;
+  --text-primary: #1a1a1a;
+  --text-secondary: #3d3d3d;
+  --text-muted: rgba(0, 0, 0, 0.45);
+  --text-faint: rgba(0, 0, 0, 0.35);
+  --green: #1a6b30;
+  --green-bg: rgba(26, 107, 48, 0.08);
+  --coral-bg: rgba(200, 92, 79, 0.08);
+  --border: rgba(0, 0, 0, 0.08);
+  --shadow: 0 0 40px rgba(0,0,0,0.06);
+  --font-body: 'neue-haas-grotesk-text', -apple-system, sans-serif;
+  --font-display: 'neue-haas-grotesk-display', -apple-system, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg-gray);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+.panel {
+  max-width: 860px;
+  margin: 0 auto;
+  background: var(--bg-cream);
+  box-shadow: var(--shadow);
+  min-height: 100vh;
+}
+
+.container { padding: 0 32px; }
+
+/* NAV */
+.nav {
+  position: sticky;
+  top: 0;
+  background: var(--bg-cream);
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+}
+.nav-date {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.nav-links {
+  display: flex;
+  gap: 4px;
+}
+.nav-link {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+.nav-link:hover {
+  color: var(--text-primary);
+  background: rgba(0,0,0,0.04);
+}
+.nav-link.active {
+  color: var(--accent-dark);
+  background: var(--coral-bg);
+}
+@media (max-width: 680px) {
+  .nav-links { display: none; }
+}
+
+/* HERO */
+.hero { padding: 80px 32px 60px; }
+.hero-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  margin-bottom: 16px;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4vw, 44px);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+.hero-bar {
+  width: 48px;
+  height: 3px;
+  background: var(--accent);
+  margin-bottom: 20px;
+}
+.hero-subtitle {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2.5vw, 22px);
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 28px;
+}
+.hero p {
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  max-width: 680px;
+}
+
+/* SECTION */
+.section {
+  padding: 60px 32px;
+  border-top: 1px solid var(--border);
+}
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  margin-bottom: 12px;
+}
+.section h2 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+.section h3 {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2.5vw, 22px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.section-desc {
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+  max-width: 680px;
+}
+
+/* TAGS */
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+.tag-green { color: var(--green); background: var(--green-bg); }
+.tag-coral { color: var(--accent-dark); background: var(--coral-bg); }
+
+/* CARDS */
+.card {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 12px;
+}
+.card-dark {
+  background: var(--text-primary);
+  border: none;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 12px;
+  color: #ffffff;
+}
+.card-dark .card-price {
+  color: #ffffff;
+}
+.card-dark .card-desc {
+  color: rgba(255,255,255,0.6);
+}
+.card-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+.card-price {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  margin-bottom: 4px;
+}
+.card-price span {
+  font-size: 14px;
+  font-weight: 400;
+  opacity: 0.5;
+}
+.card-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.total-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+.total-label {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.total-amount {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+}
+
+/* TIER TABLE */
+.tier-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+.tier-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  border-bottom: 1px solid var(--border);
+}
+.tier-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+.tier-table td:first-child {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.tier-table .current {
+  background: rgba(200, 92, 79, 0.04);
+}
+
+/* MAP */
+.map-container {
+  margin: 32px 0;
+}
+.map-svg-wrap {
+  position: relative;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.map-svg-wrap svg {
+  width: 100%;
+  height: auto;
+}
+.map-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.map-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.map-stat {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+}
+.map-stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  margin-bottom: 4px;
+}
+.map-stat-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 24px;
+}
+.map-stat-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.slider-group {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+}
+.slider-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.slider-label-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.slider-label-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+}
+.slider-group input[type="range"] {
+  width: 100%;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--border);
+  border-radius: 2px;
+  outline: none;
+}
+.slider-group input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid var(--bg-white);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.map-legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.map-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.map-legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+.map-instructions {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 12px;
+  font-style: italic;
+}
+.btn-reset {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  background: none;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 6px 14px;
+  margin-top: 8px;
+}
+.btn-reset:hover { background: var(--coral-bg); }
+
+/* ACCORDION */
+.accordion-row {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  cursor: pointer;
+  background: var(--bg-white);
+  transition: background 0.15s;
+}
+.accordion-header:hover { background: rgba(0,0,0,0.02); }
+.accordion-title {
+  font-weight: 600;
+  font-size: 15px;
+}
+.accordion-icon {
+  color: var(--accent);
+  font-size: 18px;
+  transition: transform 0.2s;
+}
+.accordion-body {
+  display: none;
+  padding: 0 20px 16px;
+  background: var(--bg-white);
+}
+.accordion-body ul {
+  list-style: none;
+  padding: 0;
+}
+.accordion-body li {
+  font-size: 14px;
+  color: var(--text-secondary);
+  padding: 6px 0;
+  padding-left: 16px;
+  position: relative;
+}
+.accordion-body li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 13px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.4;
+}
+.accordion-row.open .accordion-body { display: block; }
+.accordion-row.open .accordion-icon { transform: rotate(45deg); }
+
+/* DIFF CARDS */
+.diff-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+.diff-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+}
+.diff-card h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+.diff-card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* CTA */
+.cta-section {
+  text-align: center;
+  padding: 80px 32px;
+  border-top: 1px solid var(--border);
+}
+.cta-section h2 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.cta-section p {
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+}
+.cta-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 14px 36px;
+  border-radius: 6px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.cta-btn:hover { opacity: 0.9; }
+
+/* NOTE CARD */
+.note-card {
+  background: rgba(200, 92, 79, 0.06);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin: 24px 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* MOBILE */
+@media (max-width: 680px) {
+  .container, .hero, .section, .nav-inner { padding-left: 20px; padding-right: 20px; }
+  .card-grid { grid-template-columns: 1fr; }
+  .map-stat-grid { grid-template-columns: 1fr 1fr; }
+  .map-controls { grid-template-columns: 1fr; }
+  .diff-grid { grid-template-columns: 1fr; }
+  .cta-section { padding: 60px 20px; }
+}
+</style>
+</head>
+<body>
+<div class="panel">
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">THE SALT LICK × LOTROLL</div>
+    <div class="nav-links">
+      <a href="#investment" class="nav-link">Investment</a>
+      <a href="#roadmap" class="nav-link">Roadmap</a>
+      <a href="#included" class="nav-link">Included</a>
+      <a href="#architecture" class="nav-link">Architecture</a>
+      <a href="#deliverables" class="nav-link">Deliverables</a>
+      <a href="#why" class="nav-link">Why Salt Lick</a>
+    </div>
+    <div class="nav-date">March 2026</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">Expansion proposal</div>
+  <h1>From Colorado to&nbsp;Coast&nbsp;to&nbsp;Coast</h1>
+  <div class="hero-bar"></div>
+  <div class="hero-subtitle">A full-funnel advertising system built to scale manufactured housing nationwide.</div>
+  <p>Over the past several months, we've built a proven advertising foundation in Colorado — top-of-funnel video campaigns targeting English-speaking buyers, Spanish-speaking buyers, and sellers, backed by a deep Google Tag Manager implementation capturing listing-level data across park, price, size, bedrooms, bathrooms, and more.</p>
+  <p>This proposal outlines the next phase: deploying a full-funnel system in Colorado that connects MLS/IDX listing data directly to Meta catalog conversion campaigns, enabling retargeting with specific listings viewers have already engaged with. Once proven, this system becomes a repeatable playbook that can be deployed to every state LotRoll enters.</p>
+</div>
+
+<!-- INVESTMENT: COLORADO -->
+<div class="section" id="investment">
+  <div class="section-label">Investment</div>
+  <h2>Colorado — 90-Day Intensive</h2>
+  <p class="section-desc">The first phase builds the foundational advertising infrastructure that every future state will deploy from. Our existing GTM implementation captures visitor behavior — views, searches, and interactions with listings. The system build closes the technical gap between tracking what users do and using that data to automatically serve them relevant listing ads.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <span class="tag tag-green">Setup</span>
+      <div class="card-name">System Build</div>
+      <div class="card-price">$3,000</div>
+      <div class="card-desc">Connecting LotRoll's MLS/IDX listing data to Meta Commerce Manager as a live product feed — the bridge between "we know someone viewed a listing" and "we can automatically show them that listing as an ad." Includes Meta Product Catalog architecture, catalog conversion campaign build, product set configuration by state/price/type, BlockVantage campaign and pixel setup, GA4 implementation with a unified performance dashboard, and AI static ad template creation. This is a one-time build that becomes the engine for every state that follows.</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:8px;font-style:italic;">Note: Additional SaaS subscriptions (e.g. feed management, data transformation tools) may be required to support the system architecture. Any third-party costs will be identified during the build and communicated before purchase.</div>
+    </div>
+    <div class="card">
+      <span class="tag tag-green">Setup</span>
+      <div class="card-name">Launch Creative Batch</div>
+      <div class="card-price">Included</div>
+      <div class="card-desc">8–10 market-level static ads for Colorado built using our AI creative pipeline. Multiple formats optimized for feed, stories, and reels placements. Additional batches available at $400 per batch of 8–10 ads.</div>
+    </div>
+  </div>
+
+  <div class="card-dark">
+    <span class="tag tag-coral" style="color:#f0ebe2; background:rgba(240,235,226,0.12);">Monthly · 90 Days</span>
+    <div class="card-name" style="color:#fff;">Meta Campaign Management</div>
+    <div class="card-price">$1,000<span>/month</span></div>
+    <div class="card-desc">Full-funnel Meta management including top-of-funnel video + static campaigns, catalog conversion retargeting (viewed listings + similar listings), audience buildout, creative rotation, budget pacing, and performance reporting. Intensive rate reflects the additional attention required to build and validate the catalog system.</div>
+  </div>
+
+  <div class="card">
+    <span class="tag tag-coral">Monthly · Add-On</span>
+    <div class="card-name">BlockVantage CTV Management</div>
+    <div class="card-price">$250<span>/month</span></div>
+    <div class="card-desc">Campaign setup and ongoing management of CTV streaming ads on the BlockVantage platform. Includes geo-fenced audience targeting, creative deployment, and performance monitoring. Priced as an add-on — results from Colorado will determine if and how this scales to additional states.</div>
+  </div>
+
+  <div class="total-line">
+    <div class="total-label">Colorado monthly total (setup amortized separately)</div>
+    <div class="total-amount">$1,250<span style="font-size:14px;font-weight:400;color:var(--text-muted);">/mo</span></div>
+  </div>
+
+  <div class="note-card">
+    <strong>Recommended ad spend:</strong> $100/day ($3,000/month) — $60/day for top-of-funnel campaigns targeting buyers and sellers, plus $40/day for retargeting campaigns leveraging your existing Colorado audience of ~20,000 engaged buyers and ~4,600 sellers. BlockVantage ad spend is managed separately through their platform at your current $500/month level.
+  </div>
+
+  <div style="margin-top:24px;">
+    <h3>Production Day</h3>
+    <p class="section-desc">Scheduled for June or July, once retargeting data validates the new campaign structure.</p>
+    <div class="card" style="max-width:400px;">
+      <span class="tag tag-green">One-Time</span>
+      <div class="card-name">Video Production — 6 Scripts</div>
+      <div class="card-price">$2,750</div>
+      <div class="card-desc">Full production day to re-record buyer and seller scripts. Includes direction, filming, editing, and delivery of 6 new video ads optimized for Meta and vertical placements. Our standard production rate covers 3 scripts — the additional 3 are included as a thank you for the volume of work in this engagement.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 90-DAY REVIEW -->
+<div class="section" id="roadmap">
+  <div class="section-label">After the 90-Day Intensive</div>
+  <h2>Scaling Roadmap</h2>
+  <p class="section-desc">After validating the system in Colorado, management transitions to the Tier&nbsp;1 rate and new states begin onboarding. The 90-day review at the end of the Colorado intensive is where we evaluate what's working, confirm the scaling roadmap makes sense, and align on the right pace for expansion.</p>
+
+  <table class="tier-table">
+    <thead>
+      <tr>
+        <th>Tier</th>
+        <th>States</th>
+        <th>Meta /mo</th>
+        <th>Onboarding</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="current">
+        <td>Tier 1</td>
+        <td>1 – 5</td>
+        <td>$750 /state</td>
+        <td>$750 /state</td>
+      </tr>
+      <tr>
+        <td>Tier 2</td>
+        <td>6 – 10</td>
+        <td>$600 /state</td>
+        <td>$500 /state</td>
+      </tr>
+      <tr>
+        <td>Tier 3</td>
+        <td>11 – 15</td>
+        <td>$500 /state</td>
+        <td>$500 /state</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note-card">
+    <strong>Static creative batches:</strong> $400 per batch of 8–10 market-level static ads, available on-demand for any state. State-specific creatives can be produced as needed based on performance data. <strong>BlockVantage multi-state pricing:</strong> To be determined based on Colorado results and platform performance.
+  </div>
+
+  <!-- INTERACTIVE MAP -->
+  <div class="map-container">
+    <h3 style="margin-bottom:4px;">National Expansion Calculator</h3>
+    <p class="map-instructions">Click states to toggle them on. Adjust daily ad spend to see reach projections at your current $20 CPM.</p>
+
+    <div class="map-legend">
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#c85c4f;"></div> Active (confirmed)</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#1a6b30;"></div> Added by you</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#e0dbd3; border:1px solid rgba(0,0,0,0.15);"></div> Available</div>
+    </div>
+
+    <div class="map-svg-wrap">
+      <div id="map-target"></div>
+    </div>
+
+    <div class="map-controls">
+      <div class="slider-group">
+        <div class="slider-label">
+          <span class="slider-label-text">Daily ad spend per state</span>
+          <span class="slider-label-value" id="spend-value">$100</span>
+        </div>
+        <input type="range" min="60" max="1000" step="10" value="100" id="spend-slider">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;">
+        <button class="btn-reset" id="reset-btn">Reset map</button>
+      </div>
+    </div>
+
+    <div class="map-stat-grid">
+      <div class="map-stat">
+        <div class="map-stat-label">States selected</div>
+        <div class="map-stat-value" id="stat-states">0</div>
+        <div class="map-stat-sub" id="stat-tier">—</div>
+      </div>
+      <div class="map-stat">
+        <div class="map-stat-label">Est. monthly impressions</div>
+        <div class="map-stat-value" id="stat-impressions">0</div>
+        <div class="map-stat-sub">At $20 CPM</div>
+      </div>
+      <div class="map-stat">
+        <div class="map-stat-label">Monthly management</div>
+        <div class="map-stat-value" id="stat-mgmt">$0</div>
+        <div class="map-stat-sub" id="stat-mgmt-sub">—</div>
+      </div>
+      <div class="map-stat">
+        <div class="map-stat-label">Monthly ad spend</div>
+        <div class="map-stat-value" id="stat-adspend">$0</div>
+        <div class="map-stat-sub" id="stat-total-sub">—</div>
+      </div>
+    </div>
+
+    <div class="map-stat" style="background:var(--text-primary);border-radius:8px;padding:20px;margin-bottom:16px;">
+      <div class="map-stat-label" style="color:rgba(255,255,255,0.5);">Total monthly investment</div>
+      <div class="map-stat-value" style="color:#fff;font-size:32px;" id="stat-total">$0</div>
+      <div class="map-stat-sub" style="color:rgba(255,255,255,0.45);" id="stat-onboarding">Select states to see projections</div>
+    </div>
+
+    <!-- SCALING EFFICIENCY CHART -->
+    <div style="margin-top:32px;">
+      <h3 style="margin-bottom:4px;">Management Efficiency at Scale</h3>
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:20px;">As states and ad spend increase, management fees become a smaller fraction of your total investment. Your dollars increasingly go directly toward reaching customers.</p>
+
+      <div style="background:var(--bg-white);border:1px solid var(--border);border-radius:8px;padding:20px;">
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--text-muted);margin-bottom:16px;">
+          <span style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:#c85c4f;"></span> Management fees</span>
+          <span style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:#1a6b30;"></span> Ad spend (working media)</span>
+          <span style="display:flex;align-items:center;gap:6px;"><span style="width:20px;height:2px;background:#c85c4f;border-radius:1px;"></span> Management as % of total</span>
+        </div>
+        <div style="position:relative;width:100%;height:340px;">
+          <canvas id="efficiency-chart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT'S INCLUDED -->
+<div class="section" id="included">
+  <div class="section-label">What's included</div>
+  <h2>Your Advertising Stack</h2>
+  <p class="section-desc">Every component of a national manufactured housing advertising system, managed end-to-end.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <span class="tag tag-coral">Monthly</span>
+      <div class="card-name">Meta Full-Funnel Management</div>
+      <div class="card-desc">Top-of-funnel awareness campaigns, mid-funnel retargeting, and bottom-funnel catalog conversion campaigns driving pre-approvals and seller activations.</div>
+    </div>
+    <div class="card">
+      <span class="tag tag-green">System</span>
+      <div class="card-name">Catalog Conversion Engine</div>
+      <div class="card-desc">LotRoll's MLS/IDX listing data connected directly to Meta Commerce Manager as an auto-updating product feed. Once live, new listings automatically become ads — retargeting viewers with homes they've engaged with, or surfacing similar listings they haven't seen yet.</div>
+    </div>
+    <div class="card">
+      <span class="tag tag-coral">Add-On</span>
+      <div class="card-name">BlockVantage CTV</div>
+      <div class="card-desc">Streaming TV ads delivered to geo-fenced audiences through BlockVantage's verified CTV platform. Extends top-of-funnel reach to the biggest screen in the home.</div>
+    </div>
+    <div class="card">
+      <span class="tag tag-green">System</span>
+      <div class="card-name">AI Static Creative Pipeline</div>
+      <div class="card-desc">Market-level static ads generated via our AI design system, optimized for Meta's Andromeda algorithm which rewards creative volume and variation.</div>
+    </div>
+    <div class="card">
+      <span class="tag tag-green">System</span>
+      <div class="card-name">Tracking &amp; Analytics</div>
+      <div class="card-desc">Google Tag Manager configured to capture listing-level parameters across all platforms — Meta Pixel, CAPI, BlockVantage conversion pixel, and Google Ads (if approved). GA4 implementation with a unified dashboard so LotRoll can see all campaign performance in one place.</div>
+    </div>
+    <div class="card">
+      <span class="tag tag-coral">Monthly</span>
+      <div class="card-name">Performance Reporting</div>
+      <div class="card-desc">Regular reporting across all platforms covering audience growth, conversion metrics, catalog performance, and ad spend efficiency by state.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CAMPAIGN ARCHITECTURE -->
+<div class="section" id="architecture">
+  <div class="section-label">Campaign architecture</div>
+  <h2>How It All Connects</h2>
+  <p class="section-desc">From first impression to pre-approval — every platform, audience, and conversion action mapped end-to-end.</p>
+
+  <!-- FUNNEL FLOWCHART -->
+  <div style="background:var(--bg-white);border:1px solid var(--border);border-radius:8px;padding:32px 24px;margin-bottom:24px;overflow-x:auto;">
+    <svg id="flowchart" viewBox="0 0 796 680" width="100%" style="display:block;font-family:var(--font-body);">
+    </svg>
+  </div>
+
+  <!-- DATA FLOW -->
+  <h3 style="margin-bottom:4px;">Data Flow — MLS to Retargeting</h3>
+  <p style="font-size:14px;color:var(--text-muted);margin-bottom:20px;">Listing data flows from MLS through your website into tracking infrastructure, then branches to each advertising platform for targeted delivery.</p>
+
+  <div style="background:var(--bg-white);border:1px solid var(--border);border-radius:8px;padding:32px 24px;overflow-x:auto;">
+    <svg id="dataflow" viewBox="0 0 796 420" width="100%" style="display:block;font-family:var(--font-body);">
+    </svg>
+  </div>
+</div>
+
+<!-- DELIVERABLES -->
+<div class="section" id="deliverables">
+  <div class="section-label">Deliverables</div>
+  <h2>Detailed Breakdown</h2>
+  <p class="section-desc">Expand each service to see exactly what's delivered.</p>
+
+  <div class="accordion-row">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span class="accordion-title">Meta Campaign Management</span>
+      <span class="accordion-icon">+</span>
+    </div>
+    <div class="accordion-body">
+      <ul>
+        <li>Top-of-funnel video and static ad deployment targeting buyers (English + Spanish) and sellers</li>
+        <li>Catalog conversion campaign setup using MLS/IDX listing feed data</li>
+        <li>Retargeting campaigns for website visitors, video viewers (3-second+), and content viewers</li>
+        <li>Custom audience buildout per state based on engagement signals</li>
+        <li>Lookalike audience creation from high-intent converters</li>
+        <li>Creative rotation and A/B testing aligned with Andromeda's multi-creative optimization</li>
+        <li>Budget pacing and bid strategy optimization per adset</li>
+        <li>Weekly performance monitoring and monthly reporting</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-row">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span class="accordion-title">Catalog Conversion System</span>
+      <span class="accordion-icon">+</span>
+    </div>
+    <div class="accordion-body">
+      <ul>
+        <li>MLS/IDX listing data connected to Meta Commerce Manager as a scheduled product feed (auto-updating as listings change)</li>
+        <li>Home Listing Catalog creation with required fields: listing ID, title, description, price, photos, URL, address, and coordinates</li>
+        <li>Product set configuration for filtering by state, price range, property type, and bedroom count</li>
+        <li>Dynamic retargeting for specific viewed listings ("You looked at this home")</li>
+        <li>Broad retargeting with similar listings based on price, size, location, and property type</li>
+        <li>Catalog event mapping through GTM (ViewContent, Search, AddToCart equivalents) matched to catalog item IDs</li>
+        <li>Ongoing feed health monitoring — error detection, missing fields, broken images</li>
+        <li>GA4 implementation with unified dashboard across all campaign performance</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-row">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span class="accordion-title">BlockVantage CTV Management</span>
+      <span class="accordion-icon">+</span>
+    </div>
+    <div class="accordion-body">
+      <ul>
+        <li>Campaign creation with geo-fenced targeting (city, state, ZIP, DMA level)</li>
+        <li>Demographic and household targeting configuration</li>
+        <li>Creative deployment across streaming platforms</li>
+        <li>Conversion pixel setup integrated with GTM</li>
+        <li>Qualified Viewer Pool buildout for CTV-native retargeting</li>
+        <li>Performance monitoring and budget pacing</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-row">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span class="accordion-title">AI Static Creative Production</span>
+      <span class="accordion-icon">+</span>
+    </div>
+    <div class="accordion-body">
+      <ul>
+        <li>Brand-aligned template system built on LotRoll's visual guidelines</li>
+        <li>8–10 static ads per batch across feed, stories, and reels formats</li>
+        <li>Market-level messaging tailored to state or city audience</li>
+        <li>One launch batch included with the Colorado system build</li>
+        <li>Additional batches available at $400 per batch on-demand</li>
+        <li>State-specific creative batches produced as needed based on performance data</li>
+        <li>QA and format validation for all Meta placement specs</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-row">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span class="accordion-title">Video Production Day</span>
+      <span class="accordion-icon">+</span>
+    </div>
+    <div class="accordion-body">
+      <ul>
+        <li>6 scripts — buyer-focused and seller-focused messaging</li>
+        <li>Full production day including direction, filming, and audio</li>
+        <li>Post-production editing and color grading</li>
+        <li>Delivery in horizontal and vertical formats for all placements</li>
+        <li>Model releases for all on-camera talent</li>
+        <li>Scheduled for June/July once catalog system is validated</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-row">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+      <span class="accordion-title">Tracking &amp; Reporting Infrastructure</span>
+      <span class="accordion-icon">+</span>
+    </div>
+    <div class="accordion-body">
+      <ul>
+        <li>GA4 property setup with cross-platform event tracking</li>
+        <li>Unified Looker Studio dashboard — all campaign metrics, all platforms, one view</li>
+        <li>GTM tag creation for BlockVantage conversion pixel and Google Ads (if applicable)</li>
+        <li>Existing Meta Pixel + CAPI event structure extended for catalog item matching</li>
+        <li>Listing-level parameter capture (park, price, beds, baths, size, location) mapped to catalog IDs</li>
+        <li>Cross-platform attribution tracking</li>
+        <li>Monthly performance reports per state per platform</li>
+        <li>90-day review at end of Colorado intensive to validate scaling roadmap</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- WHY SALT LICK -->
+<div class="section" id="why">
+  <div class="section-label">Why Salt Lick</div>
+  <h2>Built Different</h2>
+  <div class="diff-grid">
+    <div class="diff-card">
+      <h3>Systems First</h3>
+      <p>We don't just run ads — we build advertising infrastructure. The catalog conversion system, GTM tracking, and creative pipeline are assets you own that compound in value as you scale.</p>
+    </div>
+    <div class="diff-card">
+      <h3>Proven in Colorado</h3>
+      <p>Nearly 20,000 engaged buyers, 4,600 sellers, and 1,200 content views — all built from the ground up. The same playbook that works here deploys to every new state.</p>
+    </div>
+    <div class="diff-card">
+      <h3>Scale Without Waste</h3>
+      <p>Tiered pricing that gets cheaper per state as you grow. AI-powered creative that keeps costs low. A flat management fee that becomes a smaller percentage of spend as you scale.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2>Ready to Scale, Grayson?</h2>
+  <p>Let's start with Colorado and build the system that takes LotRoll national.</p>
+  <a href="mailto:jason@thesaltlickdenver.com?subject=LotRoll%20Expansion%20Proposal" class="cta-btn">Let's Get Started</a>
+</div>
+
+</div><!-- /panel -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// State data: id, name, population (2024 estimates)
+const stateData = {
+  "01":{n:"Alabama",p:5108468},"02":{n:"Alaska",p:733406},"04":{n:"Arizona",p:7431344},
+  "05":{n:"Arkansas",p:3067732},"06":{n:"California",p:38965193},"08":{n:"Colorado",p:5877610},
+  "09":{n:"Connecticut",p:3617176},"10":{n:"Delaware",p:1031890},"11":{n:"District of Columbia",p:678972},
+  "12":{n:"Florida",p:22610726},"13":{n:"Georgia",p:11029227},"15":{n:"Hawaii",p:1435138},
+  "16":{n:"Idaho",p:1964726},"17":{n:"Illinois",p:12549689},"18":{n:"Indiana",p:6862199},
+  "19":{n:"Iowa",p:3207004},"20":{n:"Kansas",p:2940546},"21":{n:"Kentucky",p:4526154},
+  "22":{n:"Louisiana",p:4573749},"23":{n:"Maine",p:1395722},"24":{n:"Maryland",p:6180253},
+  "25":{n:"Massachusetts",p:7001399},"26":{n:"Michigan",p:10037261},"27":{n:"Minnesota",p:5737915},
+  "28":{n:"Mississippi",p:2939690},"29":{n:"Missouri",p:6196156},"30":{n:"Montana",p:1132812},
+  "31":{n:"Nebraska",p:1978379},"32":{n:"Nevada",p:3194176},"33":{n:"New Hampshire",p:1402054},
+  "34":{n:"New Jersey",p:9290841},"35":{n:"New Mexico",p:2114371},"36":{n:"New York",p:19571216},
+  "37":{n:"North Carolina",p:10835491},"38":{n:"North Dakota",p:783926},"39":{n:"Ohio",p:11785935},
+  "40":{n:"Oklahoma",p:4053824},"41":{n:"Oregon",p:4233358},"42":{n:"Pennsylvania",p:12961683},
+  "44":{n:"Rhode Island",p:1095962},"45":{n:"South Carolina",p:5373555},"46":{n:"South Dakota",p:919318},
+  "47":{n:"Tennessee",p:7126489},"48":{n:"Texas",p:30503301},"49":{n:"Utah",p:3417734},
+  "50":{n:"Vermont",p:647464},"51":{n:"Virginia",p:8683619},"53":{n:"Washington",p:7812880},
+  "54":{n:"West Virginia",p:1770071},"55":{n:"Wisconsin",p:5910955},"56":{n:"Wyoming",p:584057}
+};
+
+const confirmedStates = new Set(["08","04","35","06","45"]); // CO, AZ, NM, CA, SC
+const selectedStates = new Set();
+const CPM = 20;
+
+function getTier(count) {
+  if (count <= 5) return 1;
+  if (count <= 10) return 2;
+  return 3;
+}
+function getMgmtRate(stateIndex) {
+  if (stateIndex <= 5) return 750;
+  if (stateIndex <= 10) return 600;
+  return 500;
+}
+function getOnboardingFee(stateIndex) {
+  if (stateIndex === 1) return 3000;
+  if (stateIndex <= 5) return 750;
+  return 500;
+}
+function formatNum(n) {
+  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000) return Math.round(n/1000).toLocaleString() + 'K';
+  return n.toLocaleString();
+}
+function formatMoney(n) {
+  return '$' + n.toLocaleString();
+}
+
+function updateStats() {
+  const count = selectedStates.size;
+  const dailySpend = parseInt(document.getElementById('spend-slider').value);
+  const monthlySpendPerState = dailySpend * 30;
+
+  let totalMgmt = 0;
+  let totalOnboarding = 0;
+  let totalPop = 0;
+  let i = 0;
+  for (const id of selectedStates) {
+    i++;
+    totalMgmt += getMgmtRate(i);
+    totalOnboarding += getOnboardingFee(i);
+    totalPop += stateData[id]?.p || 0;
+  }
+
+  const totalAdSpend = count * monthlySpendPerState;
+  const totalMonthly = totalMgmt + totalAdSpend;
+  const monthlyImpressions = Math.round((totalAdSpend / CPM) * 1000);
+
+  document.getElementById('stat-states').textContent = count;
+  document.getElementById('stat-tier').textContent = count === 0 ? '—' : 'Tier ' + getTier(count) + ' · ' + formatNum(totalPop) + ' population';
+  document.getElementById('stat-impressions').textContent = count === 0 ? '0' : formatNum(monthlyImpressions);
+  document.getElementById('stat-mgmt').textContent = formatMoney(totalMgmt);
+  document.getElementById('stat-mgmt-sub').textContent = count === 0 ? '—' : formatMoney(getMgmtRate(count)) + '/state at Tier ' + getTier(count);
+  document.getElementById('stat-adspend').textContent = formatMoney(totalAdSpend);
+  document.getElementById('stat-total-sub').textContent = count === 0 ? '—' : formatMoney(monthlySpendPerState) + '/mo × ' + count + ' states';
+  document.getElementById('stat-total').textContent = formatMoney(totalMonthly);
+  document.getElementById('stat-onboarding').textContent = count === 0 ? 'Select states to see projections' : 'One-time onboarding: ' + formatMoney(totalOnboarding) + ' · Management: ' + formatMoney(totalMgmt) + '/mo + Ad spend: ' + formatMoney(totalAdSpend) + '/mo';
+}
+
+function updateMap() {
+  d3.selectAll('.state-path').each(function() {
+    const el = d3.select(this);
+    const id = el.attr('data-id');
+    if (selectedStates.has(id)) {
+      el.attr('fill', confirmedStates.has(id) ? '#c85c4f' : '#1a6b30');
+      el.attr('stroke', '#f0ebe2');
+      el.attr('stroke-width', 1.5);
+    } else {
+      el.attr('fill', '#e0dbd3');
+      el.attr('stroke', 'rgba(0,0,0,0.15)');
+      el.attr('stroke-width', 0.5);
+    }
+  });
+  updateStats();
+}
+
+// Build map
+d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(us => {
+  const width = 796, height = 500;
+  const svg = d3.select('#map-target').append('svg')
+    .attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('width', '100%')
+    .style('display', 'block');
+
+  const path = d3.geoPath(d3.geoAlbersUsa().scale(1050).translate([width/2, height/2]));
+  const features = topojson.feature(us, us.objects.states).features
+    .filter(f => stateData[f.id]);
+
+  // Tooltip
+  const tooltip = d3.select('#map-target').append('div')
+    .style('position','absolute').style('pointer-events','none')
+    .style('background','#1a1a1a').style('color','#fff')
+    .style('padding','6px 10px').style('border-radius','4px')
+    .style('font-size','12px').style('font-family','var(--font-body)')
+    .style('opacity',0).style('transition','opacity 0.15s')
+    .style('white-space','nowrap');
+
+  svg.selectAll('path')
+    .data(features)
+    .join('path')
+    .attr('class', 'state-path')
+    .attr('data-id', d => d.id)
+    .attr('d', path)
+    .attr('fill', '#e0dbd3')
+    .attr('stroke', 'rgba(0,0,0,0.15)')
+    .attr('stroke-width', 0.5)
+    .style('cursor', 'pointer')
+    .on('click', function(event, d) {
+      const id = d.id;
+      if (selectedStates.has(id)) {
+        selectedStates.delete(id);
+      } else {
+        selectedStates.add(id);
+      }
+      updateMap();
+    })
+    .on('mouseover', function(event, d) {
+      const sd = stateData[d.id];
+      const isSelected = selectedStates.has(d.id);
+      tooltip.html(`<strong>${sd.n}</strong> · Pop: ${sd.p.toLocaleString()}${isSelected ? ' ✓' : ''}`)
+        .style('opacity', 1);
+      d3.select(this).attr('opacity', 0.8);
+    })
+    .on('mousemove', function(event) {
+      const rect = document.querySelector('#map-target').getBoundingClientRect();
+      tooltip
+        .style('left', (event.clientX - rect.left + 12) + 'px')
+        .style('top', (event.clientY - rect.top - 30) + 'px');
+    })
+    .on('mouseout', function() {
+      tooltip.style('opacity', 0);
+      d3.select(this).attr('opacity', 1);
+    });
+
+  // Pre-select confirmed states
+  confirmedStates.forEach(id => selectedStates.add(id));
+  updateMap();
+});
+
+// Slider
+const spendSlider = document.getElementById('spend-slider');
+spendSlider.addEventListener('input', function() {
+  document.getElementById('spend-value').textContent = '$' + parseInt(this.value).toLocaleString();
+  updateStats();
+});
+
+// Reset
+document.getElementById('reset-btn').addEventListener('click', function() {
+  selectedStates.clear();
+  confirmedStates.forEach(id => selectedStates.add(id));
+  spendSlider.value = 100;
+  document.getElementById('spend-value').textContent = '$100';
+  updateMap();
+});
+
+// Accordion
+function toggleAccordion(header) {
+  const row = header.parentElement;
+  row.classList.toggle('open');
+}
+
+// Smooth scroll for nav links
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      const navH = document.querySelector('.nav').offsetHeight;
+      const y = target.getBoundingClientRect().top + window.pageYOffset - navH - 8;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  });
+});
+
+// Scrollspy
+const spySections = ['investment','roadmap','included','architecture','deliverables','why'];
+function updateSpy() {
+  const navH = document.querySelector('.nav').offsetHeight + 20;
+  let current = '';
+  spySections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= navH + 60) current = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', updateSpy, { passive: true });
+updateSpy();
+
+// === EFFICIENCY CHART ===
+let effChart = null;
+function buildEfficiencyChart() {
+  const ctx = document.getElementById('efficiency-chart');
+  if (!ctx) return;
+  const statesArr = [1,3,5,8,10,12,15,20,25];
+  const spendLevels = [100,100,100,140,140,200,300,500,1000];
+  const mgmtData = statesArr.map(s => {
+    let t = 0;
+    for (let i = 1; i <= s; i++) {
+      if (i <= 5) t += 750;
+      else if (i <= 10) t += 600;
+      else t += 500;
+    }
+    return t;
+  });
+  const adData = statesArr.map((s, idx) => s * spendLevels[idx] * 30);
+  const pctData = statesArr.map((s, idx) => {
+    const total = mgmtData[idx] + adData[idx];
+    return total > 0 ? Math.round((mgmtData[idx] / total) * 100) : 0;
+  });
+
+  effChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: statesArr.map(s => s + (s === 1 ? ' state' : ' states')),
+      datasets: [
+        { label: 'Management', data: mgmtData, backgroundColor: '#c85c4f', borderRadius: 3, order: 2, yAxisID: 'y' },
+        { label: 'Ad spend', data: adData, backgroundColor: '#1a6b30', borderRadius: 3, order: 2, yAxisID: 'y' },
+        { label: 'Mgmt %', data: pctData, type: 'line', borderColor: '#c85c4f', backgroundColor: 'rgba(200,92,79,0.1)', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#c85c4f', tension: 0.3, order: 1, yAxisID: 'y1', fill: false }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              if (ctx.dataset.label === 'Mgmt %') return 'Management: ' + ctx.raw + '% of total';
+              return ctx.dataset.label + ': $' + ctx.raw.toLocaleString() + '/mo';
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          stacked: true,
+          grid: { display: false },
+          ticks: { color: 'rgba(0,0,0,0.4)', font: { size: 11, family: 'var(--font-body)' } }
+        },
+        y: {
+          stacked: true,
+          position: 'left',
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          ticks: {
+            color: 'rgba(0,0,0,0.4)',
+            font: { size: 11 },
+            callback: function(v) { return v >= 1000 ? '$' + (v/1000).toFixed(0) + 'k' : '$' + v; }
+          }
+        },
+        y1: {
+          position: 'right',
+          min: 0,
+          max: 100,
+          grid: { display: false },
+          ticks: {
+            color: '#c85c4f',
+            font: { size: 11 },
+            callback: function(v) { return v + '%'; }
+          }
+        }
+      }
+    }
+  });
+}
+buildEfficiencyChart();
+
+// === SVG FLOWCHARTS ===
+function drawFlowchart() {
+  const svg = document.getElementById('flowchart');
+  if (!svg) return;
+
+  const cream = '#f0ebe2';
+  const coral = '#c85c4f';
+  const coralLight = 'rgba(200,92,79,0.08)';
+  const green = '#1a6b30';
+  const greenLight = 'rgba(26,107,48,0.08)';
+  const dark = '#1a1a1a';
+  const darkLight = 'rgba(26,26,26,0.06)';
+  const textMuted = 'rgba(0,0,0,0.45)';
+  const border = 'rgba(0,0,0,0.12)';
+
+  function box(x,y,w,h,fill,stroke,rx) {
+    return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx||6}" fill="${fill}" stroke="${stroke}" stroke-width="0.75"/>`;
+  }
+  function txt(x,y,text,size,weight,fill,anchor) {
+    return `<text x="${x}" y="${y}" font-size="${size}" font-weight="${weight||400}" fill="${fill||dark}" text-anchor="${anchor||'middle'}" font-family="var(--font-body)">${text}</text>`;
+  }
+  function arrow(x1,y1,x2,y2,color) {
+    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color||border}" stroke-width="1.5" marker-end="url(#arrowhead)"/>`;
+  }
+  function arrowPath(d,color) {
+    return `<path d="${d}" stroke="${color||border}" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>`;
+  }
+
+  let h = '';
+  h += `<defs><marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="${border}"/></marker>`;
+  h += `<marker id="arrowC" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="${coral}"/></marker>`;
+  h += `<marker id="arrowG" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="${green}"/></marker></defs>`;
+
+  // Section labels
+  h += txt(398, 28, 'TOP OF FUNNEL — Awareness', 11, 600, textMuted);
+
+  // TOF boxes
+  const tofY = 44;
+  h += box(20, tofY, 230, 70, coralLight, coral);
+  h += txt(135, tofY+28, 'Meta Ads', 14, 600, dark);
+  h += txt(135, tofY+48, 'Video + AI Static', 11, 400, textMuted);
+
+  h += box(283, tofY, 230, 70, '#fff', border);
+  h += txt(398, tofY+28, 'BlockVantage CTV', 14, 600, dark);
+  h += txt(398, tofY+48, 'Geo-Fenced Streaming', 11, 400, textMuted);
+
+  h += box(546, tofY, 230, 70, '#fff', border);
+  h += txt(661, tofY+28, 'Google Ads', 14, 600, dark);
+  h += txt(661, tofY+48, 'If Credits Approved', 11, 400, textMuted);
+
+  // Audience callout
+  const audY = 140;
+  h += box(80, audY, 636, 42, darkLight, 'none', 4);
+  h += txt(398, audY+26, 'Colorado audiences: ~20K buyers · ~3.8K Spanish buyers · ~4.6K sellers · ~1.2K content views', 11, 400, textMuted);
+
+  // Arrows TOF → MOF
+  h += arrow(135, tofY+70, 135, 210, coral);
+  h += arrow(398, tofY+70, 398, 210, border);
+  h += arrow(661, tofY+70, 530, 210, border);
+
+  // MOF section
+  const mofLabelY = 200;
+  h += txt(398, mofLabelY, 'MID FUNNEL — Engagement & Retargeting', 11, 600, textMuted);
+
+  const mofY = 216;
+  h += box(20, mofY, 350, 80, coralLight, coral);
+  h += txt(195, mofY+28, 'Meta Retargeting', 14, 600, dark);
+  h += txt(195, mofY+48, 'Video viewers + site visitors', 11, 400, textMuted);
+  h += txt(195, mofY+66, 'Custom & lookalike audiences', 11, 400, textMuted);
+
+  h += box(403, mofY, 373, 80, greenLight, green);
+  h += txt(590, mofY+28, 'Meta Catalog Conversions', 14, 600, dark);
+  h += txt(590, mofY+48, 'Viewed listings → re-show specific homes', 11, 400, textMuted);
+  h += txt(590, mofY+66, 'Similar listings → broad retargeting', 11, 400, textMuted);
+
+  // Arrow between MOF boxes
+  h += `<line x1="370" y1="${mofY+40}" x2="403" y2="${mofY+40}" stroke="${coral}" stroke-width="1.5" marker-end="url(#arrowC)"/>`;
+
+  // Arrows MOF → BOF
+  h += arrow(195, mofY+80, 195, 370, coral);
+  h += arrow(590, mofY+80, 590, 370, green);
+
+  // BOF section
+  h += txt(398, 360, 'BOTTOM OF FUNNEL — Conversion Actions', 11, 600, textMuted);
+
+  const bofY = 378;
+  h += box(20, bofY, 230, 64, '#fff', coral);
+  h += txt(135, bofY+26, 'Request Pre-Approval', 14, 600, dark);
+  h += txt(135, bofY+46, 'Buyer conversion goal', 11, 400, textMuted);
+
+  h += box(283, bofY, 230, 64, '#fff', green);
+  h += txt(398, bofY+26, 'Activate Seller', 14, 600, dark);
+  h += txt(398, bofY+46, 'Seller conversion goal', 11, 400, textMuted);
+
+  h += box(546, bofY, 230, 64, '#fff', border);
+  h += txt(661, bofY+26, 'Request Property Tour', 14, 600, dark);
+  h += txt(661, bofY+46, 'Engaged buyer action', 11, 400, textMuted);
+
+  // 90-day review badge
+  const badgeY = 470;
+  h += box(198, badgeY, 400, 44, dark, 'none', 6);
+  h += txt(398, badgeY+28, '90-day review after Colorado intensive — validates scaling roadmap', 12, 500, '#fff');
+
+  svg.innerHTML = h;
+  svg.setAttribute('viewBox', '0 0 796 530');
+}
+drawFlowchart();
+
+function drawDataflow() {
+  const svg = document.getElementById('dataflow');
+  if (!svg) return;
+
+  const coral = '#c85c4f';
+  const green = '#1a6b30';
+  const greenLight = 'rgba(26,107,48,0.08)';
+  const coralLight = 'rgba(200,92,79,0.08)';
+  const dark = '#1a1a1a';
+  const darkLight = 'rgba(26,26,26,0.06)';
+  const textMuted = 'rgba(0,0,0,0.45)';
+  const border = 'rgba(0,0,0,0.12)';
+  const white = '#fff';
+
+  function box(x,y,w,h,fill,stroke,rx) {
+    return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx||6}" fill="${fill}" stroke="${stroke}" stroke-width="0.75"/>`;
+  }
+  function txt(x,y,text,size,weight,fill,anchor) {
+    return `<text x="${x}" y="${y}" font-size="${size}" font-weight="${weight||400}" fill="${fill||dark}" text-anchor="${anchor||'middle'}" font-family="var(--font-body)">${text}</text>`;
+  }
+
+  let h = '';
+  h += `<defs><marker id="aDF" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="${border}"/></marker></defs>`;
+
+  function dfArrow(x1,y1,x2,y2) {
+    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${border}" stroke-width="1.5" marker-end="url(#aDF)"/>`;
+  }
+
+  // Row 1: Data sources
+  h += txt(398, 20, 'DATA SOURCE', 11, 600, textMuted);
+  h += box(248, 30, 300, 56, greenLight, green);
+  h += txt(398, 56, 'MLS / IDX Feed', 14, 600, dark);
+  h += txt(398, 74, 'Per-state listing data', 11, 400, textMuted);
+
+  h += dfArrow(398, 86, 398, 110);
+
+  // Row 2: Website
+  h += box(198, 110, 400, 56, white, border);
+  h += txt(398, 136, 'LotRoll Website', 14, 600, dark);
+  h += txt(398, 154, 'User browses listings → triggers page events', 11, 400, textMuted);
+
+  h += dfArrow(398, 166, 398, 195);
+
+  // Row 3: GTM
+  h += txt(398, 194, 'TRACKING LAYER', 11, 600, textMuted);
+  h += box(148, 204, 500, 68, darkLight, dark);
+  h += txt(398, 230, 'Google Tag Manager', 14, 600, dark);
+  h += txt(398, 250, 'Captures: park · price · size · beds · baths · listing ID · location', 11, 400, textMuted);
+  h += txt(398, 264, 'Existing variables + data layers already configured', 10, 400, textMuted);
+
+  // Row 4: Three tracking tags branching out
+  h += `<line x1="260" y1="272" x2="260" y2="300" stroke="${border}" stroke-width="1.5" marker-end="url(#aDF)"/>`;
+  h += `<line x1="398" y1="272" x2="398" y2="300" stroke="${border}" stroke-width="1.5" marker-end="url(#aDF)"/>`;
+  h += `<line x1="536" y1="272" x2="536" y2="300" stroke="${border}" stroke-width="1.5" marker-end="url(#aDF)"/>`;
+
+  h += txt(398, 296, 'PLATFORM TAGS', 11, 600, textMuted);
+
+  h += box(140, 306, 240, 50, coralLight, coral);
+  h += txt(260, 328, 'Meta Pixel + CAPI', 13, 600, dark);
+  h += txt(260, 346, 'ViewContent · Search events', 10, 400, textMuted);
+
+  h += box(400, 306, 196, 50, white, border);
+  h += txt(498, 328, 'BlockVantage Pixel', 13, 600, dark);
+  h += txt(498, 346, 'Conversion tracking', 10, 400, textMuted);
+
+  h += box(616, 306, 160, 50, white, border);
+  h += txt(696, 328, 'Google Ads Tag', 13, 600, dark);
+  h += txt(696, 346, 'If approved', 10, 400, textMuted);
+
+  // Row 5: Audience destinations
+  h += `<line x1="200" y1="356" x2="200" y2="395" stroke="${coral}" stroke-width="1.5" marker-end="url(#aDF)"/>`;
+  h += `<line x1="320" y1="356" x2="420" y2="395" stroke="${coral}" stroke-width="1.5" marker-end="url(#aDF)"/>`;
+
+  h += txt(310, 390, 'AUDIENCE DESTINATIONS', 11, 600, textMuted);
+
+  h += box(40, 400, 320, 50, coralLight, coral);
+  h += txt(200, 422, 'Meta Custom Audiences', 13, 600, dark);
+  h += txt(200, 440, 'Viewed-listing retargeting (specific homes)', 10, 400, textMuted);
+
+  h += box(380, 400, 320, 50, greenLight, green);
+  h += txt(540, 422, 'Meta Product Catalog', 13, 600, dark);
+  h += txt(540, 440, 'Similar-listing retargeting (broad reach)', 10, 400, textMuted);
+
+  svg.innerHTML = h;
+  svg.setAttribute('viewBox', '0 0 796 470');
+}
+drawDataflow();
+</script>
+</body>
+</html>

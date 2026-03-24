@@ -612,9 +612,18 @@ body {
     <div class="card-desc">Campaign setup and ongoing management of CTV streaming ads on the BlockVantage platform. Includes geo-fenced audience targeting, creative deployment, and performance monitoring. Priced as an add-on — results from Colorado will determine if and how this scales to additional states.</div>
   </div>
 
-  <div class="total-line">
-    <div class="total-label">Colorado monthly total (setup amortized separately)</div>
-    <div class="total-amount">$1,250<span style="font-size:14px;font-weight:400;color:var(--text-muted);">/mo</span></div>
+  <div style="margin-top:12px;background:var(--bg-white);border:2px solid var(--green);border-radius:8px;padding:24px;">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
+      <div style="font-size:13px;color:var(--green);font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">To get started</div>
+      <div style="font-family:var(--font-display);font-weight:700;font-size:32px;color:var(--text-primary);">$4,000</div>
+    </div>
+    <div style="font-size:14px;color:var(--text-secondary);line-height:1.6;">
+      $3,000 System Build — due upfront to begin infrastructure work<br>
+      $1,000 Month 1 Campaign Management — due prior to campaign re-launch
+    </div>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:13px;color:var(--text-muted);">
+      BlockVantage add-on ($250/mo) billed monthly starting at campaign launch
+    </div>
   </div>
 
   <div class="note-card">
@@ -739,7 +748,7 @@ body {
       <div style="background:var(--bg-white);border:1px solid var(--border);border-radius:8px;padding:20px;">
         <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--text-muted);margin-bottom:16px;">
           <span style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:#c85c4f;"></span> Management fees</span>
-          <span style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:#1a6b30;"></span> Ad spend (working media)</span>
+          <span style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:#1a6b30;"></span> Ad spend</span>
           <span style="display:flex;align-items:center;gap:6px;"><span style="width:20px;height:2px;background:#c85c4f;border-radius:1px;"></span> Management as % of total</span>
         </div>
         <div style="position:relative;width:100%;height:340px;">
@@ -982,7 +991,7 @@ const stateData = {
   "54":{n:"West Virginia",p:1770071},"55":{n:"Wisconsin",p:5910955},"56":{n:"Wyoming",p:584057}
 };
 
-const confirmedStates = new Set(["08","04","35","06","45"]); // CO, AZ, NM, CA, SC
+const confirmedStates = new Set(["08"]); // CO
 const selectedStates = new Set();
 const CPM = 20;
 
@@ -1126,6 +1135,7 @@ const spendSlider = document.getElementById('spend-slider');
 spendSlider.addEventListener('input', function() {
   document.getElementById('spend-value').textContent = '$' + parseInt(this.value).toLocaleString();
   updateStats();
+  updateEfficiencyChart();
 });
 
 // Reset
@@ -1135,6 +1145,7 @@ document.getElementById('reset-btn').addEventListener('click', function() {
   spendSlider.value = 100;
   document.getElementById('spend-value').textContent = '$100';
   updateMap();
+  updateEfficiencyChart();
 });
 
 // Accordion
@@ -1173,13 +1184,11 @@ window.addEventListener('scroll', updateSpy, { passive: true });
 updateSpy();
 
 // === EFFICIENCY CHART ===
-let effChart = null;
-function buildEfficiencyChart() {
-  const ctx = document.getElementById('efficiency-chart');
-  if (!ctx) return;
-  const statesArr = [1,3,5,8,10,12,15,20,25];
-  const spendLevels = [100,100,100,140,140,200,300,500,1000];
-  const mgmtData = statesArr.map(s => {
+var effChart = null;
+var effStatesArr = [1,3,5,8,10,12,15];
+
+function calcEffData(dailySpend) {
+  const mgmt = effStatesArr.map(s => {
     let t = 0;
     for (let i = 1; i <= s; i++) {
       if (i <= 5) t += 750;
@@ -1188,20 +1197,28 @@ function buildEfficiencyChart() {
     }
     return t;
   });
-  const adData = statesArr.map((s, idx) => s * spendLevels[idx] * 30);
-  const pctData = statesArr.map((s, idx) => {
-    const total = mgmtData[idx] + adData[idx];
-    return total > 0 ? Math.round((mgmtData[idx] / total) * 100) : 0;
+  const ad = effStatesArr.map(s => s * dailySpend * 30);
+  const pct = effStatesArr.map((s, i) => {
+    const total = mgmt[i] + ad[i];
+    return total > 0 ? Math.round((mgmt[i] / total) * 100) : 0;
   });
+  return { mgmt, ad, pct };
+}
+
+function buildEfficiencyChart() {
+  const ctx = document.getElementById('efficiency-chart');
+  if (!ctx) return;
+  const dailySpend = parseInt(document.getElementById('spend-slider').value) || 100;
+  const d = calcEffData(dailySpend);
 
   effChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: statesArr.map(s => s + (s === 1 ? ' state' : ' states')),
+      labels: effStatesArr.map(s => s + (s === 1 ? ' state' : ' states')),
       datasets: [
-        { label: 'Management', data: mgmtData, backgroundColor: '#c85c4f', borderRadius: 3, order: 2, yAxisID: 'y' },
-        { label: 'Ad spend', data: adData, backgroundColor: '#1a6b30', borderRadius: 3, order: 2, yAxisID: 'y' },
-        { label: 'Mgmt %', data: pctData, type: 'line', borderColor: '#c85c4f', backgroundColor: 'rgba(200,92,79,0.1)', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#c85c4f', tension: 0.3, order: 1, yAxisID: 'y1', fill: false }
+        { label: 'Management', data: d.mgmt, backgroundColor: '#c85c4f', borderRadius: 3, order: 2, yAxisID: 'y' },
+        { label: 'Ad spend', data: d.ad, backgroundColor: '#1a6b30', borderRadius: 3, order: 2, yAxisID: 'y' },
+        { label: 'Mgmt %', data: d.pct, type: 'line', borderColor: '#c85c4f', backgroundColor: 'rgba(200,92,79,0.1)', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#c85c4f', tension: 0.3, order: 1, yAxisID: 'y1', fill: false }
       ]
     },
     options: {
@@ -1250,6 +1267,17 @@ function buildEfficiencyChart() {
     }
   });
 }
+
+function updateEfficiencyChart() {
+  if (!effChart) return;
+  const dailySpend = parseInt(document.getElementById('spend-slider').value) || 100;
+  const d = calcEffData(dailySpend);
+  effChart.data.datasets[0].data = d.mgmt;
+  effChart.data.datasets[1].data = d.ad;
+  effChart.data.datasets[2].data = d.pct;
+  effChart.update();
+}
+
 buildEfficiencyChart();
 
 // === SVG FLOWCHARTS ===

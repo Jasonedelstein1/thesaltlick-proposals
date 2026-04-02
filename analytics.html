@@ -3,533 +3,686 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Salt Lick Denver — Analytics Dashboard</title>
+<title>Salt Lick Denver — Analytics</title>
 
-<!-- ═══════════════════════════════════════════════════════════
-     CONFIGURATION — Change these values before deploying
-     ═══════════════════════════════════════════════════════════ -->
 <script>
 const CONFIG = {
-  PASSWORD:      'saltlick2026',                    // Simple password gate
-  GA4_PROPERTY:  'properties/381732329',              // GA4 property ID
+  PASSWORD:      'saltlick2026',
+  GA4_PROPERTY:  'properties/381732329',
   CLIENT_ID:     '747535226184-qhv035vqnf1solb61mvu5rspkrvimsn4.apps.googleusercontent.com',
 };
 </script>
 
-<!-- Google Identity Services -->
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-<!-- Chart.js date adapter -->
-<script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.1/dist/chartjs-adapter-luxon.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-/* ── Salt Lick Design Tokens ──────────────────────────── */
+/* ── VARIABLES ─────────────────────────────────────── */
 :root {
-  --bg-dark:        #091800;
-  --bg-alt:         #1d1d1f;
-  --bg-warm-white:  #fff9e9;
-  --bg-pure-white:  #ffffff;
-  --text-primary:   #ffffff;
-  --text-secondary: #fff9e9;
-  --text-dark:      #091800;
-  --terracotta:     #d4775e;
-  --sage-green:     #7d9b76;
-  --coral-light:    #e8a090;
-  --coral-dark:     #c4604a;
-  --status-green:   #5fd068;
-  --status-red:     #e85d4e;
-  --radius:         12px;
-  --font:           'neue-haas-grotesk-text', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --bg: #0f0f12;
+  --bg-raised: #18181d;
+  --bg-card: #1e1e25;
+  --bg-card-hover: #24242c;
+  --bg-input: #14141a;
+  --border: #2a2a35;
+  --border-light: #222230;
+  --text: #eeeef0;
+  --text-secondary: #9090a0;
+  --text-muted: #5a5a6e;
+  --terracotta: #e07a5f;
+  --terracotta-dim: rgba(224,122,95,0.12);
+  --terracotta-glow: rgba(224,122,95,0.25);
+  --coral: #f2a894;
+  --coral-dim: rgba(242,168,148,0.1);
+  --sage: #81b29a;
+  --sage-dim: rgba(129,178,154,0.12);
+  --sage-dark: #5f9178;
+  --gold: #f2cc8f;
+  --gold-dim: rgba(242,204,143,0.12);
+  --red: #ef6461;
+  --red-dim: rgba(239,100,97,0.12);
+  --green: #6ec87a;
+  --green-dim: rgba(110,200,122,0.15);
+  --blue: #7eb8da;
+  --blue-dim: rgba(126,184,218,0.12);
+  --purple: #b8a0d4;
+  --purple-dim: rgba(184,160,212,0.12);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --radius-xs: 5px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.4);
+  --font: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  font-family: var(--font);
-  background: var(--bg-dark);
-  color: var(--text-primary);
-  line-height: 1.6;
-  min-height: 100vh;
-}
+/* ── RESET ─────────────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.5; min-height:100vh; -webkit-font-smoothing:antialiased; }
 
-/* ── Password Gate ────────────────────────────────────── */
-#password-gate {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: var(--bg-dark);
-}
-#password-gate .gate-box {
-  background: var(--bg-alt);
-  border-radius: var(--radius);
-  padding: 48px 40px;
-  text-align: center;
-  max-width: 380px;
-  width: 90%;
-}
-#password-gate h1 {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  color: var(--terracotta);
-}
-#password-gate p {
-  font-size: 14px;
-  color: #999;
-  margin-bottom: 24px;
-}
-#password-gate input {
-  width: 100%;
-  padding: 12px 16px;
-  border: 1px solid #333;
-  border-radius: var(--radius);
-  background: var(--bg-dark);
-  color: var(--text-primary);
-  font-size: 16px;
-  font-family: var(--font);
-  margin-bottom: 16px;
-}
-#password-gate input:focus { outline: none; border-color: var(--terracotta); }
-#password-gate button, .btn {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: var(--radius);
-  background: var(--terracotta);
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
-  font-family: var(--font);
-  cursor: pointer;
-  transition: background 0.2s;
-}
-#password-gate button:hover, .btn:hover { background: var(--coral-dark); }
-#password-gate .error { color: var(--status-red); font-size: 13px; margin-top: 8px; display: none; }
+/* ── SCROLLBAR ─────────────────────────────────────── */
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:#333; border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:#555; }
 
-/* ── OAuth Screen ─────────────────────────────────────── */
-#oauth-screen {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: var(--bg-dark);
+/* ── GATES ─────────────────────────────────────────── */
+.gate-screen {
+  display:flex; align-items:center; justify-content:center; min-height:100vh;
+  background: radial-gradient(ellipse at 30% 20%, rgba(224,122,95,0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 80%, rgba(129,178,154,0.06) 0%, transparent 50%),
+              var(--bg);
 }
-#oauth-screen .gate-box { background: var(--bg-alt); border-radius: var(--radius); padding: 48px 40px; text-align: center; max-width: 420px; width: 90%; }
-#oauth-screen h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; color: var(--terracotta); }
-#oauth-screen p { font-size: 14px; color: #999; margin-bottom: 24px; }
+.gate-screen.hidden { display:none; }
+.gate-box {
+  background:var(--bg-card); border-radius:20px; padding:48px 40px; text-align:center;
+  max-width:380px; width:92%; box-shadow:var(--shadow-lg); border:1px solid var(--border);
+}
+.gate-box .logo { font-size:11px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--terracotta); margin-bottom:28px; opacity:0.9; }
+.gate-box h1 { font-size:24px; font-weight:700; margin-bottom:6px; }
+.gate-box p { font-size:13px; color:var(--text-secondary); margin-bottom:24px; }
+.gate-box input[type="password"] {
+  width:100%; padding:12px 16px; border:1px solid var(--border); border-radius:var(--radius-sm);
+  background:var(--bg-input); color:var(--text); font-size:14px; font-family:var(--font);
+  margin-bottom:14px; transition:0.2s;
+}
+.gate-box input:focus { outline:none; border-color:var(--terracotta); box-shadow:0 0 0 3px var(--terracotta-dim); }
+.btn {
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  width:100%; padding:12px; border:none; border-radius:var(--radius-sm);
+  background:var(--terracotta); color:#fff; font-size:14px; font-weight:600;
+  font-family:var(--font); cursor:pointer; transition:0.2s var(--ease);
+}
+.btn:hover { background:#c9674e; box-shadow:0 4px 20px rgba(224,122,95,0.35); }
+.gate-error { color:var(--red); font-size:12px; margin-top:8px; display:none; }
 
-/* ── Dashboard Layout ─────────────────────────────────── */
-#dashboard { display: none; }
+/* ── LAYOUT ────────────────────────────────────────── */
+#dashboard { display:none; }
 .dash-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 24px;
-  background: var(--bg-alt);
-  border-bottom: 1px solid #333;
-  flex-wrap: wrap;
-  gap: 12px;
+  display:flex; align-items:center; justify-content:space-between; padding:14px 24px;
+  background:var(--bg-raised); border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:100; flex-wrap:wrap; gap:10px;
 }
-.dash-header h1 { font-size: 20px; font-weight: 700; color: var(--terracotta); }
-.dash-header-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.dash-header input[type="date"] {
-  padding: 8px 12px;
-  border: 1px solid #444;
-  border-radius: var(--radius);
-  background: var(--bg-dark);
-  color: var(--text-primary);
-  font-family: var(--font);
-  font-size: 13px;
+.dash-header-left { display:flex; align-items:center; gap:12px; }
+.dash-header-left .logo-mark {
+  font-size:10px; font-weight:800; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--terracotta); padding:5px 10px; background:var(--terracotta-dim); border-radius:var(--radius-xs);
 }
-.dash-header label { font-size: 13px; color: #aaa; }
+.dash-header-left h1 { font-size:15px; font-weight:700; }
+.dash-controls { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.dash-controls label { font-size:10px; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.05em; }
+input[type="date"], select {
+  padding:7px 10px; border:1px solid var(--border); border-radius:var(--radius-xs);
+  background:var(--bg-input); color:var(--text); font-family:var(--font); font-size:12px; transition:0.2s;
+}
+input[type="date"]:focus, select:focus { outline:none; border-color:var(--terracotta); }
 .btn-sm {
-  padding: 8px 16px;
-  border: none;
-  border-radius: var(--radius);
-  background: var(--terracotta);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 700;
-  font-family: var(--font);
-  cursor: pointer;
-  transition: background 0.2s;
+  padding:7px 14px; border:none; border-radius:var(--radius-xs);
+  background:var(--terracotta); color:#fff; font-size:12px; font-weight:600;
+  font-family:var(--font); cursor:pointer; transition:0.15s;
 }
-.btn-sm:hover { background: var(--coral-dark); }
-.btn-outline {
-  background: transparent;
-  border: 1px solid var(--terracotta);
-  color: var(--terracotta);
-}
-.btn-outline:hover { background: var(--terracotta); color: #fff; }
+.btn-sm:hover { background:#c9674e; }
+.btn-ghost { background:transparent; border:1px solid var(--border); color:var(--text-secondary); }
+.btn-ghost:hover { border-color:var(--terracotta); color:var(--terracotta); background:var(--terracotta-dim); }
 
-/* ── Filters Bar ──────────────────────────────────────── */
+/* ── FILTER BAR ────────────────────────────────────── */
 .filters-bar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 24px;
-  background: rgba(29,29,31,0.6);
-  border-bottom: 1px solid #222;
-  flex-wrap: wrap;
+  display:flex; align-items:center; gap:10px; padding:10px 24px;
+  background:var(--bg-raised); border-bottom:1px solid var(--border); flex-wrap:wrap;
 }
-.filters-bar select {
-  padding: 6px 12px;
-  border: 1px solid #444;
-  border-radius: var(--radius);
-  background: var(--bg-dark);
-  color: var(--text-primary);
-  font-family: var(--font);
-  font-size: 13px;
-}
-.filters-bar label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.08em; }
+.filters-bar label { font-size:10px; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.05em; }
 
-/* ── Grid ─────────────────────────────────────────────── */
-.dash-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
-  gap: 20px;
-  padding: 24px;
+/* ── SIDEBAR ───────────────────────────────────────── */
+.dash-body { display:flex; }
+.sidebar {
+  width:200px; flex-shrink:0; background:var(--bg-raised); border-right:1px solid var(--border);
+  padding:16px 0; position:sticky; top:92px; height:calc(100vh - 92px); overflow-y:auto;
 }
-@media (max-width: 560px) {
-  .dash-grid { grid-template-columns: 1fr; padding: 12px; gap: 12px; }
+.sidebar a {
+  display:flex; align-items:center; gap:8px; padding:9px 20px; font-size:12px; font-weight:500;
+  color:var(--text-secondary); text-decoration:none; transition:0.15s; cursor:pointer;
+}
+.sidebar a:hover { color:var(--text); background:rgba(255,255,255,0.03); }
+.sidebar a.active { color:var(--terracotta); background:var(--terracotta-dim); border-right:2px solid var(--terracotta); }
+.sidebar .nav-group { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); padding:16px 20px 6px; }
+.main-content { flex:1; min-width:0; padding:20px 24px; min-height:calc(100vh - 92px); }
+
+@media (max-width:900px) {
+  .sidebar { display:none; }
+  .main-content { padding:16px; }
 }
 
-/* ── Card ─────────────────────────────────────────────── */
+/* ── SECTIONS ──────────────────────────────────────── */
+.section { display:none; }
+.section.active { display:block; }
+.section-title { font-size:20px; font-weight:700; margin-bottom:4px; }
+.section-desc { font-size:13px; color:var(--text-secondary); margin-bottom:20px; }
+
+/* ── GRID ──────────────────────────────────────────── */
+.grid { display:grid; gap:16px; }
+.grid-2 { grid-template-columns:1fr 1fr; }
+.grid-3 { grid-template-columns:1fr 1fr 1fr; }
+.grid-4 { grid-template-columns:repeat(4,1fr); }
+.grid-5 { grid-template-columns:repeat(5,1fr); }
+.grid-full { grid-column:1/-1; }
+@media (max-width:900px) { .grid-2,.grid-3,.grid-4,.grid-5 { grid-template-columns:1fr; } }
+@media (min-width:901px) and (max-width:1200px) { .grid-3,.grid-4,.grid-5 { grid-template-columns:1fr 1fr; } }
+
+/* ── CARD ──────────────────────────────────────────── */
 .card {
-  background: var(--bg-alt);
-  border-radius: var(--radius);
-  padding: 24px;
-  position: relative;
+  background:var(--bg-card); border-radius:var(--radius); padding:20px;
+  border:1px solid var(--border); transition:0.2s var(--ease);
 }
-.card h2 {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--terracotta);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 16px;
-}
-.card h2 .subtitle { font-size: 12px; color: #777; text-transform: none; letter-spacing: 0; font-weight: 400; margin-left: 8px; }
-.card .chart-wrap { position: relative; width: 100%; }
-.card canvas { width: 100% !important; }
-.card-full { grid-column: 1 / -1; }
+.card:hover { border-color:#333; }
+.card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.card-header h3 { font-size:13px; font-weight:700; display:flex; align-items:center; gap:6px; }
+.card-header .tag { font-size:10px; font-weight:600; padding:2px 8px; border-radius:20px; }
+.tag-coral { background:var(--terracotta-dim); color:var(--terracotta); }
+.tag-sage { background:var(--sage-dim); color:var(--sage); }
+.tag-gold { background:var(--gold-dim); color:var(--gold); }
+.tag-blue { background:var(--blue-dim); color:var(--blue); }
+.tag-red { background:var(--red-dim); color:var(--red); }
 
-/* ── Table ────────────────────────────────────────────── */
-.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.data-table th {
-  text-align: left;
-  padding: 8px 12px;
-  border-bottom: 2px solid var(--terracotta);
-  color: var(--terracotta);
-  font-weight: 700;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
+.card-insight {
+  font-size:12px; color:var(--text-secondary); line-height:1.5;
+  padding:10px 14px; background:var(--bg-raised); border-radius:var(--radius-sm);
+  margin-bottom:14px; border-left:2px solid var(--terracotta);
 }
-.data-table td {
-  padding: 8px 12px;
-  border-bottom: 1px solid #2a2a2a;
-  color: #ccc;
-}
-.data-table tr:hover td { background: rgba(212,119,94,0.07); }
-.data-table .num { text-align: right; font-variant-numeric: tabular-nums; }
-.friendly-name { color: var(--text-primary); font-weight: 600; }
-.raw-id { color: #666; font-size: 11px; display: block; }
-.table-scroll { overflow-x: auto; }
+.card-insight:empty { display:none; }
+.card-insight strong { color:var(--text); }
 
-/* ── Funnel ───────────────────────────────────────────── */
-.funnel { display: flex; flex-direction: column; gap: 6px; }
-.funnel-step {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+/* ── STAT CARDS ────────────────────────────────────── */
+.stat {
+  padding:16px; border-radius:var(--radius-sm); text-align:center;
+  background:var(--bg-card); border:1px solid var(--border);
 }
-.funnel-bar-wrap { flex: 1; height: 32px; background: #1a1a1a; border-radius: 6px; overflow: hidden; position: relative; }
-.funnel-bar { height: 100%; border-radius: 6px; transition: width 0.6s ease; min-width: 2px; }
-.funnel-label { font-size: 12px; color: #aaa; min-width: 140px; text-align: right; }
-.funnel-value { font-size: 13px; font-weight: 700; min-width: 50px; color: var(--text-primary); }
-.funnel-pct { font-size: 11px; color: #888; min-width: 42px; }
+.stat .stat-val { font-size:26px; font-weight:800; letter-spacing:-0.02em; }
+.stat .stat-label { font-size:10px; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em; margin-top:2px; }
+.stat.coral .stat-val { color:var(--terracotta); }
+.stat.sage .stat-val { color:var(--sage); }
+.stat.gold .stat-val { color:var(--gold); }
+.stat.blue .stat-val { color:var(--blue); }
 
-/* ── Loading / Empty ──────────────────────────────────── */
-.loading { text-align: center; padding: 40px; color: #666; }
-.loading::after { content: ''; display: inline-block; width: 20px; height: 20px; border: 2px solid var(--terracotta); border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin-left: 8px; vertical-align: middle; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.empty { text-align: center; padding: 32px; color: #555; font-size: 13px; }
+/* ── AD CARDS ──────────────────────────────────────── */
+.ad-card {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-hover) 100%);
+  border:1px solid var(--border); border-radius:var(--radius); padding:16px;
+  display:flex; flex-direction:column; gap:8px;
+}
+.ad-card .ad-rank { font-size:10px; font-weight:800; color:var(--terracotta); letter-spacing:0.06em; }
+.ad-card .ad-name { font-size:13px; font-weight:700; line-height:1.3; }
+.ad-card .ad-id { font-size:10px; color:var(--text-muted); font-family:monospace; }
+.ad-card .ad-stats { display:flex; gap:12px; flex-wrap:wrap; margin-top:4px; }
+.ad-card .ad-stat { text-align:center; }
+.ad-card .ad-stat-val { font-size:18px; font-weight:800; }
+.ad-card .ad-stat-label { font-size:9px; font-weight:600; color:var(--text-muted); text-transform:uppercase; }
 
-/* ── Name Manager Modal ───────────────────────────────── */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  z-index: 1000;
-  align-items: center;
-  justify-content: center;
+/* ── REALTIME ──────────────────────────────────────── */
+.rt-grid { display:grid; grid-template-columns:220px 1fr; gap:16px; }
+@media (max-width:900px) { .rt-grid { grid-template-columns:1fr; } }
+.rt-big-number { text-align:center; padding:24px; }
+.rt-big-number .number { font-size:56px; font-weight:800; color:var(--green); letter-spacing:-0.03em; line-height:1; }
+.rt-big-number .label { font-size:12px; color:var(--text-secondary); margin-top:6px; font-weight:500; }
+.rt-pulse { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; color:var(--green); margin-bottom:12px; }
+.rt-dot { width:7px; height:7px; border-radius:50%; background:var(--green); animation:pulse 2s ease infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.4)} }
+
+.rt-page-list { font-size:12px; }
+.rt-page-row { display:flex; align-items:center; gap:10px; padding:6px 0; border-bottom:1px solid var(--border); }
+.rt-page-row:last-child { border:none; }
+.rt-page-count { font-weight:700; min-width:28px; color:var(--green); }
+.rt-page-path { color:var(--text-secondary); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+.rt-events { max-height:300px; overflow-y:auto; }
+.rt-event-row { display:flex; align-items:center; gap:10px; padding:5px 0; border-bottom:1px solid var(--border); font-size:11px; }
+.rt-event-name { font-weight:600; color:var(--terracotta); min-width:140px; }
+.rt-event-count { font-weight:700; min-width:36px; text-align:right; }
+
+/* ── FUNNEL ────────────────────────────────────────── */
+.funnel { display:flex; flex-direction:column; gap:3px; }
+.funnel-step { display:flex; align-items:center; gap:10px; padding:4px 0; }
+.funnel-num {
+  font-size:10px; font-weight:800; color:var(--bg); background:var(--terracotta);
+  width:20px; height:20px; border-radius:50%; display:flex; align-items:center;
+  justify-content:center; flex-shrink:0;
 }
-.modal-overlay.active { display: flex; }
-.modal {
-  background: var(--bg-alt);
-  border-radius: var(--radius);
-  padding: 32px;
-  max-width: 700px;
-  width: 95%;
-  max-height: 85vh;
-  overflow-y: auto;
+.funnel-label { font-size:12px; font-weight:500; min-width:120px; }
+.funnel-bar-wrap { flex:1; height:28px; background:var(--bg-raised); border-radius:var(--radius-xs); overflow:hidden; }
+.funnel-bar {
+  height:100%; border-radius:var(--radius-xs); transition:width 0.8s var(--ease);
+  display:flex; align-items:center; justify-content:flex-end; padding-right:8px; min-width:3px;
 }
-.modal h2 { font-size: 20px; color: var(--terracotta); margin-bottom: 16px; }
-.modal h3 { font-size: 14px; color: var(--sage-green); margin: 16px 0 8px; text-transform: uppercase; letter-spacing: 0.06em; }
-.name-row { display: flex; gap: 8px; margin-bottom: 6px; align-items: center; }
-.name-row input {
-  padding: 8px 10px;
-  border: 1px solid #333;
-  border-radius: 8px;
-  background: var(--bg-dark);
-  color: var(--text-primary);
-  font-family: var(--font);
-  font-size: 13px;
-  flex: 1;
+.funnel-bar span { font-size:11px; font-weight:700; color:#fff; text-shadow:0 1px 3px rgba(0,0,0,0.4); }
+.funnel-meta { text-align:right; min-width:55px; }
+.funnel-val { font-size:14px; font-weight:700; }
+.funnel-drop { font-size:10px; color:var(--red); font-weight:600; }
+.funnel-drop.ok { color:var(--sage); }
+
+/* ── TABLES ────────────────────────────────────────── */
+.table-wrap { overflow-x:auto; }
+table.dt { width:100%; border-collapse:collapse; font-size:12px; }
+table.dt th {
+  text-align:left; padding:8px 10px; font-weight:600; font-size:10px;
+  text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted);
+  border-bottom:1px solid var(--border); white-space:nowrap; cursor:pointer; user-select:none;
 }
-.name-row input:first-child { max-width: 220px; }
-.name-row .btn-icon {
-  background: none;
-  border: 1px solid #444;
-  color: #888;
-  border-radius: 8px;
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.name-row .btn-icon:hover { border-color: var(--status-red); color: var(--status-red); }
-.modal-actions { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
-.modal-actions .btn-sm { flex: none; }
-.csv-area { width: 100%; height: 80px; background: var(--bg-dark); color: #ccc; border: 1px solid #333; border-radius: 8px; padding: 8px; font-family: monospace; font-size: 12px; margin-top: 8px; }
+table.dt th:hover { color:var(--text); }
+table.dt th.sorted-asc::after { content:' \u25B2'; font-size:8px; }
+table.dt th.sorted-desc::after { content:' \u25BC'; font-size:8px; }
+table.dt td { padding:8px 10px; border-bottom:1px solid var(--border); }
+table.dt tr:hover td { background:rgba(224,122,95,0.04); }
+table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight:500; }
+.friendly { font-weight:600; }
+.raw-id { color:var(--text-muted); font-size:10px; display:block; font-family:monospace; }
+.chart-wrap { position:relative; width:100%; }
+.chart-wrap canvas { width:100% !important; }
+
+/* ── PROPOSAL LOG ──────────────────────────────────── */
+.proposal-log-row { display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid var(--border); cursor:pointer; transition:0.15s; }
+.proposal-log-row:hover { background:var(--terracotta-dim); margin:0 -10px; padding:8px 10px; border-radius:var(--radius-xs); }
+.proposal-path { font-size:13px; font-weight:600; color:var(--text); flex:1; }
+.proposal-views { font-size:12px; font-weight:700; color:var(--terracotta); min-width:60px; text-align:right; }
+.proposal-dates { font-size:11px; color:var(--text-muted); min-width:160px; text-align:right; }
+.proposal-detail { display:none; padding:12px 0 12px 16px; font-size:12px; color:var(--text-secondary); }
+.proposal-detail.open { display:block; }
+.proposal-date-row { padding:3px 0; display:flex; gap:12px; }
+.proposal-date-row .date { color:var(--text-muted); min-width:80px; }
+.proposal-date-row .count { color:var(--terracotta); font-weight:600; }
+
+/* ── LOADING / EMPTY ───────────────────────────────── */
+.loading { text-align:center; padding:40px; color:var(--text-muted); font-size:13px; }
+.loading::after { content:''; display:inline-block; width:16px; height:16px; border:2px solid var(--terracotta); border-top-color:transparent; border-radius:50%; animation:spin 0.6s linear infinite; margin-left:8px; vertical-align:middle; }
+@keyframes spin { to{transform:rotate(360deg)} }
+.empty { text-align:center; padding:32px; color:var(--text-muted); font-size:12px; }
+
+/* ── NAME MANAGER MODAL ────────────────────────────── */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:1000; align-items:center; justify-content:center; }
+.modal-overlay.active { display:flex; }
+.modal { background:var(--bg-card); border-radius:var(--radius); padding:28px; max-width:680px; width:95%; max-height:85vh; overflow-y:auto; border:1px solid var(--border); }
+.modal h2 { font-size:18px; margin-bottom:4px; }
+.modal .modal-desc { font-size:12px; color:var(--text-secondary); margin-bottom:16px; }
+.modal h3 { font-size:10px; color:var(--terracotta); font-weight:700; text-transform:uppercase; letter-spacing:0.06em; margin:16px 0 8px; }
+.name-row { display:flex; gap:6px; margin-bottom:5px; align-items:center; }
+.name-row input { padding:8px 10px; border:1px solid var(--border); border-radius:var(--radius-xs); background:var(--bg-input); color:var(--text); font-family:var(--font); font-size:12px; flex:1; }
+.name-row input:first-child { max-width:200px; font-family:monospace; }
+.name-row .btn-icon { background:none; border:1px solid var(--border); color:var(--text-muted); border-radius:var(--radius-xs); width:30px; height:30px; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; }
+.name-row .btn-icon:hover { border-color:var(--red); color:var(--red); }
+.modal-actions { display:flex; gap:6px; margin-top:16px; flex-wrap:wrap; }
+.csv-area { width:100%; height:70px; background:var(--bg-input); color:var(--text); border:1px solid var(--border); border-radius:var(--radius-xs); padding:8px; font-family:monospace; font-size:11px; margin-top:6px; resize:vertical; }
 </style>
 </head>
 <body>
 
-<!-- ══════════════ PASSWORD GATE ══════════════ -->
-<div id="password-gate">
+<!-- ═══ PASSWORD GATE ═══ -->
+<div class="gate-screen" id="password-gate">
   <div class="gate-box">
-    <h1>Salt Lick Analytics</h1>
-    <p>Enter password to continue</p>
+    <div class="logo">The Salt Lick Denver</div>
+    <h1>Analytics</h1>
+    <p>Enter your password to continue</p>
     <input type="password" id="pw-input" placeholder="Password" autofocus>
-    <button onclick="checkPassword()">Enter</button>
-    <div class="error" id="pw-error">Incorrect password</div>
+    <button class="btn" onclick="checkPassword()">Continue</button>
+    <div class="gate-error" id="pw-error">Incorrect password</div>
   </div>
 </div>
 
-<!-- ══════════════ OAUTH SCREEN ══════════════ -->
-<div id="oauth-screen">
+<!-- ═══ OAUTH GATE ═══ -->
+<div class="gate-screen hidden" id="oauth-screen">
   <div class="gate-box">
-    <h1>Connect Google Analytics</h1>
-    <p>Authenticate with your Google account to access GA4 data for this property.</p>
-    <button class="btn" id="oauth-btn" onclick="initOAuth()">Sign in with Google</button>
-    <p id="oauth-error" style="color:var(--status-red);font-size:13px;margin-top:12px;display:none"></p>
+    <div class="logo">The Salt Lick Denver</div>
+    <h1>Connect Analytics</h1>
+    <p>Sign in with Google to access GA4 data.</p>
+    <button class="btn" onclick="initOAuth()">
+      <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.9 33.4 29.4 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 3l5.7-5.7C34 5.9 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.2-2.7-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.5 18.8 12 24 12c3 0 5.8 1.1 7.9 3l5.7-5.7C34 5.9 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.8 13.4-5l-6.2-5.2C29.2 35.2 26.7 36 24 36c-5.3 0-9.9-3.6-11.3-8.5l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4.1 5.5l6.2 5.2C36.8 39.2 44 34 44 24c0-1.3-.2-2.7-.4-3.9z"/></svg>
+      Sign in with Google
+    </button>
+    <p id="oauth-error" style="color:var(--red);font-size:12px;margin-top:10px;display:none"></p>
   </div>
 </div>
 
-<!-- ══════════════ DASHBOARD ══════════════ -->
+<!-- ═══ DASHBOARD ═══ -->
 <div id="dashboard">
-
   <!-- Header -->
   <div class="dash-header">
-    <h1>Salt Lick Denver — Analytics</h1>
-    <div class="dash-header-controls">
-      <label>From</label>
-      <input type="date" id="date-start">
-      <label>To</label>
-      <input type="date" id="date-end">
+    <div class="dash-header-left">
+      <span class="logo-mark">TSL</span>
+      <h1>Analytics</h1>
+    </div>
+    <div class="dash-controls">
+      <label>From</label><input type="date" id="date-start">
+      <label>To</label><input type="date" id="date-end">
       <button class="btn-sm" onclick="refreshAll()">Refresh</button>
-      <button class="btn-sm btn-outline" onclick="openNameManager()">Name Manager</button>
+      <button class="btn-sm btn-ghost" onclick="openNameManager()">Names</button>
     </div>
   </div>
 
   <!-- Global Filters -->
   <div class="filters-bar">
-    <label>Page Type</label>
-    <select id="filter-page-type">
-      <option value="">All Pages</option>
-      <option value="home">Home</option>
-      <option value="strategy">Strategy</option>
-      <option value="proposal">Proposal</option>
-    </select>
-    <label>Campaign</label>
-    <select id="filter-campaign"><option value="">All Campaigns</option></select>
-    <label>Ad</label>
-    <select id="filter-ad"><option value="">All Ads</option></select>
-    <label>Source</label>
-    <select id="filter-source"><option value="">All Sources</option></select>
-    <label>Medium</label>
-    <select id="filter-medium"><option value="">All Mediums</option></select>
+    <label>Page</label>
+    <select id="filter-page-type"><option value="">All</option><option value="home">Home</option><option value="strategy">Strategy</option><option value="proposal">Proposals</option></select>
+    <label>Campaign</label><select id="filter-campaign"><option value="">All</option></select>
+    <label>Ad</label><select id="filter-ad"><option value="">All</option></select>
+    <label>Source</label><select id="filter-source"><option value="">All</option></select>
+    <label>Placement</label><select id="filter-medium"><option value="">All</option></select>
   </div>
 
-  <!-- Dashboard Grid -->
-  <div class="dash-grid">
+  <div class="dash-body">
+    <!-- Sidebar Nav -->
+    <nav class="sidebar">
+      <div class="nav-group">Overview</div>
+      <a class="active" data-section="sec-realtime" onclick="showSection(this)">Live Activity</a>
+      <a data-section="sec-journey" onclick="showSection(this)">User Journey</a>
+      <div class="nav-group">Engagement</div>
+      <a data-section="sec-home" onclick="showSection(this)">Homepage</a>
+      <a data-section="sec-strategy" onclick="showSection(this)">Strategy Session</a>
+      <a data-section="sec-proposals" onclick="showSection(this)">Proposals</a>
+      <div class="nav-group">Content</div>
+      <a data-section="sec-video" onclick="showSection(this)">Video</a>
+      <a data-section="sec-calculator" onclick="showSection(this)">ROI Calculator</a>
+      <a data-section="sec-portfolio" onclick="showSection(this)">Portfolio</a>
+      <a data-section="sec-faq" onclick="showSection(this)">FAQ</a>
+      <div class="nav-group">Ads</div>
+      <a data-section="sec-ads" onclick="showSection(this)">Ad Performance</a>
+      <a data-section="sec-funnel" onclick="showSection(this)">Booking Funnel</a>
+    </nav>
 
-    <!-- 1. Calendar Booking Funnel -->
-    <div class="card card-full" id="card-funnel">
-      <h2>Calendar Booking Funnel</h2>
-      <div id="funnel-content" class="loading">Loading funnel data…</div>
-    </div>
+    <!-- Main Content -->
+    <div class="main-content">
 
-    <!-- 2. VSL Video Engagement -->
-    <div class="card" id="card-video">
-      <h2>VSL Video Engagement</h2>
-      <div class="chart-wrap"><canvas id="chart-video"></canvas></div>
-    </div>
+      <!-- ═══ 1. LIVE ACTIVITY ═══ -->
+      <div class="section active" id="sec-realtime">
+        <div class="section-title">Live Activity</div>
+        <div class="section-desc">What's happening on your site right now. Updates every 30 seconds.</div>
+        <div class="grid grid-2" style="margin-bottom:16px">
+          <div class="card">
+            <div class="rt-big-number">
+              <div class="rt-pulse"><div class="rt-dot"></div> LIVE NOW</div>
+              <div class="number" id="rt-users">&mdash;</div>
+              <div class="label">active users on site</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Active Pages</h3></div>
+            <div class="rt-page-list" id="rt-pages"><div class="loading">Loading&hellip;</div></div>
+          </div>
+        </div>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><h3>Live Events</h3><span class="tag tag-coral">30min</span></div>
+            <div class="rt-events" id="rt-events"><div class="loading">Loading&hellip;</div></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Traffic Sources</h3></div>
+            <div id="rt-sources"><div class="loading">Loading&hellip;</div></div>
+          </div>
+        </div>
+      </div>
 
-    <!-- 3. Section Scroll Depth -->
-    <div class="card" id="card-scroll">
-      <h2>Section Scroll Depth</h2>
-      <div class="chart-wrap"><canvas id="chart-scroll"></canvas></div>
-    </div>
+      <!-- ═══ 2. USER JOURNEY ═══ -->
+      <div class="section" id="sec-journey">
+        <div class="section-title">User Journey &mdash; Ad to Booking</div>
+        <div class="section-desc">Full funnel: how users flow from landing on the site through engagement to a confirmed booking.</div>
+        <div class="grid grid-4" id="journey-stats" style="margin-bottom:16px"></div>
+        <div class="card">
+          <div class="card-insight" id="journey-insight">Loading journey data&hellip;</div>
+          <div id="journey-content" class="loading">Loading&hellip;</div>
+        </div>
+      </div>
 
-    <!-- 4. ROI Calculator Engagement -->
-    <div class="card" id="card-calculator">
-      <h2>ROI Calculator Engagement</h2>
-      <div class="chart-wrap"><canvas id="chart-calculator"></canvas></div>
-    </div>
+      <!-- ═══ 3. HOMEPAGE ENGAGEMENT ═══ -->
+      <div class="section" id="sec-home">
+        <div class="section-title">Homepage Engagement</div>
+        <div class="section-desc">Section-by-section scroll depth and interactions on thesaltlickdenver.com</div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><h3>Sections Viewed</h3><span class="tag tag-sage">Scroll Depth</span></div>
+          <div class="card-insight" id="home-scroll-insight">Which sections visitors actually see as they scroll the homepage.</div>
+          <div class="chart-wrap"><canvas id="chart-home-scroll"></canvas></div>
+        </div>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><h3>Video Engagement</h3></div>
+            <div class="chart-wrap"><canvas id="chart-home-video"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Portfolio Clicks</h3></div>
+            <div class="chart-wrap"><canvas id="chart-home-portfolio"></canvas></div>
+          </div>
+        </div>
+      </div>
 
-    <!-- 5. Portfolio Interactions -->
-    <div class="card" id="card-portfolio">
-      <h2>Portfolio Interactions</h2>
-      <div class="chart-wrap"><canvas id="chart-portfolio"></canvas></div>
-    </div>
+      <!-- ═══ 4. STRATEGY SESSION ═══ -->
+      <div class="section" id="sec-strategy">
+        <div class="section-title">Strategy Session Page</div>
+        <div class="section-desc">Activity on /free-strategy-session &mdash; sections viewed, calendar interactions, and bookings.</div>
+        <div class="grid grid-4" id="strategy-stats" style="margin-bottom:16px"></div>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><h3>Sections Viewed</h3><span class="tag tag-sage">Scroll Depth</span></div>
+            <div class="chart-wrap"><canvas id="chart-strategy-scroll"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Event Breakdown</h3></div>
+            <div class="chart-wrap"><canvas id="chart-strategy-events"></canvas></div>
+          </div>
+        </div>
+      </div>
 
-    <!-- 6. FAQ Engagement -->
-    <div class="card" id="card-faq">
-      <h2>FAQ Engagement</h2>
-      <div class="chart-wrap"><canvas id="chart-faq"></canvas></div>
-    </div>
+      <!-- ═══ 5. PROPOSALS ═══ -->
+      <div class="section" id="sec-proposals">
+        <div class="section-title">Proposal Engagement</div>
+        <div class="section-desc">Activity on docs.thesaltlickdenver.com &mdash; see which prospects are viewing their proposals.</div>
+        <div class="grid grid-4" id="proposal-stats" style="margin-bottom:16px"></div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><h3>Proposal Views by Page</h3><span class="tag tag-coral">By Path</span></div>
+          <div id="proposal-pages"><div class="loading">Loading proposal data&hellip;</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Section & Interaction Detail</h3></div>
+          <div class="chart-wrap"><canvas id="chart-proposal"></canvas></div>
+        </div>
+      </div>
 
-    <!-- 7. Proposal Engagement -->
-    <div class="card" id="card-proposal">
-      <h2>Proposal Engagement</h2>
-      <div class="chart-wrap"><canvas id="chart-proposal"></canvas></div>
-    </div>
+      <!-- ═══ 6. VIDEO ═══ -->
+      <div class="section" id="sec-video">
+        <div class="section-title">Video Engagement</div>
+        <div class="section-desc">Play counts, milestone dropoff, and completion rates for VSL and Portfolio videos.</div>
+        <div class="card-insight" id="video-insight" style="margin-bottom:16px"></div>
+        <div class="card">
+          <div class="chart-wrap"><canvas id="chart-video"></canvas></div>
+        </div>
+      </div>
 
-    <!-- 8. Traffic Attribution -->
-    <div class="card card-full" id="card-attribution">
-      <h2>Traffic Attribution / Ad Performance</h2>
-      <div id="attribution-content" class="loading">Loading attribution data…</div>
-    </div>
+      <!-- ═══ 7. ROI CALCULATOR ═══ -->
+      <div class="section" id="sec-calculator">
+        <div class="section-title">ROI Calculator</div>
+        <div class="section-desc">How visitors interact with the ROI calculator on the homepage.</div>
+        <div class="grid grid-4" id="calc-stats" style="margin-bottom:16px"></div>
+        <div class="card">
+          <div class="card-insight" id="calc-insight"></div>
+          <div class="chart-wrap"><canvas id="chart-calc"></canvas></div>
+        </div>
+      </div>
 
-    <!-- Ad Performance – by Placement -->
-    <div class="card" id="card-placement">
-      <h2>Performance by Placement <span class="subtitle">traffic_medium</span></h2>
-      <div class="chart-wrap"><canvas id="chart-placement"></canvas></div>
-    </div>
+      <!-- ═══ 8. PORTFOLIO ═══ -->
+      <div class="section" id="sec-portfolio">
+        <div class="section-title">Portfolio Interactions</div>
+        <div class="section-desc">Which client work gets the most attention in the portfolio carousel.</div>
+        <div class="card-insight" id="portfolio-insight" style="margin-bottom:16px"></div>
+        <div class="card">
+          <div class="chart-wrap"><canvas id="chart-portfolio"></canvas></div>
+        </div>
+      </div>
 
-    <!-- Ad Performance – by Source -->
-    <div class="card" id="card-source">
-      <h2>Performance by Source <span class="subtitle">fb vs ig</span></h2>
-      <div class="chart-wrap"><canvas id="chart-source"></canvas></div>
-    </div>
+      <!-- ═══ 9. FAQ ═══ -->
+      <div class="section" id="sec-faq">
+        <div class="section-title">FAQ Engagement</div>
+        <div class="section-desc">Which questions visitors click most &mdash; ranked by interaction count.</div>
+        <div class="card">
+          <div class="chart-wrap"><canvas id="chart-faq"></canvas></div>
+        </div>
+      </div>
 
-    <!-- Ad Funnel per Ad -->
-    <div class="card card-full" id="card-ad-funnel">
-      <h2>Funnel by Ad</h2>
-      <div id="ad-funnel-content" class="loading">Loading ad funnels…</div>
-    </div>
+      <!-- ═══ 10. AD PERFORMANCE ═══ -->
+      <div class="section" id="sec-ads">
+        <div class="section-title">Ad Performance & Attribution</div>
+        <div class="section-desc">Which ads and placements drive the most engaged visitors and bookings.</div>
+        <div class="grid grid-5" id="top-ads" style="margin-bottom:16px"></div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><h3>Attribution Table</h3><span class="tag tag-coral">Sortable</span></div>
+          <div class="card-insight" id="attr-insight">Click any column header to sort.</div>
+          <div id="attribution-content"><div class="loading">Loading&hellip;</div></div>
+        </div>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><h3>By Placement</h3></div>
+            <div class="chart-wrap"><canvas id="chart-placement"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>By Source</h3></div>
+            <div class="chart-wrap"><canvas id="chart-source"></canvas></div>
+          </div>
+        </div>
+      </div>
 
-  </div>
+      <!-- ═══ 11. BOOKING FUNNEL ═══ -->
+      <div class="section" id="sec-funnel">
+        <div class="section-title">Booking Funnel</div>
+        <div class="section-desc">Step-by-step conversion from calendar view to confirmed meeting, plus what users did before booking.</div>
+        <div class="grid grid-4" id="funnel-stats" style="margin-bottom:16px"></div>
+        <div class="grid grid-2" style="margin-bottom:16px">
+          <div class="card">
+            <div class="card-header"><h3>Funnel Steps</h3><span class="tag tag-coral">Conversion</span></div>
+            <div class="card-insight" id="funnel-insight"></div>
+            <div id="funnel-content"><div class="loading">Loading&hellip;</div></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Form Abandonment</h3><span class="tag tag-red">Drop-off</span></div>
+            <div class="card-insight" id="abandon-insight">Where users drop out of the booking form.</div>
+            <div id="abandon-content"><div class="loading">Loading&hellip;</div></div>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><h3>Pre-Booking Behavior</h3><span class="tag tag-sage">What bookers did first</span></div>
+          <div class="card-insight" id="prebook-insight">Of all users who submitted a booking, what percentage interacted with each page element beforehand?</div>
+          <div id="prebook-content"><div class="loading">Loading&hellip;</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Funnel by Ad</h3><span class="tag tag-coral">Per Ad</span></div>
+          <div id="ad-funnel-content"><div class="loading">Loading&hellip;</div></div>
+        </div>
+      </div>
+
+    </div><!-- /main-content -->
+  </div><!-- /dash-body -->
 </div>
 
-<!-- ══════════════ NAME MANAGER MODAL ══════════════ -->
+<!-- ═══ NAME MANAGER MODAL ═══ -->
 <div class="modal-overlay" id="name-manager-overlay" onclick="if(event.target===this)closeNameManager()">
   <div class="modal">
     <h2>Name Manager</h2>
-    <p style="font-size:13px;color:#888;margin-bottom:16px">Map raw Meta campaign/ad IDs to friendly names. Stored in localStorage.</p>
-
+    <p class="modal-desc">Map Meta campaign & ad IDs to friendly names. Stored in localStorage.</p>
     <h3>Campaign Names</h3>
     <div id="campaign-names-list"></div>
-    <button class="btn-sm btn-outline" style="margin-top:8px" onclick="addNameRow('campaign')">+ Add Campaign</button>
-
+    <button class="btn-sm btn-ghost" style="margin-top:6px" onclick="addNameRow('campaign')">+ Add</button>
     <h3>Ad Names</h3>
     <div id="ad-names-list"></div>
-    <button class="btn-sm btn-outline" style="margin-top:8px" onclick="addNameRow('ad')">+ Add Ad</button>
-
-    <h3>Import / Export CSV</h3>
-    <textarea class="csv-area" id="csv-area" placeholder="type,id,name&#10;campaign,120211234567890123,Spring 2026 HVAC&#10;ad,120241669256180477,Social Proof Ad"></textarea>
-
+    <button class="btn-sm btn-ghost" style="margin-top:6px" onclick="addNameRow('ad')">+ Add</button>
+    <h3>CSV Import/Export</h3>
+    <textarea class="csv-area" id="csv-area" placeholder="type,id,name&#10;campaign,12021...,Spring HVAC&#10;ad,12024...,Social Proof"></textarea>
     <div class="modal-actions">
-      <button class="btn-sm" onclick="saveNameManager()">Save</button>
-      <button class="btn-sm btn-outline" onclick="exportCSV()">Export CSV</button>
-      <button class="btn-sm btn-outline" onclick="importCSV()">Import CSV</button>
-      <button class="btn-sm btn-outline" onclick="closeNameManager()">Close</button>
+      <button class="btn-sm" onclick="saveNameManager()">Save & Close</button>
+      <button class="btn-sm btn-ghost" onclick="exportCSV()">Export</button>
+      <button class="btn-sm btn-ghost" onclick="importCSV()">Import</button>
+      <button class="btn-sm btn-ghost" onclick="closeNameManager()">Cancel</button>
     </div>
   </div>
 </div>
 
 <script>
+// ═══════════════════════════════════════════════════════════
+// CHART.JS REGISTRATION
+// ═══════════════════════════════════════════════════════════
+Chart.register(
+  Chart.BarController, Chart.LineController, Chart.DoughnutController, Chart.PieController,
+  Chart.PolarAreaController, Chart.RadarController, Chart.ScatterController, Chart.BubbleController,
+  Chart.BarElement, Chart.LineElement, Chart.ArcElement, Chart.PointElement,
+  Chart.CategoryScale, Chart.LinearScale, Chart.LogarithmicScale, Chart.RadialLinearScale,
+  Chart.Filler, Chart.Legend, Chart.Title, Chart.Tooltip, Chart.SubTitle
+);
+
 // ═══════════════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════════════
 let accessToken = null;
 let charts = {};
 let nameMap = { campaigns: {}, ads: {} };
+let attrData = [];
+let attrSortCol = -1;
+let attrSortAsc = true;
+let rtInterval = null;
 
-// Load name mappings from localStorage
-function loadNameMap() {
-  try {
-    const saved = localStorage.getItem('sl_name_map');
-    if (saved) nameMap = JSON.parse(saved);
-  } catch(e) {}
-}
-function saveNameMap() {
-  localStorage.setItem('sl_name_map', JSON.stringify(nameMap));
-}
-function friendlyName(type, id) {
-  if (!id) return '(not set)';
-  const map = type === 'campaign' ? nameMap.campaigns : nameMap.ads;
-  return map[id] || id;
-}
-function friendlyCell(type, id) {
-  if (!id) return '<span class="raw-id">(not set)</span>';
-  const map = type === 'campaign' ? nameMap.campaigns : nameMap.ads;
-  const name = map[id];
-  if (name) return `<span class="friendly-name">${esc(name)}</span><span class="raw-id" title="${esc(id)}">${esc(id)}</span>`;
-  return `<span>${esc(id)}</span>`;
-}
+// ═══════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════
 function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function num(v) { return parseInt(v) || 0; }
+function pct(a, b) { return b > 0 ? ((a / b) * 100).toFixed(1) + '%' : '0%'; }
+function fmtN(n) { return n.toLocaleString(); }
+
+// Name Manager helpers
+function loadNameMap() { try { const s = localStorage.getItem('sl_name_map'); if (s) nameMap = JSON.parse(s); } catch (e) {} }
+function saveNameMapLS() { localStorage.setItem('sl_name_map', JSON.stringify(nameMap)); }
+function fn(type, id) {
+  if (!id || id === '(not set)') return '(not set)';
+  const m = type === 'campaign' ? nameMap.campaigns : nameMap.ads;
+  return m[id] || id;
+}
+function fc(type, id) {
+  if (!id || id === '(not set)') return '<span class="raw-id">(not set)</span>';
+  const m = type === 'campaign' ? nameMap.campaigns : nameMap.ads;
+  const n = m[id];
+  if (n) return `<span class="friendly">${esc(n)}</span><span class="raw-id">${esc(id)}</span>`;
+  return `<span style="font-family:monospace;font-size:11px">${esc(id)}</span>`;
+}
 loadNameMap();
 
 // ═══════════════════════════════════════════════════════════
-// PASSWORD GATE
+// NAV
+// ═══════════════════════════════════════════════════════════
+function showSection(el) {
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(el.dataset.section).classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════════
+// AUTH
 // ═══════════════════════════════════════════════════════════
 document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
+
 function checkPassword() {
-  const val = document.getElementById('pw-input').value;
-  if (val === CONFIG.PASSWORD) {
-    document.getElementById('password-gate').style.display = 'none';
-    document.getElementById('oauth-screen').style.display = 'flex';
+  if (document.getElementById('pw-input').value === CONFIG.PASSWORD) {
+    document.getElementById('password-gate').classList.add('hidden');
+    document.getElementById('oauth-screen').classList.remove('hidden');
   } else {
     document.getElementById('pw-error').style.display = 'block';
   }
 }
 
-// ═══════════════════════════════════════════════════════════
-// GOOGLE OAUTH
-// ═══════════════════════════════════════════════════════════
 function initOAuth() {
   const client = google.accounts.oauth2.initTokenClient({
     client_id: CONFIG.CLIENT_ID,
     scope: 'https://www.googleapis.com/auth/analytics.readonly',
-    callback: (response) => {
-      if (response.error) {
-        document.getElementById('oauth-error').textContent = 'Auth failed: ' + response.error;
+    callback: (resp) => {
+      if (resp.error) {
+        document.getElementById('oauth-error').textContent = 'Auth failed: ' + resp.error;
         document.getElementById('oauth-error').style.display = 'block';
         return;
       }
-      accessToken = response.access_token;
-      document.getElementById('oauth-screen').style.display = 'none';
+      accessToken = resp.access_token;
+      document.getElementById('oauth-screen').classList.add('hidden');
       document.getElementById('dashboard').style.display = 'block';
       initDashboard();
     },
@@ -538,750 +691,1084 @@ function initOAuth() {
 }
 
 // ═══════════════════════════════════════════════════════════
-// DATE RANGE
+// DATE RANGE & GA4 API
 // ═══════════════════════════════════════════════════════════
 function initDateRange() {
-  const end = new Date();
-  const start = new Date();
+  const end = new Date(), start = new Date();
   start.setDate(end.getDate() - 30);
-  document.getElementById('date-start').value = fmt(start);
-  document.getElementById('date-end').value = fmt(end);
+  document.getElementById('date-start').value = fmtDate(start);
+  document.getElementById('date-end').value = fmtDate(end);
 }
-function fmt(d) { return d.toISOString().split('T')[0]; }
-function getDateRange() {
-  return {
-    startDate: document.getElementById('date-start').value,
-    endDate: document.getElementById('date-end').value,
-  };
-}
+function fmtDate(d) { return d.toISOString().split('T')[0]; }
+function getDR() { return { startDate: document.getElementById('date-start').value, endDate: document.getElementById('date-end').value }; }
 
-// ═══════════════════════════════════════════════════════════
-// GA4 DATA API HELPER
-// ═══════════════════════════════════════════════════════════
-async function ga4Report(body) {
-  const url = `https://analyticsdata.googleapis.com/v1beta/${CONFIG.GA4_PROPERTY}:runReport`;
-  const res = await fetch(url, {
+async function ga4(body) {
+  const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/${CONFIG.GA4_PROPERTY}:runReport`, {
     method: 'POST',
     headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   });
-  if (!res.ok) {
-    const err = await res.text();
-    console.error('GA4 API error:', err);
-    throw new Error('GA4 API error: ' + res.status);
-  }
-  return res.json();
+  if (!r.ok) { const t = await r.text(); console.error('GA4 error:', r.status, t); throw new Error('GA4 ' + r.status); }
+  return r.json();
 }
 
-// Build dimension filter expressions
+async function ga4RT(body) {
+  const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/${CONFIG.GA4_PROPERTY}:runRealtimeReport`, {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!r.ok) { const t = await r.text(); console.error('RT error:', r.status, t); throw new Error('RT ' + r.status); }
+  return r.json();
+}
+
+// ═══════════════════════════════════════════════════════════
+// FILTER BUILDER
+// ═══════════════════════════════════════════════════════════
 function buildFilters() {
-  const filters = [];
-  const pageType = document.getElementById('filter-page-type').value;
-  const campaign = document.getElementById('filter-campaign').value;
-  const ad = document.getElementById('filter-ad').value;
-  const source = document.getElementById('filter-source').value;
-  const medium = document.getElementById('filter-medium').value;
-  if (pageType) filters.push({ filter: { fieldName: 'customEvent:page_type', stringFilter: { value: pageType, matchType: 'EXACT' } } });
-  if (campaign) filters.push({ filter: { fieldName: 'customEvent:campaign_id', stringFilter: { value: campaign, matchType: 'EXACT' } } });
-  if (ad) filters.push({ filter: { fieldName: 'customEvent:ad_id', stringFilter: { value: ad, matchType: 'EXACT' } } });
-  if (source) filters.push({ filter: { fieldName: 'customEvent:traffic_source', stringFilter: { value: source, matchType: 'EXACT' } } });
-  if (medium) filters.push({ filter: { fieldName: 'customEvent:traffic_medium', stringFilter: { value: medium, matchType: 'EXACT' } } });
-  if (filters.length === 0) return undefined;
-  if (filters.length === 1) return filters[0];
-  return { andGroup: { expressions: filters } };
+  const f = [];
+  const pv = document.getElementById('filter-page-type').value;
+  const cv = document.getElementById('filter-campaign').value;
+  const av = document.getElementById('filter-ad').value;
+  const sv = document.getElementById('filter-source').value;
+  const mv = document.getElementById('filter-medium').value;
+  if (pv) f.push({ filter: { fieldName: 'customEvent:page_type', stringFilter: { value: pv, matchType: 'EXACT' } } });
+  if (cv) f.push({ filter: { fieldName: 'customEvent:campaign_id', stringFilter: { value: cv, matchType: 'EXACT' } } });
+  if (av) f.push({ filter: { fieldName: 'customEvent:ad_id', stringFilter: { value: av, matchType: 'EXACT' } } });
+  if (sv) f.push({ filter: { fieldName: 'customEvent:traffic_source', stringFilter: { value: sv, matchType: 'EXACT' } } });
+  if (mv) f.push({ filter: { fieldName: 'customEvent:traffic_medium', stringFilter: { value: mv, matchType: 'EXACT' } } });
+  if (!f.length) return undefined;
+  if (f.length === 1) return f[0];
+  return { andGroup: { expressions: f } };
 }
 
-function baseRequest(overrides) {
-  const dr = getDateRange();
-  const req = {
-    dateRanges: [{ startDate: dr.startDate, endDate: dr.endDate }],
-    ...overrides,
-  };
-  const dim = buildFilters();
-  if (dim) req.dimensionFilter = dim;
-  return req;
+function mergeFilters(a, b) {
+  if (!a && !b) return undefined;
+  if (!a) return b;
+  if (!b) return a;
+  const e = [];
+  if (a.andGroup) e.push(...a.andGroup.expressions); else e.push(a);
+  if (b.andGroup) e.push(...b.andGroup.expressions); else e.push(b);
+  return { andGroup: { expressions: e } };
 }
 
-// ═══════════════════════════════════════════════════════════
-// CHART.JS DEFAULTS
-// ═══════════════════════════════════════════════════════════
-Chart.defaults.color = '#aaa';
-Chart.defaults.borderColor = '#2a2a2a';
-Chart.defaults.font.family = "'neue-haas-grotesk-text', -apple-system, 'Segoe UI', sans-serif";
-
-const PALETTE = ['#d4775e','#7d9b76','#e8a090','#c4604a','#5fd068','#fff9e9','#a3c49a','#f0c2b5'];
-
-function destroyChart(key) {
-  if (charts[key]) { charts[key].destroy(); delete charts[key]; }
+function baseReq(overrides) {
+  const r = { dateRanges: [getDR()], ...overrides };
+  const f = buildFilters();
+  if (f) r.dimensionFilter = mergeFilters(r.dimensionFilter, f);
+  return r;
 }
 
 // ═══════════════════════════════════════════════════════════
-// INIT DASHBOARD
+// CHART DEFAULTS
+// ═══════════════════════════════════════════════════════════
+Chart.defaults.color = '#7a7a8e';
+Chart.defaults.borderColor = '#2a2a35';
+Chart.defaults.font.family = "'Inter',-apple-system,sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.datasets.bar = { maxBarThickness: 40, barPercentage: 0.7, categoryPercentage: 0.8 };
+const PALETTE = ['#e07a5f', '#81b29a', '#f2cc8f', '#f2a894', '#7eb8da', '#b8a0d4', '#6ec87a', '#ef6461'];
+
+function dc(key) { if (charts[key]) { charts[key].destroy(); delete charts[key]; } }
+
+function safeChart(key, canvasId, config) {
+  dc(key);
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const hasData = config.data && config.data.labels && config.data.labels.length > 0;
+  if (!hasData) {
+    canvas.style.display = 'none';
+    let el = canvas.parentElement.querySelector('.chart-empty');
+    if (!el) { el = document.createElement('div'); el.className = 'chart-empty empty'; canvas.parentElement.appendChild(el); }
+    el.textContent = 'No data available for this date range.';
+    return;
+  }
+  canvas.style.display = '';
+  const el = canvas.parentElement.querySelector('.chart-empty');
+  if (el) el.remove();
+  charts[key] = new Chart(canvas, config);
+}
+
+function statHTML(items) {
+  return items.map(s => `<div class="stat ${s.c}"><div class="stat-val">${fmtN(s.v)}</div><div class="stat-label">${s.l}</div></div>`).join('');
+}
+
+function renderFunnel(steps, maxVal) {
+  const max = maxVal || Math.max(...steps.map(s => s.users), 1);
+  let html = '<div class="funnel">';
+  steps.forEach((s, i) => {
+    const w = Math.max((s.users / max) * 100, 2);
+    const drop = i > 0 && steps[0].users > 0 ? pct(s.users, steps[0].users) : '';
+    html += `<div class="funnel-step">
+      <span class="funnel-num">${i + 1}</span>
+      <span class="funnel-label">${esc(s.label)}</span>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:${w}%;background:${s.color || PALETTE[i % PALETTE.length]}"><span>${fmtN(s.users)}</span></div></div>
+      <div class="funnel-meta"><span class="funnel-val">${fmtN(s.events)}</span><span class="funnel-drop ${i === 0 ? 'ok' : ''}">${drop}</span></div>
+    </div>`;
+  });
+  html += '</div>';
+  return html;
+}
+
+// ═══════════════════════════════════════════════════════════
+// INIT & REFRESH
 // ═══════════════════════════════════════════════════════════
 function initDashboard() {
   initDateRange();
   refreshAll();
+  startRT();
 }
 
 async function refreshAll() {
   await Promise.allSettled([
-    loadFunnel(),
-    loadVideo(),
-    loadScroll(),
-    loadCalculator(),
-    loadPortfolio(),
-    loadFAQ(),
-    loadProposal(),
-    loadAttribution(),
-    loadPlacement(),
-    loadSource(),
-    loadAdFunnel(),
-    populateFilterDropdowns(),
+    loadRT(), loadJourney(), loadHomeScroll(), loadHomeVideo(), loadHomePortfolio(),
+    loadStrategy(), loadProposals(), loadVideo(), loadCalc(), loadPortfolio(),
+    loadFAQ(), loadAds(), loadPlacement(), loadSource(), loadFunnel(), loadAdFunnel(),
+    loadPrebook(), populateFilters(),
   ]);
 }
 
+// Attach filter change listeners
+['filter-page-type', 'filter-campaign', 'filter-ad', 'filter-source', 'filter-medium'].forEach(id => {
+  document.getElementById(id).addEventListener('change', refreshAll);
+});
+
 // ═══════════════════════════════════════════════════════════
-// 1. CALENDAR BOOKING FUNNEL
+// POPULATE FILTER DROPDOWNS
 // ═══════════════════════════════════════════════════════════
-async function loadFunnel() {
-  const el = document.getElementById('funnel-content');
-  el.className = 'loading'; el.textContent = 'Loading funnel data…';
+async function populateFilters() {
   try {
-    const steps = ['calendar_view','date_selected','time_selected','form_shown','form_interaction','booking_submitted','meeting_confirmed'];
-    const eventNames = ['calendar_funnel_step','schedule_meeting','meeting_confirmed'];
-    const data = await ga4Report(baseRequest({
-      dimensions: [{ name: 'customEvent:calendar_action' }],
-      metrics: [{ name: 'eventCount' }],
-      dimensionFilter: mergeDimFilter(
-        buildFilters(),
-        { filter: { fieldName: 'eventName', inListFilter: { values: eventNames } } }
-      ),
-    }));
-    const counts = {};
-    if (data.rows) {
-      data.rows.forEach(r => {
-        const action = r.dimensionValues[0].value;
-        counts[action] = (counts[action] || 0) + parseInt(r.metricValues[0].value);
+    const [camps, ads, srcs, meds] = await Promise.allSettled([
+      ga4(baseReq({ dimensions: [{ name: 'customEvent:campaign_id' }], metrics: [{ name: 'eventCount' }], orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 50 })),
+      ga4(baseReq({ dimensions: [{ name: 'customEvent:ad_id' }], metrics: [{ name: 'eventCount' }], orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 50 })),
+      ga4(baseReq({ dimensions: [{ name: 'customEvent:traffic_source' }], metrics: [{ name: 'eventCount' }], orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 20 })),
+      ga4(baseReq({ dimensions: [{ name: 'customEvent:traffic_medium' }], metrics: [{ name: 'eventCount' }], orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 30 })),
+    ]);
+    fillSelect('filter-campaign', camps, 'campaign');
+    fillSelect('filter-ad', ads, 'ad');
+    fillSelect('filter-source', srcs);
+    fillSelect('filter-medium', meds);
+  } catch (e) { console.error('Filters:', e); }
+}
+
+function fillSelect(id, result, nameType) {
+  const sel = document.getElementById(id);
+  const cur = sel.value;
+  while (sel.options.length > 1) sel.remove(1);
+  if (result.status !== 'fulfilled' || !result.value.rows) return;
+  result.value.rows.forEach(r => {
+    const v = r.dimensionValues[0].value;
+    if (!v || v === '(not set)') return;
+    const opt = document.createElement('option');
+    opt.value = v;
+    opt.textContent = nameType ? fn(nameType, v) : v;
+    sel.appendChild(opt);
+  });
+  sel.value = cur;
+}
+
+// ═══════════════════════════════════════════════════════════
+// 1. REALTIME
+// Uses only valid RT dimensions: unifiedScreenName, eventName, deviceCategory
+// Does NOT use pagePath, hostName, sessionSource, or customEvent: dims
+// ═══════════════════════════════════════════════════════════
+function startRT() { loadRT(); rtInterval = setInterval(loadRT, 30000); }
+
+async function loadRT() {
+  try {
+    // Active users by page title (unifiedScreenName is valid for RT)
+    try {
+      const pages = await ga4RT({ dimensions: [{ name: 'unifiedScreenName' }], metrics: [{ name: 'activeUsers' }] });
+      let total = 0;
+      const pageList = [];
+      if (pages.rows) pages.rows.forEach(r => {
+        const c = num(r.metricValues[0].value);
+        total += c;
+        pageList.push({ page: r.dimensionValues[0].value, users: c });
       });
+      document.getElementById('rt-users').textContent = total;
+      pageList.sort((a, b) => b.users - a.users);
+      document.getElementById('rt-pages').innerHTML = pageList.length
+        ? pageList.map(p => `<div class="rt-page-row"><span class="rt-page-count">${p.users}</span><span class="rt-page-path">${esc(p.page)}</span></div>`).join('')
+        : '<div class="empty">No active pages right now</div>';
+    } catch (e) {
+      console.error('RT pages:', e);
+      try {
+        const simple = await ga4RT({ metrics: [{ name: 'activeUsers' }] });
+        document.getElementById('rt-users').textContent = simple.rows ? num(simple.rows[0].metricValues[0].value) : 0;
+      } catch (e2) { document.getElementById('rt-users').textContent = '\u2014'; }
+      document.getElementById('rt-pages').innerHTML = '<div class="empty">Page breakdown unavailable</div>';
     }
-    const maxVal = Math.max(...steps.map(s => counts[s] || 0), 1);
-    let html = '<div class="funnel">';
-    steps.forEach((step, i) => {
-      const val = counts[step] || 0;
-      const pct = maxVal > 0 ? ((val / maxVal) * 100) : 0;
-      const dropoff = i > 0 ? (counts[steps[i-1]] ? ((val / counts[steps[i-1]]) * 100).toFixed(0) : '0') : '100';
-      const color = interpolateColor(i / (steps.length - 1));
-      html += `<div class="funnel-step">
-        <span class="funnel-label">${step.replace(/_/g, ' ')}</span>
-        <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:${pct}%;background:${color}"></div></div>
-        <span class="funnel-value">${val.toLocaleString()}</span>
-        <span class="funnel-pct">${i > 0 ? dropoff + '%' : ''}</span>
-      </div>`;
+
+    // Events in last 30 min (eventName is valid for RT)
+    try {
+      const events = await ga4RT({ dimensions: [{ name: 'eventName' }], metrics: [{ name: 'eventCount' }] });
+      const evList = [];
+      if (events.rows) events.rows.forEach(r => evList.push({ name: r.dimensionValues[0].value, count: num(r.metricValues[0].value) }));
+      evList.sort((a, b) => b.count - a.count);
+      document.getElementById('rt-events').innerHTML = evList.length
+        ? evList.map(e => `<div class="rt-event-row"><span class="rt-event-name">${esc(e.name)}</span><span class="rt-event-count">${e.count}</span></div>`).join('')
+        : '<div class="empty">No events in last 30 min</div>';
+    } catch (e) {
+      document.getElementById('rt-events').innerHTML = '<div class="empty">Events unavailable</div>';
+    }
+
+    // Traffic sources — use deviceCategory since sessionSource is NOT valid for RT
+    try {
+      const devices = await ga4RT({ dimensions: [{ name: 'deviceCategory' }], metrics: [{ name: 'activeUsers' }] });
+      const srcList = [];
+      if (devices.rows) devices.rows.forEach(r => srcList.push({ src: r.dimensionValues[0].value, users: num(r.metricValues[0].value) }));
+      srcList.sort((a, b) => b.users - a.users);
+      document.getElementById('rt-sources').innerHTML = srcList.length
+        ? srcList.map(s => `<div class="rt-page-row"><span class="rt-page-count">${s.users}</span><span class="rt-page-path">${esc(s.src)}</span></div>`).join('')
+        : '<div class="empty">No sources</div>';
+    } catch (e) {
+      document.getElementById('rt-sources').innerHTML = '<div class="empty">Sources unavailable</div>';
+    }
+  } catch (e) {
+    console.error('RT fatal:', e);
+    document.getElementById('rt-users').textContent = '\u2014';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// 2. USER JOURNEY
+// ═══════════════════════════════════════════════════════════
+async function loadJourney() {
+  const el = document.getElementById('journey-content');
+  el.className = 'loading'; el.textContent = 'Loading\u2026';
+  try {
+    const data = await ga4(baseReq({
+      dimensions: [{ name: 'eventName' }],
+      metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+    }));
+    const ev = {}, us = {};
+    if (data.rows) data.rows.forEach(r => {
+      ev[r.dimensionValues[0].value] = num(r.metricValues[0].value);
+      us[r.dimensionValues[0].value] = num(r.metricValues[1].value);
     });
-    html += '</div>';
+
+    const stages = [
+      { label: 'Page View', key: 'page_view', color: '#e07a5f' },
+      { label: 'Section Viewed', key: 'section_view', color: '#f2a894' },
+      { label: 'Video Play', key: 'video_engagement', color: '#f2cc8f' },
+      { label: 'Calculator Used', key: 'calculator_interaction', color: '#81b29a' },
+      { label: 'Portfolio Viewed', key: 'portfolio_interaction', color: '#5f9178' },
+      { label: 'Calendar Opened', key: 'calendar_funnel_step', color: '#7eb8da' },
+      { label: 'Booking Submitted', key: 'schedule_meeting', color: '#6ec87a' },
+      { label: 'Meeting Confirmed', key: 'meeting_confirmed', color: '#2e8b57' },
+    ];
+
+    const pvCount = ev.page_view || 0, bk = ev.schedule_meeting || 0, cf = ev.meeting_confirmed || 0, cal = ev.calendar_funnel_step || 0;
+    document.getElementById('journey-stats').innerHTML = statHTML([
+      { v: pvCount, l: 'Page Views', c: 'coral' },
+      { v: cal, l: 'Calendar Opens', c: 'gold' },
+      { v: bk, l: 'Bookings', c: 'sage' },
+      { v: cf, l: 'Confirmed', c: 'blue' },
+    ]);
+
+    const ins = document.getElementById('journey-insight');
+    const parts = [];
+    if (pvCount > 0 && bk > 0) parts.push(`<strong>${pct(bk, pvCount)}</strong> of page views \u2192 booking`);
+    if (cal > 0 && bk > 0) parts.push(`<strong>${pct(bk, cal)}</strong> calendar \u2192 booking`);
+    if (bk > 0 && cf > 0) parts.push(`<strong>${pct(cf, bk)}</strong> booking \u2192 confirmed`);
+    ins.innerHTML = parts.join(' \u00B7 ') || 'Waiting for data\u2026';
+
+    const steps = stages.map(s => ({ label: s.label, users: us[s.key] || 0, events: ev[s.key] || 0, color: s.color }));
     el.className = '';
-    el.innerHTML = html;
-  } catch(e) { el.className = 'empty'; el.textContent = 'Failed to load funnel: ' + e.message; }
-}
-
-function interpolateColor(t) {
-  // terracotta → sage green gradient
-  const r = Math.round(212 + (125 - 212) * t);
-  const g = Math.round(119 + (155 - 119) * t);
-  const b = Math.round(94 + (118 - 94) * t);
-  return `rgb(${r},${g},${b})`;
-}
-
-function mergeDimFilter(existing, extra) {
-  if (!existing && !extra) return undefined;
-  if (!existing) return extra;
-  if (!extra) return existing;
-  // Merge into an andGroup
-  const exprs = [];
-  if (existing.andGroup) exprs.push(...existing.andGroup.expressions);
-  else exprs.push(existing);
-  exprs.push(extra);
-  return { andGroup: { expressions: exprs } };
+    el.innerHTML = renderFunnel(steps);
+  } catch (e) { el.className = 'empty'; el.textContent = 'Failed: ' + e.message; }
 }
 
 // ═══════════════════════════════════════════════════════════
-// 2. VSL VIDEO ENGAGEMENT
+// 3. HOMEPAGE ENGAGEMENT
 // ═══════════════════════════════════════════════════════════
-async function loadVideo() {
+async function loadHomeScroll() {
   try {
-    const data = await ga4Report(baseRequest({
-      dimensions: [
-        { name: 'customEvent:video_title' },
-        { name: 'customEvent:video_action' },
-      ],
-      metrics: [{ name: 'eventCount' }],
-      dimensionFilter: mergeDimFilter(
-        buildFilters(),
-        { filter: { fieldName: 'eventName', stringFilter: { value: 'video_engagement', matchType: 'EXACT' } } }
-      ),
+    const data = await ga4(baseReq({
+      dimensions: [{ name: 'customEvent:section_name' }],
+      metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+      dimensionFilter: { andGroup: { expressions: [
+        { filter: { fieldName: 'eventName', stringFilter: { value: 'section_view', matchType: 'EXACT' } } },
+        { filter: { fieldName: 'customEvent:page_type', stringFilter: { value: 'home', matchType: 'EXACT' } } },
+      ] } },
+      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 20,
     }));
-
-    const grouped = {};
-    if (data.rows) {
-      data.rows.forEach(r => {
-        const title = r.dimensionValues[0].value;
-        const action = r.dimensionValues[1].value;
-        const count = parseInt(r.metricValues[0].value);
-        if (!grouped[title]) grouped[title] = {};
-        grouped[title][action] = count;
-      });
-    }
-
-    const titles = Object.keys(grouped);
-    const actions = ['play','milestone','pause','complete'];
-    destroyChart('video');
-    charts.video = new Chart(document.getElementById('chart-video'), {
-      type: 'bar',
-      data: {
-        labels: actions,
-        datasets: titles.map((t, i) => ({
-          label: t,
-          data: actions.map(a => grouped[t][a] || 0),
-          backgroundColor: PALETTE[i % PALETTE.length],
-          borderRadius: 4,
-        })),
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { position: 'top' } },
-        scales: { y: { beginAtZero: true } },
-      },
+    const labels = [], vals = [], users = [];
+    if (data.rows) data.rows.forEach(r => {
+      labels.push(r.dimensionValues[0].value);
+      vals.push(num(r.metricValues[0].value));
+      users.push(num(r.metricValues[1].value));
     });
-  } catch(e) { console.error('Video load error:', e); }
-}
 
-// ═══════════════════════════════════════════════════════════
-// 3. SECTION SCROLL DEPTH
-// ═══════════════════════════════════════════════════════════
-async function loadScroll() {
-  try {
-    const data = await ga4Report(baseRequest({
-      dimensions: [
-        { name: 'customEvent:section_name' },
-        { name: 'customEvent:page_type' },
-      ],
-      metrics: [{ name: 'eventCount' }],
-      dimensionFilter: mergeDimFilter(
-        buildFilters(),
-        { filter: { fieldName: 'eventName', stringFilter: { value: 'section_view', matchType: 'EXACT' } } }
-      ),
-    }));
+    const ins = document.getElementById('home-scroll-insight');
+    if (labels.length >= 2) ins.innerHTML = `Top section: <strong>${esc(labels[0])}</strong> (${vals[0]} views, ${users[0]} users). Last: <strong>${esc(labels[labels.length - 1])}</strong> (${vals[vals.length - 1]} views).`;
 
-    const sections = {};
-    if (data.rows) {
-      data.rows.forEach(r => {
-        const section = r.dimensionValues[0].value;
-        const page = r.dimensionValues[1].value;
-        const count = parseInt(r.metricValues[0].value);
-        if (!sections[section]) sections[section] = {};
-        sections[section][page] = count;
-      });
-    }
-
-    const sectionNames = Object.keys(sections).sort((a,b) => {
-      const totalA = Object.values(sections[a]).reduce((s,v)=>s+v,0);
-      const totalB = Object.values(sections[b]).reduce((s,v)=>s+v,0);
-      return totalB - totalA;
-    }).slice(0, 15);
-    const pageTypes = [...new Set(Object.values(sections).flatMap(v => Object.keys(v)))];
-
-    destroyChart('scroll');
-    charts.scroll = new Chart(document.getElementById('chart-scroll'), {
-      type: 'bar',
-      data: {
-        labels: sectionNames,
-        datasets: pageTypes.map((p, i) => ({
-          label: p,
-          data: sectionNames.map(s => (sections[s] && sections[s][p]) || 0),
-          backgroundColor: PALETTE[i % PALETTE.length],
-          borderRadius: 4,
-        })),
-      },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        plugins: { legend: { position: 'top' } },
-        scales: { x: { beginAtZero: true, stacked: true }, y: { stacked: true } },
-      },
-    });
-  } catch(e) { console.error('Scroll load error:', e); }
-}
-
-// ═══════════════════════════════════════════════════════════
-// 4. ROI CALCULATOR ENGAGEMENT
-// ═══════════════════════════════════════════════════════════
-async function loadCalculator() {
-  try {
-    const data = await ga4Report(baseRequest({
-      dimensions: [{ name: 'customEvent:calc_action' }],
-      metrics: [{ name: 'eventCount' }],
-      dimensionFilter: mergeDimFilter(
-        buildFilters(),
-        { filter: { fieldName: 'eventName', stringFilter: { value: 'calculator_interaction', matchType: 'EXACT' } } }
-      ),
-    }));
-
-    const actions = {};
-    if (data.rows) data.rows.forEach(r => { actions[r.dimensionValues[0].value] = parseInt(r.metricValues[0].value); });
-
-    const labels = ['first_interaction','input_change','slider_change','cta_click'];
-    const values = labels.map(l => actions[l] || 0);
-
-    destroyChart('calculator');
-    charts.calculator = new Chart(document.getElementById('chart-calculator'), {
-      type: 'doughnut',
-      data: {
-        labels: labels.map(l => l.replace(/_/g, ' ')),
-        datasets: [{ data: values, backgroundColor: PALETTE.slice(0, 4), borderWidth: 0 }],
-      },
-      options: { responsive: true, plugins: { legend: { position: 'bottom' } } },
-    });
-  } catch(e) { console.error('Calculator load error:', e); }
-}
-
-// ═══════════════════════════════════════════════════════════
-// 5. PORTFOLIO INTERACTIONS
-// ═══════════════════════════════════════════════════════════
-async function loadPortfolio() {
-  try {
-    const data = await ga4Report(baseRequest({
-      dimensions: [
-        { name: 'customEvent:portfolio_action' },
-        { name: 'customEvent:portfolio_client' },
-      ],
-      metrics: [{ name: 'eventCount' }],
-      dimensionFilter: mergeDimFilter(
-        buildFilters(),
-        { filter: { fieldName: 'eventName', stringFilter: { value: 'portfolio_interaction', matchType: 'EXACT' } } }
-      ),
-    }));
-
-    const clients = {};
-    if (data.rows) {
-      data.rows.forEach(r => {
-        const action = r.dimensionValues[0].value;
-        const client = r.dimensionValues[1].value;
-        const count = parseInt(r.metricValues[0].value);
-        if (!clients[client]) clients[client] = {};
-        clients[client][action] = count;
-      });
-    }
-
-    const clientNames = Object.keys(clients);
-    const actions = [...new Set(Object.values(clients).flatMap(v => Object.keys(v)))];
-
-    destroyChart('portfolio');
-    charts.portfolio = new Chart(document.getElementById('chart-portfolio'), {
-      type: 'bar',
-      data: {
-        labels: clientNames,
-        datasets: actions.map((a, i) => ({
-          label: a.replace(/_/g, ' '),
-          data: clientNames.map(c => clients[c][a] || 0),
-          backgroundColor: PALETTE[i % PALETTE.length],
-          borderRadius: 4,
-        })),
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { position: 'top' } },
-        scales: { y: { beginAtZero: true } },
-      },
-    });
-  } catch(e) { console.error('Portfolio load error:', e); }
-}
-
-// ═══════════════════════════════════════════════════════════
-// 6. FAQ ENGAGEMENT
-// ═══════════════════════════════════════════════════════════
-async function loadFAQ() {
-  try {
-    const data = await ga4Report(baseRequest({
-      dimensions: [{ name: 'customEvent:faq_question' }],
-      metrics: [{ name: 'eventCount' }],
-      dimensionFilter: mergeDimFilter(
-        buildFilters(),
-        { filter: { fieldName: 'eventName', stringFilter: { value: 'faq_click', matchType: 'EXACT' } } }
-      ),
-      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
-      limit: 20,
-    }));
-
-    const labels = [];
-    const values = [];
-    if (data.rows) {
-      data.rows.forEach(r => {
-        const q = r.dimensionValues[0].value;
-        labels.push(q.length > 50 ? q.substring(0, 47) + '…' : q);
-        values.push(parseInt(r.metricValues[0].value));
-      });
-    }
-
-    destroyChart('faq');
-    charts.faq = new Chart(document.getElementById('chart-faq'), {
+    safeChart('homeScroll', 'chart-home-scroll', {
       type: 'bar',
       data: {
         labels,
-        datasets: [{ label: 'Clicks', data: values, backgroundColor: PALETTE[0], borderRadius: 4 }],
+        datasets: [
+          { label: 'Views', data: vals, backgroundColor: PALETTE[0] + '99', borderColor: PALETTE[0], borderWidth: 1 },
+          { label: 'Users', data: users, backgroundColor: PALETTE[1] + '99', borderColor: PALETTE[1], borderWidth: 1 },
+        ],
       },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        plugins: { legend: { display: false } },
-        scales: { x: { beginAtZero: true } },
-      },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { position: 'top' } }, scales: { x: { beginAtZero: true } } },
     });
-  } catch(e) { console.error('FAQ load error:', e); }
+  } catch (e) { console.error('Home scroll:', e); }
+}
+
+async function loadHomeVideo() {
+  try {
+    const data = await ga4(baseReq({
+      dimensions: [{ name: 'customEvent:video_action' }],
+      metrics: [{ name: 'eventCount' }],
+      dimensionFilter: { andGroup: { expressions: [
+        { filter: { fieldName: 'eventName', stringFilter: { value: 'video_engagement', matchType: 'EXACT' } } },
+        { filter: { fieldName: 'customEvent:page_type', stringFilter: { value: 'home', matchType: 'EXACT' } } },
+      ] } },
+      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+    }));
+    const labels = [], vals = [];
+    if (data.rows) data.rows.forEach(r => { labels.push(r.dimensionValues[0].value); vals.push(num(r.metricValues[0].value)); });
+    safeChart('homeVideo', 'chart-home-video', {
+      type: 'doughnut',
+      data: { labels, datasets: [{ data: vals, backgroundColor: PALETTE.slice(0, labels.length) }] },
+      options: { responsive: true, plugins: { legend: { position: 'bottom' } } },
+    });
+  } catch (e) { console.error('Home video:', e); }
+}
+
+async function loadHomePortfolio() {
+  try {
+    const data = await ga4(baseReq({
+      dimensions: [{ name: 'customEvent:portfolio_client' }],
+      metrics: [{ name: 'eventCount' }],
+      dimensionFilter: { andGroup: { expressions: [
+        { filter: { fieldName: 'eventName', stringFilter: { value: 'portfolio_interaction', matchType: 'EXACT' } } },
+        { filter: { fieldName: 'customEvent:page_type', stringFilter: { value: 'home', matchType: 'EXACT' } } },
+      ] } },
+      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+    }));
+    const labels = [], vals = [];
+    if (data.rows) data.rows.forEach(r => { labels.push(r.dimensionValues[0].value); vals.push(num(r.metricValues[0].value)); });
+    safeChart('homePortfolio', 'chart-home-portfolio', {
+      type: 'bar',
+      data: { labels, datasets: [{ label: 'Interactions', data: vals, backgroundColor: PALETTE[1] + '99', borderColor: PALETTE[1], borderWidth: 1 }] },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } },
+    });
+  } catch (e) { console.error('Home portfolio:', e); }
 }
 
 // ═══════════════════════════════════════════════════════════
-// 7. PROPOSAL ENGAGEMENT
+// 4. STRATEGY SESSION
 // ═══════════════════════════════════════════════════════════
-async function loadProposal() {
+async function loadStrategy() {
   try {
-    // section_view with page_type=proposal, plus proposal events
-    const data = await ga4Report(baseRequest({
-      dimensions: [
-        { name: 'eventName' },
-        { name: 'customEvent:section_name' },
-      ],
-      metrics: [{ name: 'eventCount' }],
-      dimensionFilter: mergeDimFilter(
-        buildFilters(),
-        {
-          andGroup: {
-            expressions: [
-              { filter: { fieldName: 'eventName', inListFilter: { values: ['section_view', 'proposal_accordion_click', 'proposal_cta_click'] } } },
-              { filter: { fieldName: 'customEvent:page_type', stringFilter: { value: 'proposal', matchType: 'EXACT' } } },
-            ]
-          }
-        }
-      ),
-    }));
+    const stratFilter = { andGroup: { expressions: [
+      { filter: { fieldName: 'hostName', stringFilter: { value: 'www.thesaltlickdenver.com', matchType: 'EXACT' } } },
+      { filter: { fieldName: 'pagePath', stringFilter: { value: '/free-strategy-session', matchType: 'EXACT' } } },
+    ] } };
 
-    const items = {};
-    if (data.rows) {
-      data.rows.forEach(r => {
-        const event = r.dimensionValues[0].value;
-        const section = r.dimensionValues[1].value || event;
-        const count = parseInt(r.metricValues[0].value);
-        const label = event === 'section_view' ? `Scroll: ${section}` : event === 'proposal_accordion_click' ? `Accordion: ${section}` : `CTA: ${section}`;
-        items[label] = (items[label] || 0) + count;
-      });
+    const [scrollData, eventData, statsData] = await Promise.all([
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:section_name' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: mergeFilters(stratFilter, { filter: { fieldName: 'eventName', stringFilter: { value: 'section_view', matchType: 'EXACT' } } }),
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 15,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'eventName' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: stratFilter,
+      })),
+      ga4(baseReq({
+        metrics: [{ name: 'screenPageViews' }, { name: 'totalUsers' }],
+        dimensionFilter: stratFilter,
+      })),
+    ]);
+
+    // Stats
+    const ev = {};
+    if (eventData.rows) eventData.rows.forEach(r => ev[r.dimensionValues[0].value] = num(r.metricValues[0].value));
+    const pvs = statsData.rows ? num(statsData.rows[0].metricValues[0].value) : 0;
+    document.getElementById('strategy-stats').innerHTML = statHTML([
+      { v: pvs, l: 'Page Views', c: 'coral' },
+      { v: ev.section_view || 0, l: 'Sections Seen', c: 'gold' },
+      { v: ev.schedule_meeting || 0, l: 'Bookings', c: 'sage' },
+      { v: ev.meeting_confirmed || 0, l: 'Confirmed', c: 'blue' },
+    ]);
+
+    // Scroll chart
+    const sLabels = [], sVals = [];
+    if (scrollData.rows) scrollData.rows.forEach(r => { sLabels.push(r.dimensionValues[0].value); sVals.push(num(r.metricValues[0].value)); });
+    safeChart('stratScroll', 'chart-strategy-scroll', {
+      type: 'bar',
+      data: { labels: sLabels, datasets: [{ label: 'Views', data: sVals, backgroundColor: PALETTE[1] + '99', borderColor: PALETTE[1], borderWidth: 1 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } },
+    });
+
+    // Event chart
+    const eLabels = [], eVals = [];
+    if (eventData.rows) eventData.rows.sort((a, b) => num(b.metricValues[0].value) - num(a.metricValues[0].value))
+      .forEach(r => { eLabels.push(r.dimensionValues[0].value); eVals.push(num(r.metricValues[0].value)); });
+    safeChart('stratEvents', 'chart-strategy-events', {
+      type: 'bar',
+      data: { labels: eLabels, datasets: [{ label: 'Count', data: eVals, backgroundColor: PALETTE.map(c => c + '99'), borderColor: PALETTE, borderWidth: 1 }] },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } },
+    });
+  } catch (e) { console.error('Strategy:', e); }
+}
+
+// ═══════════════════════════════════════════════════════════
+// 5. PROPOSALS
+// ═══════════════════════════════════════════════════════════
+async function loadProposals() {
+  const el = document.getElementById('proposal-pages');
+  try {
+    const docsFilter = { filter: { fieldName: 'hostName', stringFilter: { value: 'docs.thesaltlickdenver.com', matchType: 'EXACT' } } };
+
+    const [pageData, eventData, dateData] = await Promise.all([
+      ga4(baseReq({
+        dimensions: [{ name: 'pagePath' }],
+        metrics: [{ name: 'screenPageViews' }],
+        dimensionFilter: docsFilter,
+        orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }], limit: 30,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'eventName' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: docsFilter,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'pagePath' }, { name: 'date' }],
+        metrics: [{ name: 'screenPageViews' }],
+        dimensionFilter: docsFilter,
+        orderBys: [{ dimension: { dimensionName: 'date' }, desc: true }], limit: 200,
+      })),
+    ]);
+
+    // Stats
+    const ev = {};
+    if (eventData.rows) eventData.rows.forEach(r => ev[r.dimensionValues[0].value] = num(r.metricValues[0].value));
+    const totalPVs = pageData.rows ? pageData.rows.reduce((s, r) => s + num(r.metricValues[0].value), 0) : 0;
+    document.getElementById('proposal-stats').innerHTML = statHTML([
+      { v: totalPVs, l: 'Page Views', c: 'coral' },
+      { v: ev.section_view || 0, l: 'Sections Viewed', c: 'gold' },
+      { v: ev.proposal_accordion_click || 0, l: 'Accordion Clicks', c: 'sage' },
+      { v: ev.proposal_cta_click || 0, l: 'CTA Clicks', c: 'blue' },
+    ]);
+
+    // Build date map
+    const dateMap = {};
+    if (dateData.rows) dateData.rows.forEach(r => {
+      const path = r.dimensionValues[0].value;
+      const date = r.dimensionValues[1].value;
+      const views = num(r.metricValues[0].value);
+      if (!dateMap[path]) dateMap[path] = [];
+      dateMap[path].push({ date: date.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), views });
+    });
+
+    // Page list
+    if (!pageData.rows || !pageData.rows.length) {
+      el.innerHTML = '<div class="empty">No proposal views in this date range.</div>';
+    } else {
+      el.innerHTML = pageData.rows.map((r, i) => {
+        const path = r.dimensionValues[0].value;
+        const views = num(r.metricValues[0].value);
+        const dates = dateMap[path] || [];
+        const dateHTML = dates.map(d => `<div class="proposal-date-row"><span class="date">${d.date}</span><span class="count">${d.views} view${d.views !== 1 ? 's' : ''}</span></div>`).join('');
+        return `<div>
+          <div class="proposal-log-row" onclick="this.nextElementSibling.classList.toggle('open')">
+            <span class="proposal-path">${esc(path)}</span>
+            <span class="proposal-views">${views} views</span>
+          </div>
+          <div class="proposal-detail">${dateHTML || '<div class="empty">No date breakdown</div>'}</div>
+        </div>`;
+      }).join('');
     }
 
-    const sorted = Object.entries(items).sort((a,b) => b[1] - a[1]).slice(0, 15);
-    destroyChart('proposal');
-    charts.proposal = new Chart(document.getElementById('chart-proposal'), {
-      type: 'bar',
-      data: {
-        labels: sorted.map(s => s[0]),
-        datasets: [{ label: 'Events', data: sorted.map(s => s[1]), backgroundColor: PALETTE[1], borderRadius: 4 }],
-      },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        plugins: { legend: { display: false } },
-        scales: { x: { beginAtZero: true } },
-      },
+    // Section & interaction chart
+    const [secData] = await Promise.all([
+      ga4(baseReq({
+        dimensions: [{ name: 'eventName' }, { name: 'customEvent:section_name' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: docsFilter,
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 30,
+      })),
+    ]);
+    const pLabels = [], pVals = [];
+    if (secData.rows) secData.rows.forEach(r => {
+      pLabels.push(`${r.dimensionValues[0].value}: ${r.dimensionValues[1].value}`);
+      pVals.push(num(r.metricValues[0].value));
     });
-  } catch(e) { console.error('Proposal load error:', e); }
+    safeChart('proposal', 'chart-proposal', {
+      type: 'bar',
+      data: { labels: pLabels, datasets: [{ label: 'Count', data: pVals, backgroundColor: PALETTE[0] + '99', borderColor: PALETTE[0], borderWidth: 1 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } },
+    });
+  } catch (e) { console.error('Proposals:', e); el.innerHTML = '<div class="empty">Failed to load proposals.</div>'; }
 }
 
 // ═══════════════════════════════════════════════════════════
-// 8. TRAFFIC ATTRIBUTION TABLE
+// 6. VIDEO
 // ═══════════════════════════════════════════════════════════
-async function loadAttribution() {
-  const el = document.getElementById('attribution-content');
-  el.className = 'loading'; el.textContent = 'Loading attribution data…';
+async function loadVideo() {
   try {
-    const data = await ga4Report(baseRequest({
+    const data = await ga4(baseReq({
+      dimensions: [{ name: 'customEvent:video_title' }, { name: 'customEvent:video_action' }],
+      metrics: [{ name: 'eventCount' }],
+      dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { value: 'video_engagement', matchType: 'EXACT' } } },
+      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 40,
+    }));
+
+    const titles = new Set();
+    const actionMap = {};
+    if (data.rows) data.rows.forEach(r => {
+      const title = r.dimensionValues[0].value;
+      const action = r.dimensionValues[1].value;
+      titles.add(title);
+      if (!actionMap[action]) actionMap[action] = {};
+      actionMap[action][title] = num(r.metricValues[0].value);
+    });
+
+    const titleArr = [...titles];
+    const actions = ['play', 'milestone', 'pause', 'complete'];
+    const datasets = actions.filter(a => actionMap[a]).map((a, i) => ({
+      label: a.charAt(0).toUpperCase() + a.slice(1),
+      data: titleArr.map(t => (actionMap[a] || {})[t] || 0),
+      backgroundColor: PALETTE[i] + '99',
+      borderColor: PALETTE[i],
+      borderWidth: 1,
+    }));
+
+    // Insight
+    const ins = document.getElementById('video-insight');
+    const totalPlays = Object.values(actionMap.play || {}).reduce((s, v) => s + v, 0);
+    const totalComplete = Object.values(actionMap.complete || {}).reduce((s, v) => s + v, 0);
+    if (totalPlays > 0) ins.innerHTML = `<strong>${totalPlays}</strong> plays, <strong>${totalComplete}</strong> completions (<strong>${pct(totalComplete, totalPlays)}</strong> completion rate)`;
+
+    safeChart('video', 'chart-video', {
+      type: 'bar',
+      data: { labels: titleArr, datasets },
+      options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true } } },
+    });
+  } catch (e) { console.error('Video:', e); }
+}
+
+// ═══════════════════════════════════════════════════════════
+// 7. ROI CALCULATOR
+// ═══════════════════════════════════════════════════════════
+async function loadCalc() {
+  try {
+    const data = await ga4(baseReq({
+      dimensions: [{ name: 'customEvent:calc_action' }],
+      metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+      dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { value: 'calculator_interaction', matchType: 'EXACT' } } },
+    }));
+
+    const ev = {}, us = {};
+    if (data.rows) data.rows.forEach(r => {
+      ev[r.dimensionValues[0].value] = num(r.metricValues[0].value);
+      us[r.dimensionValues[0].value] = num(r.metricValues[1].value);
+    });
+
+    document.getElementById('calc-stats').innerHTML = statHTML([
+      { v: ev.first_interaction || 0, l: 'First Interaction', c: 'coral' },
+      { v: ev.input_change || 0, l: 'Input Changes', c: 'gold' },
+      { v: ev.slider_change || 0, l: 'Slider Changes', c: 'sage' },
+      { v: ev.cta_click || 0, l: 'CTA Clicks', c: 'blue' },
+    ]);
+
+    const ins = document.getElementById('calc-insight');
+    const fi = us.first_interaction || 0, cta = us.cta_click || 0;
+    if (fi > 0 && cta > 0) ins.innerHTML = `<strong>${pct(cta, fi)}</strong> of users who started the calculator clicked the CTA.`;
+
+    const labels = Object.keys(ev);
+    const vals = Object.values(ev);
+    safeChart('calc', 'chart-calc', {
+      type: 'bar',
+      data: { labels, datasets: [{ label: 'Events', data: vals, backgroundColor: PALETTE.map(c => c + '99'), borderColor: PALETTE, borderWidth: 1 }] },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } },
+    });
+  } catch (e) { console.error('Calc:', e); }
+}
+
+// ═══════════════════════════════════════════════════════════
+// 8. PORTFOLIO
+// ═══════════════════════════════════════════════════════════
+async function loadPortfolio() {
+  try {
+    const data = await ga4(baseReq({
+      dimensions: [{ name: 'customEvent:portfolio_client' }, { name: 'customEvent:portfolio_action' }],
+      metrics: [{ name: 'eventCount' }],
+      dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { value: 'portfolio_interaction', matchType: 'EXACT' } } },
+      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 50,
+    }));
+
+    const clients = new Set();
+    const actionMap = {};
+    if (data.rows) data.rows.forEach(r => {
+      const client = r.dimensionValues[0].value;
+      const action = r.dimensionValues[1].value;
+      clients.add(client);
+      if (!actionMap[action]) actionMap[action] = {};
+      actionMap[action][client] = num(r.metricValues[0].value);
+    });
+
+    const clientArr = [...clients];
+    const actKeys = Object.keys(actionMap);
+    const datasets = actKeys.map((a, i) => ({
+      label: a.replace(/_/g, ' '),
+      data: clientArr.map(c => actionMap[a][c] || 0),
+      backgroundColor: PALETTE[i % PALETTE.length] + '99',
+      borderColor: PALETTE[i % PALETTE.length],
+      borderWidth: 1,
+    }));
+
+    const ins = document.getElementById('portfolio-insight');
+    if (clientArr.length > 0) {
+      const totals = {};
+      clientArr.forEach(c => { totals[c] = 0; actKeys.forEach(a => { totals[c] += (actionMap[a] || {})[c] || 0; }); });
+      const top = Object.entries(totals).sort((a, b) => b[1] - a[1])[0];
+      ins.innerHTML = `Most viewed client: <strong>${esc(top[0])}</strong> with ${top[1]} interactions.`;
+    }
+
+    safeChart('portfolio', 'chart-portfolio', {
+      type: 'bar',
+      data: { labels: clientArr, datasets },
+      options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } } },
+    });
+  } catch (e) { console.error('Portfolio:', e); }
+}
+
+// ═══════════════════════════════════════════════════════════
+// 9. FAQ
+// ═══════════════════════════════════════════════════════════
+async function loadFAQ() {
+  try {
+    const data = await ga4(baseReq({
+      dimensions: [{ name: 'customEvent:faq_question' }],
+      metrics: [{ name: 'eventCount' }],
+      dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { value: 'faq_click', matchType: 'EXACT' } } },
+      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 20,
+    }));
+    const labels = [], vals = [];
+    if (data.rows) data.rows.forEach(r => {
+      const q = r.dimensionValues[0].value;
+      labels.push(q.length > 60 ? q.substring(0, 57) + '...' : q);
+      vals.push(num(r.metricValues[0].value));
+    });
+    safeChart('faq', 'chart-faq', {
+      type: 'bar',
+      data: { labels, datasets: [{ label: 'Clicks', data: vals, backgroundColor: PALETTE[2] + '99', borderColor: PALETTE[2], borderWidth: 1 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } },
+    });
+  } catch (e) { console.error('FAQ:', e); }
+}
+
+// ═══════════════════════════════════════════════════════════
+// 10. AD PERFORMANCE & ATTRIBUTION
+// ═══════════════════════════════════════════════════════════
+async function loadAds() {
+  const el = document.getElementById('attribution-content');
+  try {
+    // Get attribution data: source x medium x campaign x ad x event counts
+    // GA4 limits to 9 dims, so we get ad-level aggregated with key events
+    const data = await ga4(baseReq({
       dimensions: [
         { name: 'customEvent:traffic_source' },
         { name: 'customEvent:traffic_medium' },
         { name: 'customEvent:campaign_id' },
         { name: 'customEvent:ad_id' },
-        { name: 'eventName' },
       ],
-      metrics: [{ name: 'eventCount' }],
+      metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
       orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+      limit: 200,
+    }));
+
+    // Also get per-ad event breakdowns for bookings, section views, calendar
+    const detailData = await ga4(baseReq({
+      dimensions: [{ name: 'customEvent:ad_id' }, { name: 'eventName' }],
+      metrics: [{ name: 'eventCount' }],
       limit: 500,
     }));
 
-    // Pivot: group by source+medium+campaign+ad, with event counts as columns
-    const rows = {};
-    const eventSet = new Set();
-    if (data.rows) {
-      data.rows.forEach(r => {
-        const source = r.dimensionValues[0].value;
-        const medium = r.dimensionValues[1].value;
-        const campaign = r.dimensionValues[2].value;
-        const ad = r.dimensionValues[3].value;
-        const event = r.dimensionValues[4].value;
-        const count = parseInt(r.metricValues[0].value);
-        const key = `${source}|${medium}|${campaign}|${ad}`;
-        if (!rows[key]) rows[key] = { source, medium, campaign, ad, events: {}, total: 0 };
-        rows[key].events[event] = (rows[key].events[event] || 0) + count;
-        rows[key].total += count;
-        eventSet.add(event);
-      });
-    }
-
-    const keyEvents = ['schedule_meeting','meeting_confirmed','calendar_funnel_step','video_engagement','section_view','calculator_interaction','portfolio_interaction','faq_click'];
-    const events = keyEvents.filter(e => eventSet.has(e));
-    const sortedRows = Object.values(rows).sort((a,b) => b.total - a.total).slice(0, 50);
-
-    let html = '<div class="table-scroll"><table class="data-table"><thead><tr>';
-    html += '<th>Source</th><th>Medium</th><th>Campaign</th><th>Ad</th>';
-    events.forEach(e => html += `<th class="num">${e.replace(/_/g, ' ')}</th>`);
-    html += '<th class="num">Total</th></tr></thead><tbody>';
-
-    sortedRows.forEach(r => {
-      html += '<tr>';
-      html += `<td>${esc(r.source)}</td>`;
-      html += `<td>${esc(r.medium)}</td>`;
-      html += `<td>${friendlyCell('campaign', r.campaign)}</td>`;
-      html += `<td>${friendlyCell('ad', r.ad)}</td>`;
-      events.forEach(e => html += `<td class="num">${(r.events[e] || 0).toLocaleString()}</td>`);
-      html += `<td class="num" style="font-weight:700">${r.total.toLocaleString()}</td>`;
-      html += '</tr>';
+    const adEvents = {};
+    if (detailData.rows) detailData.rows.forEach(r => {
+      const adId = r.dimensionValues[0].value;
+      const event = r.dimensionValues[1].value;
+      if (!adEvents[adId]) adEvents[adId] = {};
+      adEvents[adId][event] = (adEvents[adId][event] || 0) + num(r.metricValues[0].value);
     });
 
-    html += '</tbody></table></div>';
-    if (sortedRows.length === 0) html = '<div class="empty">No attribution data found for this date range.</div>';
-    el.className = '';
-    el.innerHTML = html;
-  } catch(e) { el.className = 'empty'; el.textContent = 'Failed to load: ' + e.message; }
+    // Build table data
+    attrData = [];
+    if (data.rows) data.rows.forEach(r => {
+      const src = r.dimensionValues[0].value;
+      const med = r.dimensionValues[1].value;
+      const camp = r.dimensionValues[2].value;
+      const ad = r.dimensionValues[3].value;
+      const events = num(r.metricValues[0].value);
+      const users = num(r.metricValues[1].value);
+      const ae = adEvents[ad] || {};
+      attrData.push({
+        src, med, camp, ad, events, users,
+        bookings: ae.schedule_meeting || 0,
+        sections: ae.section_view || 0,
+        calendar: ae.calendar_funnel_step || 0,
+      });
+    });
+
+    // Top 5 ad cards
+    const adTotals = {};
+    attrData.forEach(r => {
+      if (!r.ad || r.ad === '(not set)') return;
+      if (!adTotals[r.ad]) adTotals[r.ad] = { events: 0, bookings: 0, sections: 0, calendar: 0 };
+      adTotals[r.ad].events += r.events;
+      adTotals[r.ad].bookings += r.bookings;
+      adTotals[r.ad].sections += r.sections;
+      adTotals[r.ad].calendar += r.calendar;
+    });
+
+    const top5 = Object.entries(adTotals).sort((a, b) => b[1].events - a[1].events).slice(0, 5);
+    document.getElementById('top-ads').innerHTML = top5.map(([id, s], i) => `
+      <div class="ad-card">
+        <div class="ad-rank">#${i + 1} AD</div>
+        <div class="ad-name">${esc(fn('ad', id))}</div>
+        ${fn('ad', id) !== id ? `<div class="ad-id">${esc(id)}</div>` : ''}
+        <div class="ad-stats">
+          <div class="ad-stat"><div class="ad-stat-val" style="color:var(--terracotta)">${fmtN(s.events)}</div><div class="ad-stat-label">Events</div></div>
+          <div class="ad-stat"><div class="ad-stat-val" style="color:var(--sage)">${fmtN(s.bookings)}</div><div class="ad-stat-label">Bookings</div></div>
+          <div class="ad-stat"><div class="ad-stat-val" style="color:var(--gold)">${fmtN(s.sections)}</div><div class="ad-stat-label">Sections</div></div>
+          <div class="ad-stat"><div class="ad-stat-val" style="color:var(--blue)">${fmtN(s.calendar)}</div><div class="ad-stat-label">Calendar</div></div>
+        </div>
+      </div>
+    `).join('');
+
+    renderAttrTable();
+  } catch (e) { console.error('Ads:', e); el.innerHTML = '<div class="empty">Failed to load ad data.</div>'; }
 }
 
-// ═══════════════════════════════════════════════════════════
-// PERFORMANCE BY PLACEMENT (traffic_medium)
-// ═══════════════════════════════════════════════════════════
+function renderAttrTable() {
+  const el = document.getElementById('attribution-content');
+  if (!attrData.length) { el.innerHTML = '<div class="empty">No attribution data.</div>'; return; }
+
+  // Sort
+  if (attrSortCol >= 0) {
+    const cols = ['src', 'med', 'camp', 'ad', 'events', 'users', 'bookings', 'sections', 'calendar'];
+    const key = cols[attrSortCol];
+    attrData.sort((a, b) => {
+      const av = a[key], bv = b[key];
+      if (typeof av === 'number') return attrSortAsc ? av - bv : bv - av;
+      return attrSortAsc ? String(av).localeCompare(String(bv)) : String(bv).localeCompare(String(av));
+    });
+  }
+
+  const headers = ['Source', 'Placement', 'Campaign', 'Ad', 'Events', 'Users', 'Bookings', 'Sections', 'Calendar'];
+  let html = '<div class="table-wrap"><table class="dt"><thead><tr>';
+  headers.forEach((h, i) => {
+    const cls = i === attrSortCol ? (attrSortAsc ? 'sorted-asc' : 'sorted-desc') : '';
+    html += `<th class="${cls}" onclick="sortAttr(${i})">${h}</th>`;
+  });
+  html += '</tr></thead><tbody>';
+  attrData.forEach(r => {
+    html += `<tr>
+      <td>${esc(r.src)}</td>
+      <td>${esc(r.med)}</td>
+      <td>${fc('campaign', r.camp)}</td>
+      <td>${fc('ad', r.ad)}</td>
+      <td class="num">${fmtN(r.events)}</td>
+      <td class="num">${fmtN(r.users)}</td>
+      <td class="num">${fmtN(r.bookings)}</td>
+      <td class="num">${fmtN(r.sections)}</td>
+      <td class="num">${fmtN(r.calendar)}</td>
+    </tr>`;
+  });
+  html += '</tbody></table></div>';
+  el.innerHTML = html;
+}
+
+function sortAttr(col) {
+  if (attrSortCol === col) attrSortAsc = !attrSortAsc;
+  else { attrSortCol = col; attrSortAsc = true; }
+  renderAttrTable();
+}
+
 async function loadPlacement() {
   try {
-    const data = await ga4Report(baseRequest({
+    const data = await ga4(baseReq({
       dimensions: [{ name: 'customEvent:traffic_medium' }],
       metrics: [{ name: 'eventCount' }],
-      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
-      limit: 20,
+      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 15,
     }));
-    const labels = [], values = [];
-    if (data.rows) {
-      data.rows.forEach(r => {
-        const v = r.dimensionValues[0].value;
-        if (v && v !== '(not set)') { labels.push(v); values.push(parseInt(r.metricValues[0].value)); }
-      });
-    }
-    destroyChart('placement');
-    charts.placement = new Chart(document.getElementById('chart-placement'), {
-      type: 'bar',
-      data: { labels, datasets: [{ label: 'Events', data: values, backgroundColor: PALETTE[0], borderRadius: 4 }] },
-      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } },
+    const labels = [], vals = [];
+    if (data.rows) data.rows.forEach(r => { labels.push(r.dimensionValues[0].value); vals.push(num(r.metricValues[0].value)); });
+    safeChart('placement', 'chart-placement', {
+      type: 'doughnut',
+      data: { labels, datasets: [{ data: vals, backgroundColor: PALETTE.slice(0, labels.length) }] },
+      options: { responsive: true, plugins: { legend: { position: 'right' } } },
     });
-  } catch(e) { console.error('Placement load error:', e); }
+  } catch (e) { console.error('Placement:', e); }
 }
 
-// ═══════════════════════════════════════════════════════════
-// PERFORMANCE BY SOURCE (traffic_source)
-// ═══════════════════════════════════════════════════════════
 async function loadSource() {
   try {
-    const data = await ga4Report(baseRequest({
+    const data = await ga4(baseReq({
       dimensions: [{ name: 'customEvent:traffic_source' }],
       metrics: [{ name: 'eventCount' }],
-      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
-      limit: 10,
+      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 10,
     }));
-    const labels = [], values = [];
-    if (data.rows) {
-      data.rows.forEach(r => {
-        const v = r.dimensionValues[0].value;
-        if (v && v !== '(not set)') { labels.push(v); values.push(parseInt(r.metricValues[0].value)); }
-      });
-    }
-    destroyChart('source');
-    charts.source = new Chart(document.getElementById('chart-source'), {
+    const labels = [], vals = [];
+    if (data.rows) data.rows.forEach(r => { labels.push(r.dimensionValues[0].value); vals.push(num(r.metricValues[0].value)); });
+    safeChart('source', 'chart-source', {
       type: 'doughnut',
-      data: { labels, datasets: [{ data: values, backgroundColor: PALETTE, borderWidth: 0 }] },
-      options: { responsive: true, plugins: { legend: { position: 'bottom' } } },
+      data: { labels, datasets: [{ data: vals, backgroundColor: PALETTE.slice(0, labels.length) }] },
+      options: { responsive: true, plugins: { legend: { position: 'right' } } },
     });
-  } catch(e) { console.error('Source load error:', e); }
+  } catch (e) { console.error('Source:', e); }
 }
 
 // ═══════════════════════════════════════════════════════════
-// AD FUNNEL (per ad_id)
+// 11. BOOKING FUNNEL
 // ═══════════════════════════════════════════════════════════
-async function loadAdFunnel() {
-  const el = document.getElementById('ad-funnel-content');
-  el.className = 'loading'; el.textContent = 'Loading ad funnels…';
+async function loadFunnel() {
+  const el = document.getElementById('funnel-content');
+  const aEl = document.getElementById('abandon-content');
   try {
-    const funnelSteps = ['calendar_view','date_selected','time_selected','form_shown','form_interaction','booking_submitted','meeting_confirmed'];
-    const data = await ga4Report(baseRequest({
-      dimensions: [
-        { name: 'customEvent:ad_id' },
-        { name: 'customEvent:calendar_action' },
-      ],
-      metrics: [{ name: 'eventCount' }],
-      dimensionFilter: mergeDimFilter(
-        buildFilters(),
-        { filter: { fieldName: 'eventName', inListFilter: { values: ['calendar_funnel_step','schedule_meeting','meeting_confirmed'] } } }
-      ),
+    const data = await ga4(baseReq({
+      dimensions: [{ name: 'customEvent:calendar_action' }],
+      metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+      dimensionFilter: { orGroup: { expressions: [
+        { filter: { fieldName: 'eventName', stringFilter: { value: 'calendar_funnel_step', matchType: 'EXACT' } } },
+        { filter: { fieldName: 'eventName', stringFilter: { value: 'schedule_meeting', matchType: 'EXACT' } } },
+        { filter: { fieldName: 'eventName', stringFilter: { value: 'meeting_confirmed', matchType: 'EXACT' } } },
+      ] } },
     }));
 
-    const ads = {};
-    if (data.rows) {
-      data.rows.forEach(r => {
-        const ad = r.dimensionValues[0].value;
-        const action = r.dimensionValues[1].value;
-        const count = parseInt(r.metricValues[0].value);
-        if (!ads[ad]) ads[ad] = {};
-        ads[ad][action] = (ads[ad][action] || 0) + count;
-      });
-    }
-
-    const adIds = Object.keys(ads).filter(a => a && a !== '(not set)');
-    if (adIds.length === 0) { el.className = 'empty'; el.textContent = 'No ad funnel data found.'; return; }
-
-    let html = '<div class="table-scroll"><table class="data-table"><thead><tr>';
-    html += '<th>Ad</th>';
-    funnelSteps.forEach(s => html += `<th class="num">${s.replace(/_/g, ' ')}</th>`);
-    html += '</tr></thead><tbody>';
-
-    adIds.forEach(ad => {
-      html += '<tr>';
-      html += `<td>${friendlyCell('ad', ad)}</td>`;
-      funnelSteps.forEach(s => {
-        const val = ads[ad][s] || 0;
-        html += `<td class="num">${val.toLocaleString()}</td>`;
-      });
-      html += '</tr>';
+    const ev = {}, us = {};
+    if (data.rows) data.rows.forEach(r => {
+      ev[r.dimensionValues[0].value] = num(r.metricValues[0].value);
+      us[r.dimensionValues[0].value] = num(r.metricValues[1].value);
     });
 
-    html += '</tbody></table></div>';
-    el.className = '';
-    el.innerHTML = html;
-  } catch(e) { el.className = 'empty'; el.textContent = 'Failed to load: ' + e.message; }
-}
+    const funnelSteps = [
+      { label: 'Calendar View', key: 'calendar_view', color: '#e07a5f' },
+      { label: 'Date Selected', key: 'date_selected', color: '#f2a894' },
+      { label: 'Time Selected', key: 'time_selected', color: '#f2cc8f' },
+      { label: 'Form Shown', key: 'form_shown', color: '#81b29a' },
+      { label: 'Form Interaction', key: 'form_interaction', color: '#7eb8da' },
+      { label: 'Booking Submitted', key: 'booking_submitted', color: '#6ec87a' },
+      { label: 'Meeting Confirmed', key: 'meeting_confirmed', color: '#2e8b57' },
+    ];
 
-// ═══════════════════════════════════════════════════════════
-// POPULATE FILTER DROPDOWNS
-// ═══════════════════════════════════════════════════════════
-async function populateFilterDropdowns() {
-  try {
-    const [campaignData, adData, sourceData, mediumData] = await Promise.all([
-      ga4Report(baseRequest({ dimensions: [{ name: 'customEvent:campaign_id' }], metrics: [{ name: 'eventCount' }], orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 50 })),
-      ga4Report(baseRequest({ dimensions: [{ name: 'customEvent:ad_id' }], metrics: [{ name: 'eventCount' }], orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 50 })),
-      ga4Report(baseRequest({ dimensions: [{ name: 'customEvent:traffic_source' }], metrics: [{ name: 'eventCount' }], orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 20 })),
-      ga4Report(baseRequest({ dimensions: [{ name: 'customEvent:traffic_medium' }], metrics: [{ name: 'eventCount' }], orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 30 })),
+    const steps = funnelSteps.map(s => ({ label: s.label, users: us[s.key] || 0, events: ev[s.key] || 0, color: s.color }));
+
+    // Stats
+    const calView = us.calendar_view || 0;
+    const booked = us.booking_submitted || 0;
+    const confirmed = us.meeting_confirmed || 0;
+    document.getElementById('funnel-stats').innerHTML = statHTML([
+      { v: calView, l: 'Calendar Views', c: 'coral' },
+      { v: us.form_shown || 0, l: 'Forms Shown', c: 'gold' },
+      { v: booked, l: 'Booked', c: 'sage' },
+      { v: confirmed, l: 'Confirmed', c: 'blue' },
     ]);
 
-    function fillSelect(id, data, type) {
-      const sel = document.getElementById(id);
-      const current = sel.value;
-      const first = sel.options[0].outerHTML;
-      sel.innerHTML = first;
-      if (data.rows) {
-        data.rows.forEach(r => {
-          const val = r.dimensionValues[0].value;
-          if (val && val !== '(not set)') {
-            const opt = document.createElement('option');
-            opt.value = val;
-            opt.textContent = type ? friendlyName(type, val) + (nameMap[type+'s']?.[val] ? ` (${val.substring(0,8)}…)` : '') : val;
-            sel.appendChild(opt);
-          }
-        });
-      }
-      sel.value = current;
-    }
+    // Insight
+    const ins = document.getElementById('funnel-insight');
+    if (calView > 0 && booked > 0) ins.innerHTML = `<strong>${pct(booked, calView)}</strong> calendar-to-booking conversion rate.`;
 
-    fillSelect('filter-campaign', campaignData, 'campaign');
-    fillSelect('filter-ad', adData, 'ad');
-    fillSelect('filter-source', sourceData, null);
-    fillSelect('filter-medium', mediumData, null);
-  } catch(e) { console.error('Filter populate error:', e); }
+    el.innerHTML = renderFunnel(steps);
+
+    // Form abandonment
+    const formShown = us.form_shown || 0;
+    const formInt = us.form_interaction || 0;
+    const formSub = us.booking_submitted || 0;
+    if (formShown > 0) {
+      const abSteps = [
+        { label: 'Form Shown', users: formShown, events: ev.form_shown || 0, color: '#f2cc8f' },
+        { label: 'Form Interaction', users: formInt, events: ev.form_interaction || 0, color: '#81b29a' },
+        { label: 'Form Submitted', users: formSub, events: ev.booking_submitted || 0, color: '#6ec87a' },
+      ];
+      const abIns = document.getElementById('abandon-insight');
+      const startRate = pct(formInt, formShown);
+      const submitRate = pct(formSub, formShown);
+      abIns.innerHTML = `<strong>${startRate}</strong> started filling the form, <strong>${submitRate}</strong> submitted it.`;
+      aEl.innerHTML = renderFunnel(abSteps, formShown);
+    } else {
+      aEl.innerHTML = '<div class="empty">No form data available.</div>';
+    }
+  } catch (e) { console.error('Funnel:', e); el.innerHTML = '<div class="empty">Failed to load funnel.</div>'; }
 }
 
-// Listen for filter changes
-['filter-page-type','filter-campaign','filter-ad','filter-source','filter-medium'].forEach(id => {
-  document.getElementById(id).addEventListener('change', refreshAll);
-});
+async function loadPrebook() {
+  const el = document.getElementById('prebook-content');
+  try {
+    // Get users who booked AND also triggered other events
+    // We query totalUsers for schedule_meeting, then for each other event type
+    const bookerData = await ga4(baseReq({
+      dimensions: [{ name: 'eventName' }],
+      metrics: [{ name: 'totalUsers' }],
+      dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { value: 'schedule_meeting', matchType: 'EXACT' } } },
+    }));
+    const totalBookers = bookerData.rows ? num(bookerData.rows[0].metricValues[0].value) : 0;
+
+    if (totalBookers === 0) {
+      el.innerHTML = '<div class="empty">No booking data to analyze.</div>';
+      return;
+    }
+
+    // Get all event types and their user counts
+    const allData = await ga4(baseReq({
+      dimensions: [{ name: 'eventName' }],
+      metrics: [{ name: 'totalUsers' }],
+      orderBys: [{ metric: { metricName: 'totalUsers' }, desc: true }],
+    }));
+
+    const relevantEvents = ['section_view', 'video_engagement', 'calculator_interaction', 'portfolio_interaction', 'faq_click', 'button_click', 'periodic_card_click'];
+    const rows = [];
+    if (allData.rows) allData.rows.forEach(r => {
+      const name = r.dimensionValues[0].value;
+      if (relevantEvents.includes(name)) {
+        rows.push({ name, users: num(r.metricValues[0].value) });
+      }
+    });
+
+    let html = '<div style="display:flex;flex-direction:column;gap:6px">';
+    rows.forEach(r => {
+      const overlap = Math.min(r.users, totalBookers);
+      const rate = Math.min((overlap / totalBookers) * 100, 100);
+      html += `<div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:12px;font-weight:500;min-width:160px">${esc(r.name.replace(/_/g, ' '))}</span>
+        <div style="flex:1;height:22px;background:var(--bg-raised);border-radius:var(--radius-xs);overflow:hidden">
+          <div style="height:100%;width:${rate}%;background:var(--sage);border-radius:var(--radius-xs);display:flex;align-items:center;justify-content:flex-end;padding-right:6px">
+            <span style="font-size:10px;font-weight:700;color:#fff">${rate.toFixed(0)}%</span>
+          </div>
+        </div>
+        <span style="font-size:11px;color:var(--text-muted);min-width:50px;text-align:right">${fmtN(r.users)} users</span>
+      </div>`;
+    });
+    html += '</div>';
+    el.innerHTML = html;
+  } catch (e) { console.error('Prebook:', e); el.innerHTML = '<div class="empty">Failed to load.</div>'; }
+}
+
+async function loadAdFunnel() {
+  const el = document.getElementById('ad-funnel-content');
+  try {
+    const data = await ga4(baseReq({
+      dimensions: [{ name: 'customEvent:ad_id' }, { name: 'customEvent:calendar_action' }],
+      metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+      dimensionFilter: { orGroup: { expressions: [
+        { filter: { fieldName: 'eventName', stringFilter: { value: 'calendar_funnel_step', matchType: 'EXACT' } } },
+        { filter: { fieldName: 'eventName', stringFilter: { value: 'schedule_meeting', matchType: 'EXACT' } } },
+        { filter: { fieldName: 'eventName', stringFilter: { value: 'meeting_confirmed', matchType: 'EXACT' } } },
+      ] } },
+      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 200,
+    }));
+
+    const adMap = {};
+    if (data.rows) data.rows.forEach(r => {
+      const ad = r.dimensionValues[0].value;
+      const action = r.dimensionValues[1].value;
+      if (!ad || ad === '(not set)') return;
+      if (!adMap[ad]) adMap[ad] = { ev: {}, us: {} };
+      adMap[ad].ev[action] = num(r.metricValues[0].value);
+      adMap[ad].us[action] = num(r.metricValues[1].value);
+    });
+
+    const funnelKeys = ['calendar_view', 'date_selected', 'time_selected', 'form_shown', 'booking_submitted', 'meeting_confirmed'];
+    const funnelLabels = ['Calendar View', 'Date Selected', 'Time Selected', 'Form Shown', 'Booked', 'Confirmed'];
+    const adIds = Object.keys(adMap);
+
+    if (!adIds.length) { el.innerHTML = '<div class="empty">No ad funnel data.</div>'; return; }
+
+    // Build a table
+    let html = '<div class="table-wrap"><table class="dt"><thead><tr><th>Ad</th>';
+    funnelLabels.forEach(l => html += `<th>${l}</th>`);
+    html += '</tr></thead><tbody>';
+    adIds.sort((a, b) => (adMap[b].us.calendar_view || 0) - (adMap[a].us.calendar_view || 0));
+    adIds.slice(0, 20).forEach(ad => {
+      html += `<tr><td>${fc('ad', ad)}</td>`;
+      funnelKeys.forEach(k => html += `<td class="num">${fmtN(adMap[ad].us[k] || 0)}</td>`);
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    el.innerHTML = html;
+  } catch (e) { console.error('Ad funnel:', e); el.innerHTML = '<div class="empty">Failed to load.</div>'; }
+}
 
 // ═══════════════════════════════════════════════════════════
 // NAME MANAGER
 // ═══════════════════════════════════════════════════════════
 function openNameManager() {
-  renderNameRows('campaign');
-  renderNameRows('ad');
   document.getElementById('name-manager-overlay').classList.add('active');
+  renderNameRows();
 }
+
 function closeNameManager() {
   document.getElementById('name-manager-overlay').classList.remove('active');
 }
-function renderNameRows(type) {
-  const container = document.getElementById(type === 'campaign' ? 'campaign-names-list' : 'ad-names-list');
-  const map = type === 'campaign' ? nameMap.campaigns : nameMap.ads;
-  container.innerHTML = '';
-  Object.entries(map).forEach(([id, name]) => {
-    container.appendChild(createNameRow(type, id, name));
+
+function renderNameRows() {
+  ['campaign', 'ad'].forEach(type => {
+    const list = document.getElementById(type === 'campaign' ? 'campaign-names-list' : 'ad-names-list');
+    const map = type === 'campaign' ? nameMap.campaigns : nameMap.ads;
+    list.innerHTML = '';
+    Object.entries(map).forEach(([id, name]) => {
+      const row = document.createElement('div');
+      row.className = 'name-row';
+      row.innerHTML = `<input value="${esc(id)}" data-type="${type}" data-orig="${esc(id)}" placeholder="ID"><input value="${esc(name)}" placeholder="Friendly name"><button class="btn-icon" onclick="this.parentElement.remove()">&times;</button>`;
+      list.appendChild(row);
+    });
   });
 }
-function createNameRow(type, id, name) {
-  const div = document.createElement('div');
-  div.className = 'name-row';
-  div.dataset.type = type;
-  div.innerHTML = `<input class="nm-id" value="${esc(id || '')}" placeholder="ID (e.g., 120211…)">
-    <input class="nm-name" value="${esc(name || '')}" placeholder="Friendly name">
-    <button class="btn-icon" onclick="this.parentElement.remove()" title="Remove">&times;</button>`;
-  return div;
-}
+
 function addNameRow(type) {
-  const container = document.getElementById(type === 'campaign' ? 'campaign-names-list' : 'ad-names-list');
-  container.appendChild(createNameRow(type, '', ''));
-  container.lastElementChild.querySelector('.nm-id').focus();
+  const list = document.getElementById(type === 'campaign' ? 'campaign-names-list' : 'ad-names-list');
+  const row = document.createElement('div');
+  row.className = 'name-row';
+  row.innerHTML = `<input placeholder="ID" data-type="${type}"><input placeholder="Friendly name"><button class="btn-icon" onclick="this.parentElement.remove()">&times;</button>`;
+  list.appendChild(row);
 }
+
 function saveNameManager() {
-  nameMap.campaigns = {};
-  nameMap.ads = {};
+  nameMap = { campaigns: {}, ads: {} };
   document.querySelectorAll('#campaign-names-list .name-row').forEach(row => {
-    const id = row.querySelector('.nm-id').value.trim();
-    const name = row.querySelector('.nm-name').value.trim();
+    const inputs = row.querySelectorAll('input');
+    const id = inputs[0].value.trim(), name = inputs[1].value.trim();
     if (id && name) nameMap.campaigns[id] = name;
   });
   document.querySelectorAll('#ad-names-list .name-row').forEach(row => {
-    const id = row.querySelector('.nm-id').value.trim();
-    const name = row.querySelector('.nm-name').value.trim();
+    const inputs = row.querySelectorAll('input');
+    const id = inputs[0].value.trim(), name = inputs[1].value.trim();
     if (id && name) nameMap.ads[id] = name;
   });
-  saveNameMap();
+  saveNameMapLS();
   closeNameManager();
   refreshAll();
 }
+
 function exportCSV() {
-  let csv = 'type,id,name\n';
-  Object.entries(nameMap.campaigns).forEach(([id, name]) => { csv += `campaign,${id},"${name}"\n`; });
-  Object.entries(nameMap.ads).forEach(([id, name]) => { csv += `ad,${id},"${name}"\n`; });
-  document.getElementById('csv-area').value = csv;
+  const lines = ['type,id,name'];
+  Object.entries(nameMap.campaigns).forEach(([id, name]) => lines.push(`campaign,${id},${name}`));
+  Object.entries(nameMap.ads).forEach(([id, name]) => lines.push(`ad,${id},${name}`));
+  document.getElementById('csv-area').value = lines.join('\n');
 }
+
 function importCSV() {
   const text = document.getElementById('csv-area').value.trim();
   if (!text) return;
-  const lines = text.split('\n').slice(1); // skip header
-  lines.forEach(line => {
-    const match = line.match(/^(campaign|ad),([^,]+),["']?(.+?)["']?$/);
-    if (match) {
-      const [, type, id, name] = match;
-      if (type === 'campaign') nameMap.campaigns[id.trim()] = name.trim();
-      else nameMap.ads[id.trim()] = name.trim();
-    }
+  text.split('\n').forEach(line => {
+    const parts = line.split(',');
+    if (parts.length < 3) return;
+    const type = parts[0].trim(), id = parts[1].trim(), name = parts.slice(2).join(',').trim();
+    if (type === 'campaign' && id && name) nameMap.campaigns[id] = name;
+    if (type === 'ad' && id && name) nameMap.ads[id] = name;
   });
-  saveNameMap();
-  renderNameRows('campaign');
-  renderNameRows('ad');
+  saveNameMapLS();
+  renderNameRows();
 }
 </script>
 </body>

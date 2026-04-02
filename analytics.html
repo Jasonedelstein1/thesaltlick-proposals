@@ -433,30 +433,30 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
       <!-- ═══ 3. HOMEPAGE ENGAGEMENT ═══ -->
       <div class="section" id="sec-home">
         <div class="section-title">Homepage Engagement</div>
-        <div class="section-desc">Section-by-section scroll depth and interactions on thesaltlickdenver.com</div>
-        <div class="card" style="margin-bottom:16px">
-          <div class="card-header"><h3>Sections Viewed</h3><span class="tag tag-sage">Scroll Depth</span></div>
-          <div class="card-insight" id="home-scroll-insight">Which sections visitors actually see as they scroll the homepage.</div>
-          <div class="chart-wrap"><canvas id="chart-home-scroll"></canvas></div>
+        <div class="section-desc">Activity on thesaltlickdenver.com &mdash; sections viewed, button clicks, and event breakdown.</div>
+        <div class="grid grid-4" id="home-stats" style="margin-bottom:16px"></div>
+        <div class="grid grid-2" style="margin-bottom:16px">
+          <div class="card">
+            <div class="card-header"><h3>Sections Viewed</h3><span class="tag tag-sage">Scroll Depth</span></div>
+            <div class="chart-wrap"><canvas id="chart-home-scroll"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Event Breakdown</h3></div>
+            <div class="chart-wrap"><canvas id="chart-home-events"></canvas></div>
+          </div>
         </div>
-        <div class="grid grid-2">
-          <div class="card">
-            <div class="card-header"><h3>Video Engagement</h3></div>
-            <div class="chart-wrap"><canvas id="chart-home-video"></canvas></div>
-          </div>
-          <div class="card">
-            <div class="card-header"><h3>Portfolio Clicks</h3></div>
-            <div class="chart-wrap"><canvas id="chart-home-portfolio"></canvas></div>
-          </div>
+        <div class="card">
+          <div class="card-header"><h3>Button Clicks</h3><span class="tag tag-coral">Top Clicked</span></div>
+          <div class="chart-wrap"><canvas id="chart-home-buttons"></canvas></div>
         </div>
       </div>
 
       <!-- ═══ 4. STRATEGY SESSION ═══ -->
       <div class="section" id="sec-strategy">
         <div class="section-title">Strategy Session Page</div>
-        <div class="section-desc">Activity on /free-strategy-session &mdash; sections viewed, calendar interactions, and bookings.</div>
+        <div class="section-desc">Activity on /free-strategy-session &mdash; sections viewed, button clicks, calendar interactions, and bookings.</div>
         <div class="grid grid-4" id="strategy-stats" style="margin-bottom:16px"></div>
-        <div class="grid grid-2">
+        <div class="grid grid-2" style="margin-bottom:16px">
           <div class="card">
             <div class="card-header"><h3>Sections Viewed</h3><span class="tag tag-sage">Scroll Depth</span></div>
             <div class="chart-wrap"><canvas id="chart-strategy-scroll"></canvas></div>
@@ -465,6 +465,10 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
             <div class="card-header"><h3>Event Breakdown</h3></div>
             <div class="chart-wrap"><canvas id="chart-strategy-events"></canvas></div>
           </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Button Clicks</h3><span class="tag tag-coral">Top Clicked</span></div>
+          <div class="chart-wrap"><canvas id="chart-strategy-buttons"></canvas></div>
         </div>
       </div>
 
@@ -527,11 +531,17 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
       <div class="section" id="sec-ads">
         <div class="section-title">Ad Performance & Attribution</div>
         <div class="section-desc">Which ads and placements drive the most engaged visitors and bookings.</div>
-        <div class="grid grid-5" id="top-ads" style="margin-bottom:16px"></div>
+        <div class="grid grid-5" id="top-ads" style="margin-bottom:16px"><div class="loading">Loading top ads&hellip;</div></div>
         <div class="card" style="margin-bottom:16px">
           <div class="card-header"><h3>Attribution Table</h3><span class="tag tag-coral">Sortable</span></div>
           <div class="card-insight" id="attr-insight">Click any column header to sort.</div>
           <div id="attribution-content"><div class="loading">Loading&hellip;</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+          <label style="font-size:12px;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;gap:6px">
+            <input type="checkbox" id="hide-notset" onchange="loadPlacement();loadSource();" style="accent-color:var(--terracotta)">
+            Hide "(not set)" from charts
+          </label>
         </div>
         <div class="grid grid-2">
           <div class="card">
@@ -828,11 +838,13 @@ function initDashboard() {
 }
 
 async function refreshAll() {
+  // Clear pie chart caches so they re-fetch on refresh
+  placementRaw = []; sourceRaw = [];
   // GA4 API has a concurrent request quota (~10 simultaneous).
   // Batch into small groups to avoid 429 RESOURCE_EXHAUSTED errors.
   async function batch(...fns) { await Promise.allSettled(fns.map(f => f())); }
   await batch(loadRT, populateFilters);
-  await batch(loadJourney, loadHomeScroll, loadHomeVideo, loadHomePortfolio);
+  await batch(loadJourney, loadHome);
   await batch(loadStrategy, loadProposals, loadVideo);
   await batch(loadCalc, loadPortfolio, loadFAQ);
   await batch(loadAds, loadPlacement, loadSource);
@@ -967,22 +979,21 @@ async function loadJourney() {
       { label: 'Portfolio Viewed', key: 'portfolio_interaction', color: '#5f9178' },
       { label: 'Calendar Opened', key: 'calendar_funnel_step', color: '#7eb8da' },
       { label: 'Booking Submitted', key: 'schedule_meeting', color: '#6ec87a' },
-      { label: 'Meeting Confirmed', key: 'meeting_confirmed', color: '#2e8b57' },
     ];
 
-    const pvCount = ev.page_view || 0, bk = ev.schedule_meeting || 0, cf = ev.meeting_confirmed || 0, cal = ev.calendar_funnel_step || 0;
+    const pvCount = ev.page_view || 0, bk = ev.schedule_meeting || 0, cal = ev.calendar_funnel_step || 0;
+    const totalUsers = us.page_view || 0;
     document.getElementById('journey-stats').innerHTML = statHTML([
       { v: pvCount, l: 'Page Views', c: 'coral' },
       { v: cal, l: 'Calendar Opens', c: 'gold' },
       { v: bk, l: 'Bookings', c: 'sage' },
-      { v: cf, l: 'Confirmed', c: 'blue' },
+      { v: totalUsers, l: 'Total Users', c: 'blue' },
     ]);
 
     const ins = document.getElementById('journey-insight');
     const parts = [];
     if (pvCount > 0 && bk > 0) parts.push(`<strong>${pct(bk, pvCount)}</strong> of page views \u2192 booking`);
     if (cal > 0 && bk > 0) parts.push(`<strong>${pct(bk, cal)}</strong> calendar \u2192 booking`);
-    if (bk > 0 && cf > 0) parts.push(`<strong>${pct(cf, bk)}</strong> booking \u2192 confirmed`);
     ins.innerHTML = parts.join(' \u00B7 ') || 'Waiting for data\u2026';
 
     const steps = stages.map(s => ({ label: s.label, users: us[s.key] || 0, events: ev[s.key] || 0, color: s.color }));
@@ -992,83 +1003,84 @@ async function loadJourney() {
 }
 
 // ═══════════════════════════════════════════════════════════
-// 3. HOMEPAGE ENGAGEMENT
+// 3. HOMEPAGE ENGAGEMENT (mirrors Strategy Session layout)
 // ═══════════════════════════════════════════════════════════
-async function loadHomeScroll() {
+async function loadHome() {
   try {
-    const data = await ga4(baseReq({
-      dimensions: [{ name: 'customEvent:section_name' }],
-      metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
-      dimensionFilter: { andGroup: { expressions: [
-        { filter: { fieldName: 'eventName', stringFilter: { value: 'section_view', matchType: 'EXACT' } } },
-        { filter: { fieldName: 'customEvent:page_type', stringFilter: { value: 'home', matchType: 'EXACT' } } },
-      ] } },
-      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 20,
-    }));
-    const labels = [], vals = [], users = [];
-    if (data.rows) data.rows.forEach(r => {
-      labels.push(r.dimensionValues[0].value);
-      vals.push(num(r.metricValues[0].value));
-      users.push(num(r.metricValues[1].value));
-    });
+    const homeFilter = { andGroup: { expressions: [
+      { filter: { fieldName: 'hostName', stringFilter: { value: 'www.thesaltlickdenver.com', matchType: 'EXACT' } } },
+      { filter: { fieldName: 'pagePath', stringFilter: { value: '/', matchType: 'EXACT' } } },
+    ] } };
 
-    const ins = document.getElementById('home-scroll-insight');
-    if (labels.length >= 2) ins.innerHTML = `Top section: <strong>${esc(labels[0])}</strong> (${vals[0]} views, ${users[0]} users). Last: <strong>${esc(labels[labels.length - 1])}</strong> (${vals[vals.length - 1]} views).`;
+    const [scrollData, eventData, statsData, buttonData] = await Promise.all([
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:section_name' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: mergeFilters(homeFilter, { filter: { fieldName: 'eventName', stringFilter: { value: 'section_view', matchType: 'EXACT' } } }),
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 20,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'eventName' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: homeFilter,
+      })),
+      ga4(baseReq({
+        metrics: [{ name: 'screenPageViews' }, { name: 'totalUsers' }],
+        dimensionFilter: homeFilter,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:button_text' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: mergeFilters(homeFilter, { filter: { fieldName: 'eventName', stringFilter: { value: 'button_click', matchType: 'EXACT' } } }),
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 15,
+      })),
+    ]);
 
+    // Stats
+    const ev = {};
+    if (eventData.rows) eventData.rows.forEach(r => ev[r.dimensionValues[0].value] = num(r.metricValues[0].value));
+    const pvs = statsData.rows ? num(statsData.rows[0].metricValues[0].value) : 0;
+    const users = statsData.rows ? num(statsData.rows[0].metricValues[1].value) : 0;
+    document.getElementById('home-stats').innerHTML = statHTML([
+      { v: pvs, l: 'Page Views', c: 'coral' },
+      { v: users, l: 'Users', c: 'blue' },
+      { v: ev.section_view || 0, l: 'Sections Seen', c: 'gold' },
+      { v: ev.button_click || 0, l: 'Button Clicks', c: 'sage' },
+    ]);
+
+    // Scroll chart
+    const sLabels = [], sVals = [];
+    if (scrollData.rows) scrollData.rows.forEach(r => { sLabels.push(r.dimensionValues[0].value); sVals.push(num(r.metricValues[0].value)); });
     safeChart('homeScroll', 'chart-home-scroll', {
       type: 'bar',
-      data: {
-        labels,
-        datasets: [
-          { label: 'Views', data: vals, backgroundColor: PALETTE[0] + '99', borderColor: PALETTE[0], borderWidth: 1 },
-          { label: 'Users', data: users, backgroundColor: PALETTE[1] + '99', borderColor: PALETTE[1], borderWidth: 1 },
-        ],
-      },
-      options: { indexAxis: 'y', responsive: true, plugins: { legend: { position: 'top' } }, scales: { x: { beginAtZero: true } } },
+      data: { labels: sLabels, datasets: [{ label: 'Views', data: sVals, backgroundColor: PALETTE[1] + '99', borderColor: PALETTE[1], borderWidth: 1 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } },
     });
-  } catch (e) { console.error('Home scroll:', e); }
-}
 
-async function loadHomeVideo() {
-  try {
-    const data = await ga4(baseReq({
-      dimensions: [{ name: 'customEvent:video_action' }],
-      metrics: [{ name: 'eventCount' }],
-      dimensionFilter: { andGroup: { expressions: [
-        { filter: { fieldName: 'eventName', stringFilter: { value: 'video_engagement', matchType: 'EXACT' } } },
-        { filter: { fieldName: 'customEvent:page_type', stringFilter: { value: 'home', matchType: 'EXACT' } } },
-      ] } },
-      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
-    }));
-    const labels = [], vals = [];
-    if (data.rows) data.rows.forEach(r => { labels.push(r.dimensionValues[0].value); vals.push(num(r.metricValues[0].value)); });
-    safeChart('homeVideo', 'chart-home-video', {
-      type: 'doughnut',
-      data: { labels, datasets: [{ data: vals, backgroundColor: PALETTE.slice(0, labels.length) }] },
-      options: { responsive: true, plugins: { legend: { position: 'bottom' } } },
-    });
-  } catch (e) { console.error('Home video:', e); }
-}
-
-async function loadHomePortfolio() {
-  try {
-    const data = await ga4(baseReq({
-      dimensions: [{ name: 'customEvent:portfolio_client' }],
-      metrics: [{ name: 'eventCount' }],
-      dimensionFilter: { andGroup: { expressions: [
-        { filter: { fieldName: 'eventName', stringFilter: { value: 'portfolio_interaction', matchType: 'EXACT' } } },
-        { filter: { fieldName: 'customEvent:page_type', stringFilter: { value: 'home', matchType: 'EXACT' } } },
-      ] } },
-      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
-    }));
-    const labels = [], vals = [];
-    if (data.rows) data.rows.forEach(r => { labels.push(r.dimensionValues[0].value); vals.push(num(r.metricValues[0].value)); });
-    safeChart('homePortfolio', 'chart-home-portfolio', {
+    // Event chart
+    const eLabels = [], eVals = [];
+    if (eventData.rows) eventData.rows.sort((a, b) => num(b.metricValues[0].value) - num(a.metricValues[0].value))
+      .forEach(r => { eLabels.push(r.dimensionValues[0].value); eVals.push(num(r.metricValues[0].value)); });
+    safeChart('homeEvents', 'chart-home-events', {
       type: 'bar',
-      data: { labels, datasets: [{ label: 'Interactions', data: vals, backgroundColor: PALETTE[1] + '99', borderColor: PALETTE[1], borderWidth: 1 }] },
+      data: { labels: eLabels, datasets: [{ label: 'Count', data: eVals, backgroundColor: PALETTE.map(c => c + '99'), borderColor: PALETTE, borderWidth: 1 }] },
       options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } },
     });
-  } catch (e) { console.error('Home portfolio:', e); }
+
+    // Button clicks chart
+    const bLabels = [], bVals = [];
+    if (buttonData.rows) buttonData.rows.forEach(r => {
+      const txt = r.dimensionValues[0].value;
+      if (!txt || txt === '(not set)') return;
+      bLabels.push(txt.length > 40 ? txt.substring(0, 37) + '...' : txt);
+      bVals.push(num(r.metricValues[0].value));
+    });
+    safeChart('homeButtons', 'chart-home-buttons', {
+      type: 'bar',
+      data: { labels: bLabels, datasets: [{ label: 'Clicks', data: bVals, backgroundColor: PALETTE[0] + '99', borderColor: PALETTE[0], borderWidth: 1 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } },
+    });
+  } catch (e) { console.error('Home:', e); }
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1081,7 +1093,7 @@ async function loadStrategy() {
       { filter: { fieldName: 'pagePath', stringFilter: { value: '/free-strategy-session', matchType: 'EXACT' } } },
     ] } };
 
-    const [scrollData, eventData, statsData] = await Promise.all([
+    const [scrollData, eventData, statsData, buttonData] = await Promise.all([
       ga4(baseReq({
         dimensions: [{ name: 'customEvent:section_name' }],
         metrics: [{ name: 'eventCount' }],
@@ -1097,6 +1109,12 @@ async function loadStrategy() {
         metrics: [{ name: 'screenPageViews' }, { name: 'totalUsers' }],
         dimensionFilter: stratFilter,
       })),
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:button_text' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: mergeFilters(stratFilter, { filter: { fieldName: 'eventName', stringFilter: { value: 'button_click', matchType: 'EXACT' } } }),
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 15,
+      })),
     ]);
 
     // Stats
@@ -1107,7 +1125,7 @@ async function loadStrategy() {
       { v: pvs, l: 'Page Views', c: 'coral' },
       { v: ev.section_view || 0, l: 'Sections Seen', c: 'gold' },
       { v: ev.schedule_meeting || 0, l: 'Bookings', c: 'sage' },
-      { v: ev.meeting_confirmed || 0, l: 'Confirmed', c: 'blue' },
+      { v: ev.calendar_funnel_step || 0, l: 'Calendar Opens', c: 'blue' },
     ]);
 
     // Scroll chart
@@ -1127,6 +1145,20 @@ async function loadStrategy() {
       type: 'bar',
       data: { labels: eLabels, datasets: [{ label: 'Count', data: eVals, backgroundColor: PALETTE.map(c => c + '99'), borderColor: PALETTE, borderWidth: 1 }] },
       options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } },
+    });
+
+    // Button clicks chart
+    const bLabels = [], bVals = [];
+    if (buttonData.rows) buttonData.rows.forEach(r => {
+      const txt = r.dimensionValues[0].value;
+      if (!txt || txt === '(not set)') return;
+      bLabels.push(txt.length > 40 ? txt.substring(0, 37) + '...' : txt);
+      bVals.push(num(r.metricValues[0].value));
+    });
+    safeChart('stratButtons', 'chart-strategy-buttons', {
+      type: 'bar',
+      data: { labels: bLabels, datasets: [{ label: 'Clicks', data: bVals, backgroundColor: PALETTE[0] + '99', borderColor: PALETTE[0], borderWidth: 1 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } },
     });
   } catch (e) { console.error('Strategy:', e); }
 }
@@ -1446,7 +1478,7 @@ async function loadAds() {
     });
 
     const top5 = Object.entries(adTotals).sort((a, b) => b[1].events - a[1].events).slice(0, 5);
-    document.getElementById('top-ads').innerHTML = top5.map(([id, s], i) => `
+    document.getElementById('top-ads').innerHTML = top5.length ? top5.map(([id, s], i) => `
       <div class="ad-card">
         <div class="ad-rank">#${i + 1} AD</div>
         <div class="ad-name">${esc(fn('ad', id))}</div>
@@ -1458,7 +1490,7 @@ async function loadAds() {
           <div class="ad-stat"><div class="ad-stat-val" style="color:var(--blue)">${fmtN(s.calendar)}</div><div class="ad-stat-label">Calendar</div></div>
         </div>
       </div>
-    `).join('');
+    `).join('') : '<div class="empty" style="grid-column:1/-1">No ad data with identified IDs in this date range.</div>';
 
     renderAttrTable();
   } catch (e) { console.error('Ads:', e); el.innerHTML = '<div class="empty">Failed to load ad data.</div>'; }
@@ -1509,15 +1541,25 @@ function sortAttr(col) {
   renderAttrTable();
 }
 
+// Cache raw pie chart data so the toggle can re-render without re-fetching
+let placementRaw = [], sourceRaw = [];
+
+function hideNotSet() { return document.getElementById('hide-notset').checked; }
+
 async function loadPlacement() {
   try {
-    const data = await ga4(baseReq({
-      dimensions: [{ name: 'customEvent:traffic_medium' }],
-      metrics: [{ name: 'eventCount' }],
-      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 15,
-    }));
-    const labels = [], vals = [];
-    if (data.rows) data.rows.forEach(r => { labels.push(r.dimensionValues[0].value); vals.push(num(r.metricValues[0].value)); });
+    // Only fetch if cache is empty (first load); toggle re-renders from cache
+    if (!placementRaw.length) {
+      const data = await ga4(baseReq({
+        dimensions: [{ name: 'customEvent:traffic_medium' }],
+        metrics: [{ name: 'eventCount' }],
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 15,
+      }));
+      placementRaw = [];
+      if (data.rows) data.rows.forEach(r => placementRaw.push({ label: r.dimensionValues[0].value, val: num(r.metricValues[0].value) }));
+    }
+    const filtered = hideNotSet() ? placementRaw.filter(r => r.label && r.label !== '(not set)') : placementRaw;
+    const labels = filtered.map(r => r.label), vals = filtered.map(r => r.val);
     safeChart('placement', 'chart-placement', {
       type: 'doughnut',
       data: { labels, datasets: [{ data: vals, backgroundColor: PALETTE.slice(0, labels.length) }] },
@@ -1528,13 +1570,17 @@ async function loadPlacement() {
 
 async function loadSource() {
   try {
-    const data = await ga4(baseReq({
-      dimensions: [{ name: 'customEvent:traffic_source' }],
-      metrics: [{ name: 'eventCount' }],
-      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 10,
-    }));
-    const labels = [], vals = [];
-    if (data.rows) data.rows.forEach(r => { labels.push(r.dimensionValues[0].value); vals.push(num(r.metricValues[0].value)); });
+    if (!sourceRaw.length) {
+      const data = await ga4(baseReq({
+        dimensions: [{ name: 'customEvent:traffic_source' }],
+        metrics: [{ name: 'eventCount' }],
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 10,
+      }));
+      sourceRaw = [];
+      if (data.rows) data.rows.forEach(r => sourceRaw.push({ label: r.dimensionValues[0].value, val: num(r.metricValues[0].value) }));
+    }
+    const filtered = hideNotSet() ? sourceRaw.filter(r => r.label && r.label !== '(not set)') : sourceRaw;
+    const labels = filtered.map(r => r.label), vals = filtered.map(r => r.val);
     safeChart('source', 'chart-source', {
       type: 'doughnut',
       data: { labels, datasets: [{ data: vals, backgroundColor: PALETTE.slice(0, labels.length) }] },
@@ -1556,7 +1602,6 @@ async function loadFunnel() {
       dimensionFilter: { orGroup: { expressions: [
         { filter: { fieldName: 'eventName', stringFilter: { value: 'calendar_funnel_step', matchType: 'EXACT' } } },
         { filter: { fieldName: 'eventName', stringFilter: { value: 'schedule_meeting', matchType: 'EXACT' } } },
-        { filter: { fieldName: 'eventName', stringFilter: { value: 'meeting_confirmed', matchType: 'EXACT' } } },
       ] } },
     }));
 
@@ -1573,7 +1618,6 @@ async function loadFunnel() {
       { label: 'Form Shown', key: 'form_shown', color: '#81b29a' },
       { label: 'Form Interaction', key: 'form_interaction', color: '#7eb8da' },
       { label: 'Booking Submitted', key: 'booking_submitted', color: '#6ec87a' },
-      { label: 'Meeting Confirmed', key: 'meeting_confirmed', color: '#2e8b57' },
     ];
 
     const steps = funnelSteps.map(s => ({ label: s.label, users: us[s.key] || 0, events: ev[s.key] || 0, color: s.color }));
@@ -1581,12 +1625,11 @@ async function loadFunnel() {
     // Stats
     const calView = us.calendar_view || 0;
     const booked = us.booking_submitted || 0;
-    const confirmed = us.meeting_confirmed || 0;
     document.getElementById('funnel-stats').innerHTML = statHTML([
       { v: calView, l: 'Calendar Views', c: 'coral' },
       { v: us.form_shown || 0, l: 'Forms Shown', c: 'gold' },
       { v: booked, l: 'Booked', c: 'sage' },
-      { v: confirmed, l: 'Confirmed', c: 'blue' },
+      { v: us.form_interaction || 0, l: 'Form Starts', c: 'blue' },
     ]);
 
     // Insight
@@ -1677,7 +1720,6 @@ async function loadAdFunnel() {
       dimensionFilter: { orGroup: { expressions: [
         { filter: { fieldName: 'eventName', stringFilter: { value: 'calendar_funnel_step', matchType: 'EXACT' } } },
         { filter: { fieldName: 'eventName', stringFilter: { value: 'schedule_meeting', matchType: 'EXACT' } } },
-        { filter: { fieldName: 'eventName', stringFilter: { value: 'meeting_confirmed', matchType: 'EXACT' } } },
       ] } },
       orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 200,
     }));
@@ -1692,8 +1734,8 @@ async function loadAdFunnel() {
       adMap[ad].us[action] = num(r.metricValues[1].value);
     });
 
-    const funnelKeys = ['calendar_view', 'date_selected', 'time_selected', 'form_shown', 'booking_submitted', 'meeting_confirmed'];
-    const funnelLabels = ['Calendar View', 'Date Selected', 'Time Selected', 'Form Shown', 'Booked', 'Confirmed'];
+    const funnelKeys = ['calendar_view', 'date_selected', 'time_selected', 'form_shown', 'booking_submitted'];
+    const funnelLabels = ['Calendar View', 'Date Selected', 'Time Selected', 'Form Shown', 'Booked'];
     const adIds = Object.keys(adMap);
 
     if (!adIds.length) { el.innerHTML = '<div class="empty">No ad funnel data.</div>'; return; }

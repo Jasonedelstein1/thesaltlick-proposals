@@ -601,15 +601,10 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
 
 <script>
 // ═══════════════════════════════════════════════════════════
-// CHART.JS REGISTRATION
+// CHART.JS — UMD build auto-registers all controllers, elements,
+// scales and plugins. No Chart.register() call needed.
+// See Documentation/chartjs/integration.md — Script Tag section.
 // ═══════════════════════════════════════════════════════════
-Chart.register(
-  Chart.BarController, Chart.LineController, Chart.DoughnutController, Chart.PieController,
-  Chart.PolarAreaController, Chart.RadarController, Chart.ScatterController, Chart.BubbleController,
-  Chart.BarElement, Chart.LineElement, Chart.ArcElement, Chart.PointElement,
-  Chart.CategoryScale, Chart.LinearScale, Chart.LogarithmicScale, Chart.RadialLinearScale,
-  Chart.Filler, Chart.Legend, Chart.Title, Chart.Tooltip, Chart.SubTitle
-);
 
 // ═══════════════════════════════════════════════════════════
 // STATE
@@ -820,12 +815,15 @@ function initDashboard() {
 }
 
 async function refreshAll() {
-  await Promise.allSettled([
-    loadRT(), loadJourney(), loadHomeScroll(), loadHomeVideo(), loadHomePortfolio(),
-    loadStrategy(), loadProposals(), loadVideo(), loadCalc(), loadPortfolio(),
-    loadFAQ(), loadAds(), loadPlacement(), loadSource(), loadFunnel(), loadAdFunnel(),
-    loadPrebook(), populateFilters(),
-  ]);
+  // GA4 API has a concurrent request quota (~10 simultaneous).
+  // Batch into small groups to avoid 429 RESOURCE_EXHAUSTED errors.
+  async function batch(...fns) { await Promise.allSettled(fns.map(f => f())); }
+  await batch(loadRT, populateFilters);
+  await batch(loadJourney, loadHomeScroll, loadHomeVideo, loadHomePortfolio);
+  await batch(loadStrategy, loadProposals, loadVideo);
+  await batch(loadCalc, loadPortfolio, loadFAQ);
+  await batch(loadAds, loadPlacement, loadSource);
+  await batch(loadFunnel, loadAdFunnel, loadPrebook);
 }
 
 // Attach filter change listeners
@@ -1420,15 +1418,18 @@ async function loadAds() {
       });
     });
 
-    // Top 5 ad cards
+    // Top 5 ad cards — use adEvents directly (already per-ad totals) to avoid
+    // double-counting when the same ad appears across multiple src/med/camp combos
     const adTotals = {};
-    attrData.forEach(r => {
-      if (!r.ad || r.ad === '(not set)') return;
-      if (!adTotals[r.ad]) adTotals[r.ad] = { events: 0, bookings: 0, sections: 0, calendar: 0 };
-      adTotals[r.ad].events += r.events;
-      adTotals[r.ad].bookings += r.bookings;
-      adTotals[r.ad].sections += r.sections;
-      adTotals[r.ad].calendar += r.calendar;
+    Object.entries(adEvents).forEach(([adId, evMap]) => {
+      if (!adId || adId === '(not set)') return;
+      const totalEv = Object.values(evMap).reduce((s, v) => s + v, 0);
+      adTotals[adId] = {
+        events: totalEv,
+        bookings: evMap.schedule_meeting || 0,
+        sections: evMap.section_view || 0,
+        calendar: evMap.calendar_funnel_step || 0,
+      };
     });
 
     const top5 = Object.entries(adTotals).sort((a, b) => b[1].events - a[1].events).slice(0, 5);
@@ -1436,7 +1437,7 @@ async function loadAds() {
       <div class="ad-card">
         <div class="ad-rank">#${i + 1} AD</div>
         <div class="ad-name">${esc(fn('ad', id))}</div>
-        ${fn('ad', id) !== id ? `<div class="ad-id">${esc(id)}</div>` : ''}
+        <div class="ad-id">${esc(id)}</div>
         <div class="ad-stats">
           <div class="ad-stat"><div class="ad-stat-val" style="color:var(--terracotta)">${fmtN(s.events)}</div><div class="ad-stat-label">Events</div></div>
           <div class="ad-stat"><div class="ad-stat-val" style="color:var(--sage)">${fmtN(s.bookings)}</div><div class="ad-stat-label">Bookings</div></div>

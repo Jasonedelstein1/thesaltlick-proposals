@@ -1415,9 +1415,9 @@ async function loadFAQ() {
 // ═══════════════════════════════════════════════════════════
 async function loadAds() {
   const el = document.getElementById('attribution-content');
+  const topEl = document.getElementById('top-ads');
   try {
-    // Get attribution data: source x medium x campaign x ad x event counts
-    // GA4 limits to 9 dims, so we get ad-level aggregated with key events
+    // Step 1: Get the attribution table (source x medium x campaign x ad)
     const data = await ga4(baseReq({
       dimensions: [
         { name: 'customEvent:traffic_source' },
@@ -1430,15 +1430,19 @@ async function loadAds() {
       limit: 200,
     }));
 
-    // Also get per-ad event breakdowns for bookings, section views, calendar
-    const detailData = await ga4(baseReq({
-      dimensions: [{ name: 'customEvent:ad_id' }, { name: 'eventName' }],
-      metrics: [{ name: 'eventCount' }],
-      limit: 500,
-    }));
+    // Step 2: Get per-ad event breakdown (separate call for detail stats)
+    let detailData = null;
+    try {
+      detailData = await ga4(baseReq({
+        dimensions: [{ name: 'customEvent:ad_id' }, { name: 'eventName' }],
+        metrics: [{ name: 'eventCount' }],
+        limit: 500,
+      }));
+    } catch (e2) { console.warn('Ad detail call failed, building cards from table data:', e2); }
 
+    // Build per-ad event map from detail data (if available)
     const adEvents = {};
-    if (detailData.rows) detailData.rows.forEach(r => {
+    if (detailData && detailData.rows) detailData.rows.forEach(r => {
       const adId = r.dimensionValues[0].value;
       const event = r.dimensionValues[1].value;
       if (!adEvents[adId]) adEvents[adId] = {};
@@ -1463,22 +1467,30 @@ async function loadAds() {
       });
     });
 
-    // Top 5 ad cards — use adEvents directly (already per-ad totals) to avoid
-    // double-counting when the same ad appears across multiple src/med/camp combos
+    // Top 5 ad cards — aggregate per ad_id, excluding (not set)
     const adTotals = {};
-    Object.entries(adEvents).forEach(([adId, evMap]) => {
-      if (!adId || adId === '(not set)') return;
-      const totalEv = Object.values(evMap).reduce((s, v) => s + v, 0);
-      adTotals[adId] = {
-        events: totalEv,
-        bookings: evMap.schedule_meeting || 0,
-        sections: evMap.section_view || 0,
-        calendar: evMap.calendar_funnel_step || 0,
-      };
-    });
+    // Prefer detail data if available, otherwise fall back to table data
+    if (Object.keys(adEvents).length > 0) {
+      Object.entries(adEvents).forEach(([adId, evMap]) => {
+        if (!adId || adId === '(not set)') return;
+        adTotals[adId] = {
+          events: Object.values(evMap).reduce((s, v) => s + v, 0),
+          bookings: evMap.schedule_meeting || 0,
+          sections: evMap.section_view || 0,
+        };
+      });
+    } else {
+      // Fallback: aggregate from attribution table rows
+      attrData.forEach(r => {
+        if (!r.ad || r.ad === '(not set)') return;
+        if (!adTotals[r.ad]) adTotals[r.ad] = { events: 0, bookings: 0, sections: 0 };
+        adTotals[r.ad].events += r.events;
+      });
+    }
 
+    console.log('Top ads found:', Object.keys(adTotals).length, adTotals);
     const top5 = Object.entries(adTotals).sort((a, b) => b[1].events - a[1].events).slice(0, 5);
-    document.getElementById('top-ads').innerHTML = top5.length ? top5.map(([id, s], i) => `
+    topEl.innerHTML = top5.length ? top5.map(([id, s], i) => `
       <div class="ad-card">
         <div class="ad-rank">#${i + 1} AD</div>
         <div class="ad-name">${esc(fn('ad', id))}</div>
@@ -1487,13 +1499,16 @@ async function loadAds() {
           <div class="ad-stat"><div class="ad-stat-val" style="color:var(--terracotta)">${fmtN(s.events)}</div><div class="ad-stat-label">Events</div></div>
           <div class="ad-stat"><div class="ad-stat-val" style="color:var(--sage)">${fmtN(s.bookings)}</div><div class="ad-stat-label">Bookings</div></div>
           <div class="ad-stat"><div class="ad-stat-val" style="color:var(--gold)">${fmtN(s.sections)}</div><div class="ad-stat-label">Sections</div></div>
-          <div class="ad-stat"><div class="ad-stat-val" style="color:var(--blue)">${fmtN(s.calendar)}</div><div class="ad-stat-label">Calendar</div></div>
         </div>
       </div>
     `).join('') : '<div class="empty" style="grid-column:1/-1">No ad data with identified IDs in this date range.</div>';
 
     renderAttrTable();
-  } catch (e) { console.error('Ads:', e); el.innerHTML = '<div class="empty">Failed to load ad data.</div>'; }
+  } catch (e) {
+    console.error('Ads:', e);
+    el.innerHTML = '<div class="empty">Failed to load ad data.</div>';
+    topEl.innerHTML = '<div class="empty" style="grid-column:1/-1">Failed to load top ads.</div>';
+  }
 }
 
 function renderAttrTable() {

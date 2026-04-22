@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stoke Social: Meta Advertising Proposal</title>
+<style>
+    @import url('https://use.typekit.net/csj2hfl.css');
+
+    :root {
+        --primary-bg: #f0ebe2;
+        --page-bg: #e0dbd3;
+        --card-bg: #ffffff;
+        --primary: #c85c4f;
+        --text-primary: #1a1a1a;
+        --text-secondary: #3d3d3d;
+        --text-muted: rgba(0,0,0,0.45);
+        --text-faint: rgba(0,0,0,0.35);
+        --status-green: #1a6b30;
+        --status-green-bg: rgba(26,107,48,0.08);
+        --coral-tag: #9e4535;
+        --coral-tag-bg: rgba(200,92,79,0.08);
+        --border-color: rgba(0,0,0,0.08);
+        --dark-card-bg: #1a1a1a;
+        --dark-card-text: #ffffff;
+        --dark-card-muted: rgba(255,255,255,0.5);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: neue-haas-grotesk-text, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background-color: var(--page-bg);
+        color: var(--text-primary);
+        line-height: 1.65;
+        overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+        position: fixed; top: 0; left: 0; right: 0;
+        background: var(--primary-bg); padding: 15px 0;
+        z-index: 1000; border-bottom: 1px solid var(--border-color);
+    }
+    .nav-container {
+        max-width: 860px; margin: 0 auto; padding: 0 32px;
+        display: flex; justify-content: space-between; align-items: center;
+    }
+    .company-name {
+        font-family: neue-haas-grotesk-display, sans-serif;
+        font-weight: 600; font-size: 1rem; color: var(--text-primary);
+    }
+    .nav-menu { display: flex; gap: 28px; }
+    .nav-menu a {
+        color: var(--text-secondary); text-decoration: none;
+        font-size: 14px; font-weight: 400; transition: opacity 0.2s;
+    }
+    .nav-menu a:hover { opacity: 0.55; }
+    .nav-toggle {
+        display: none; background: none; border: none;
+        cursor: pointer; padding: 4px; color: var(--text-primary); font-size: 20px;
+    }
+
+    /* ── WRAPPER ── */
+    .proposal-wrapper {
+        max-width: 860px; margin: 0 auto;
+        background: var(--primary-bg);
+        box-shadow: 0 0 40px rgba(0,0,0,0.06);
+        padding-top: 72px;
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 72px 48px; border-bottom: 1px solid var(--border-color); }
+    section:last-of-type { border-bottom: none; }
+    .section-label {
+        font-size: 11px; font-weight: 600; text-transform: uppercase;
+        letter-spacing: 0.1em; color: var(--text-faint); margin-bottom: 20px;
+    }
+
+    /* ── HERO ── */
+    .hero { padding: 80px 48px 72px; }
+    .hero h1 {
+        font-family: neue-haas-grotesk-display, sans-serif;
+        font-size: clamp(36px,4vw,44px); font-weight: 700;
+        line-height: 1.1; color: var(--text-primary); margin-bottom: 16px;
+    }
+    .accent-bar {
+        width: 48px; height: 3px; background: var(--primary);
+        border-radius: 2px; margin-bottom: 20px;
+    }
+    .hero-subtitle {
+        font-size: 18px; color: var(--primary); font-weight: 400;
+        margin-bottom: 28px; line-height: 1.5;
+    }
+    .hero p {
+        font-size: 16px; color: var(--text-secondary);
+        max-width: 680px; margin-bottom: 16px;
+    }
+    .hero p:last-child { margin-bottom: 0; }
+
+    /* ── INVESTMENT ── */
+    .investment-grid {
+        display: grid; gap: 16px; margin-bottom: 24px;
+    }
+    .price-card {
+        background: var(--card-bg); border: 1px solid var(--border-color);
+        border-radius: 12px; padding: 28px 32px;
+    }
+    .price-card-header {
+        display: flex; justify-content: space-between;
+        align-items: flex-start; margin-bottom: 10px;
+    }
+    .price-card-name {
+        font-family: neue-haas-grotesk-display, sans-serif;
+        font-size: 17px; font-weight: 700; color: var(--text-primary);
+    }
+    .price-tag {
+        font-family: neue-haas-grotesk-display, sans-serif;
+        font-size: 20px; font-weight: 700; color: var(--text-primary);
+        white-space: nowrap; margin-left: 16px;
+    }
+    .price-card-desc {
+        font-size: 14px; color: var(--text-muted); line-height: 1.55;
+    }
+    .status-tag {
+        display: inline-block; font-size: 11px; font-weight: 600;
+        text-transform: uppercase; letter-spacing: 0.08em;
+        padding: 3px 8px; border-radius: 4px; margin-bottom: 10px;
+    }
+    .tag-green {
+        color: var(--status-green); background: var(--status-green-bg);
+    }
+    .tag-coral {
+        color: var(--coral-tag); background: var(--coral-tag-bg);
+    }
+
+    /* dark monthly card */
+    .price-card-dark {
+        background: var(--dark-card-bg); border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 12px; padding: 28px 32px;
+    }
+    .price-card-dark .price-card-name { color: var(--dark-card-text); }
+    .price-card-dark .price-tag { color: var(--dark-card-text); }
+    .price-card-dark .price-card-desc { color: var(--dark-card-muted); }
+    .price-card-dark .status-tag.tag-coral {
+        color: #e8897f; background: rgba(200,92,79,0.15);
+    }
+
+    .investment-total {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 18px 20px; border-top: 1px solid var(--border-color);
+    }
+    .investment-total-label {
+        font-size: 13px; font-weight: 600; color: var(--text-muted);
+        text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .investment-total-price {
+        font-family: neue-haas-grotesk-display, sans-serif;
+        font-size: 22px; font-weight: 700; color: var(--text-primary);
+    }
+    .cc-note {
+        font-size: 12px; color: var(--text-faint);
+        margin-top: 10px; text-align: right;
+    }
+
+    /* ── WHATS INCLUDED ── */
+    .included-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .included-card {
+        background: var(--card-bg); border: 1px solid var(--border-color);
+        border-radius: 12px; padding: 28px 28px 30px;
+    }
+    .included-card h3 {
+        font-family: neue-haas-grotesk-display, sans-serif;
+        font-size: 17px; font-weight: 700; margin-bottom: 10px;
+        color: var(--text-primary);
+    }
+    .included-card p {
+        font-size: 14px; color: var(--text-secondary); line-height: 1.6;
+    }
+
+    /* ── DELIVERABLES ── */
+    .deliverables-table { width: 100%; }
+    .table-header {
+        display: grid; grid-template-columns: 220px 1fr;
+        padding: 10px 20px; border-bottom: 2px solid var(--border-color);
+        margin-bottom: 4px;
+    }
+    .table-header span {
+        font-size: 11px; font-weight: 600; text-transform: uppercase;
+        letter-spacing: 0.08em; color: var(--text-faint);
+    }
+    .pricing-row {
+        display: grid; grid-template-columns: 220px 1fr auto;
+        align-items: center; padding: 18px 20px;
+        background: var(--card-bg); border: 1px solid var(--border-color);
+        border-radius: 10px; margin-bottom: 6px;
+        cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease;
+        user-select: none;
+    }
+    .pricing-row:hover { border-color: rgba(0,0,0,0.16); }
+    .pricing-row-name {
+        font-weight: 600; font-size: 15px; color: var(--text-primary);
+    }
+    .pricing-row-desc {
+        font-size: 14px; color: var(--text-muted); line-height: 1.5;
+    }
+    .expand-icon {
+        font-size: 20px; font-weight: 300; color: var(--primary);
+        line-height: 1; margin-left: 16px; flex-shrink: 0;
+    }
+    .pricing-details {
+        display: none; background: rgba(255,255,255,0.6);
+        border: 1px solid var(--border-color); border-top: none;
+        border-radius: 0 0 10px 10px; padding: 20px 28px 22px;
+        margin-top: -6px; margin-bottom: 6px;
+    }
+    .pricing-details.active { display: block; }
+    .pricing-details ul {
+        list-style: none; padding: 0;
+    }
+    .pricing-details ul li {
+        font-size: 14px; color: var(--text-secondary);
+        padding: 5px 0; border-bottom: 1px solid var(--border-color);
+        display: flex; align-items: flex-start; gap: 10px; line-height: 1.5;
+    }
+    .pricing-details ul li:last-child { border-bottom: none; }
+    .pricing-details ul li::before {
+        content: "–"; color: var(--primary); flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* ── WHY SALT LICK ── */
+    .why-grid {
+        display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;
+        margin-top: 4px;
+    }
+    .why-card {
+        background: var(--card-bg); border: 1px solid var(--border-color);
+        border-radius: 12px; padding: 26px 24px;
+    }
+    .why-icon { width: 28px; height: 28px; margin-bottom: 14px; color: var(--primary); }
+    .why-card h3 {
+        font-family: neue-haas-grotesk-display, sans-serif;
+        font-size: 15px; font-weight: 700; margin-bottom: 8px;
+        color: var(--text-primary);
+    }
+    .why-card p {
+        font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    }
+
+    /* ── CREDENTIALS ── */
+    .reviews-badge {
+        display: flex; align-items: center; gap: 14px;
+        background: var(--card-bg); border: 1px solid var(--border-color);
+        border-radius: 12px; padding: 22px 28px; margin-bottom: 20px;
+        max-width: 380px;
+    }
+    .stars { font-size: 20px; letter-spacing: 2px; color: #e8a32e; }
+    .reviews-text { font-size: 14px; color: var(--text-secondary); }
+    .reviews-text strong { color: var(--text-primary); font-weight: 700; }
+    .reviews-text span { color: var(--text-muted); font-size: 12px; display: block; }
+    .trust-grid {
+        display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;
+    }
+    .trust-card {
+        background: var(--card-bg); border: 1px solid var(--border-color);
+        border-radius: 12px; padding: 24px 22px;
+    }
+    .trust-card h3 {
+        font-family: neue-haas-grotesk-display, sans-serif;
+        font-size: 15px; font-weight: 700; margin-bottom: 8px;
+        color: var(--text-primary);
+    }
+    .trust-card p {
+        font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    }
+
+    /* ── CTA ── */
+    .cta-section { text-align: center; padding: 72px 48px 80px; }
+    .cta-section h2 {
+        font-family: neue-haas-grotesk-display, sans-serif;
+        font-size: clamp(24px,3vw,32px); font-weight: 700;
+        margin-bottom: 14px; color: var(--text-primary);
+    }
+    .cta-section p {
+        font-size: 16px; color: var(--text-secondary); margin-bottom: 32px;
+        max-width: 520px; margin-left: auto; margin-right: auto;
+    }
+    .cta-btn {
+        display: inline-block; background: var(--primary);
+        color: #fff; text-decoration: none;
+        font-family: neue-haas-grotesk-display, sans-serif;
+        font-weight: 700; font-size: 15px;
+        padding: 14px 32px; border-radius: 8px;
+        transition: opacity 0.2s; margin-bottom: 48px;
+    }
+    .cta-btn:hover { opacity: 0.88; }
+    .cta-divider {
+        font-size: 13px; color: var(--text-faint);
+        margin-bottom: 32px; text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 680px) {
+        section { padding: 52px 24px; }
+        .hero { padding: 60px 24px 52px; }
+        .nav-container { padding: 0 20px; }
+        .nav-menu { display: none; flex-direction: column; gap: 16px;
+            position: absolute; top: 60px; left: 0; right: 0;
+            background: var(--primary-bg); padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .nav-menu.active { display: flex; }
+        .nav-toggle { display: block; }
+        .included-grid { grid-template-columns: 1fr; }
+        .why-grid { grid-template-columns: 1fr; }
+        .trust-grid { grid-template-columns: 1fr; }
+        .table-header { display: none; }
+        .pricing-row { grid-template-columns: 1fr auto; }
+        .pricing-row-desc { display: none; }
+        .cta-section { padding: 52px 24px 64px; }
+    }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="company-name">The Salt Lick Denver</div>
+        <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+        <div class="nav-menu">
+            <a href="#investment">Investment</a>
+            <a href="#included">Services</a>
+            <a href="#deliverables">Deliverables</a>
+            <a href="#cta">Get Started</a>
+        </div>
+    </div>
+</nav>
+
+<div class="proposal-wrapper">
+
+    <!-- HERO -->
+    <section class="hero">
+        <p class="section-label">Prepared for Tyler Hayes · Stoke Social</p>
+        <h1>Turn Early Installs Into Subscription Revenue</h1>
+        <div class="accent-bar"></div>
+        <p class="hero-subtitle">Meta Advertising &amp; Conversion Infrastructure for Stoke Social</p>
+        <p>You've built the platform — now it's time to seed it with users. The single most important thing we can do right now is get real app installs and subscription data flowing back to Meta so every dollar you spend gets smarter over time.</p>
+        <p>Since managing your own Meta account isn't an option, we'll host your ad account inside ours, handle the full technical setup, and run your campaigns. You bring the creatives; we'll make sure they're tracked, tested, and optimized.</p>
+    </section>
+
+    <!-- INVESTMENT -->
+    <section id="investment">
+        <p class="section-label">Investment</p>
+
+        <div class="investment-grid">
+
+            <!-- One-time setup -->
+            <div class="price-card">
+                <div class="status-tag tag-green">One-Time Setup</div>
+                <div class="price-card-header">
+                    <div class="price-card-name">Conversion Infrastructure</div>
+                    <div class="price-tag">$550</div>
+                </div>
+                <p class="price-card-desc">Full technical build-out to track app downloads, free trial starts, and paid subscriptions inside Meta — so your ad spend is tied directly to revenue from day one.</p>
+            </div>
+
+            <!-- Monthly management (dark card) -->
+            <div class="price-card-dark">
+                <div class="status-tag tag-coral">Monthly · Ongoing</div>
+                <div class="price-card-header">
+                    <div class="price-card-name">Ad Management</div>
+                    <div class="price-tag">$750<span style="font-size:14px;font-weight:400;opacity:0.55">/mo</span></div>
+                </div>
+                <p class="price-card-desc">We manage your campaigns inside our agency ad account — handling audience strategy, campaign structure, creative trafficking, and performance reporting every month. Pause seasonally when needed.</p>
+            </div>
+
+        </div>
+
+        <div class="investment-total">
+            <span class="investment-total-label">Initial Investment</span>
+            <span class="investment-total-price">$572</span>
+        </div>
+        <p class="cc-note">$550 setup · $22 credit card processing fee (4%) · $750/mo ongoing management billed separately</p>
+    </section>
+
+    <!-- WHAT'S INCLUDED -->
+    <section id="included">
+        <p class="section-label">What's Included</p>
+
+        <div class="included-grid">
+
+            <div class="included-card">
+                <div class="status-tag tag-green">One-Time</div>
+                <h3>Conversion Infrastructure</h3>
+                <p>We configure your Meta Pixel and Conversions API to capture the events that matter most — app installs, free trial starts, and paid subscriptions. This data trains Meta's algorithm and powers every future campaign decision.</p>
+            </div>
+
+            <div class="included-card">
+                <div class="status-tag tag-coral">Monthly</div>
+                <h3>Ad Management</h3>
+                <p>Full campaign management across Facebook and Instagram — run from our agency ad account so your personal Meta restriction never gets in the way. We test audiences, optimize toward subscriptions, and report on what's actually working.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- DELIVERABLES -->
+    <section id="deliverables">
+        <p class="section-label">Deliverables</p>
+
+        <div class="deliverables-table">
+            <div class="table-header">
+                <span>Service</span>
+                <span>Description</span>
+            </div>
+
+            <!-- Conversion Infrastructure -->
+            <div class="pricing-row" id="conversion-row">
+                <div class="pricing-row-name">Conversion Infrastructure</div>
+                <div class="pricing-row-desc">App download + subscription tracking via Meta Pixel &amp; Conversions API</div>
+                <div class="expand-icon">+</div>
+            </div>
+            <div class="pricing-details" id="conversion-details">
+                <ul>
+                    <li>Agency-hosted Meta ad account creation and configuration</li>
+                    <li>Meta Pixel implementation for the Stoke Social web presence</li>
+                    <li>App install conversion event configuration and QA</li>
+                    <li>Free trial start event tracking setup</li>
+                    <li>Paid subscription conversion event ($17.99/mo) tied to Meta reporting</li>
+                    <li>Meta Conversions API integration for server-side attribution reliability</li>
+                    <li>Test event verification and data validation before launch</li>
+                </ul>
+            </div>
+
+            <!-- Ad Management -->
+            <div class="pricing-row" id="management-row">
+                <div class="pricing-row-name">Ad Management</div>
+                <div class="pricing-row-desc">Full campaign management run from The Salt Lick ad account</div>
+                <div class="expand-icon">+</div>
+            </div>
+            <div class="pricing-details" id="management-details">
+                <ul>
+                    <li>Campaign architecture optimized for app install volume and subscription conversions</li>
+                    <li>Audience research and targeting across Facebook and Instagram placements</li>
+                    <li>Creative trafficking — we configure and publish creatives you provide</li>
+                    <li>Split testing of friend-finding vs. activity-partner positioning to identify highest-performing angle</li>
+                    <li>Budget pacing, bid strategy management, and ongoing campaign optimization</li>
+                    <li>Subscription ROI reporting — cost-per-install and cost-per-subscriber tracked monthly</li>
+                    <li>Data-informed scaling recommendations as subscriber volume grows</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- WHY SALT LICK -->
+    <section id="why">
+        <p class="section-label">Why Salt Lick</p>
+
+        <div class="why-grid">
+
+            <div class="why-card">
+                <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <h3>Own Your Marketing System</h3>
+                <p>Monthly management is required to keep campaigns optimized — but you're not locked in forever. Pause when you need to and pick back up when the timing is right, without losing your data or setup work.</p>
+            </div>
+
+            <div class="why-card">
+                <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                <h3>Creative-First Thinking</h3>
+                <p>We know what makes an early-stage app compelling on social. When you're ready to level up your video creative, we're already inside your account — no onboarding lag, no strategy reset.</p>
+            </div>
+
+            <div class="why-card">
+                <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <h3>Denver-Based</h3>
+                <p>We're local, we understand the outdoor activity community you're building for, and you can always reach us directly — not a ticketing queue.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CREDENTIALS -->
+    <section id="credentials">
+        <p class="section-label">Our Track Record</p>
+
+        <div class="reviews-badge">
+            <div class="stars">★★★★★</div>
+            <div class="reviews-text">
+                <strong>5.0 Rating</strong>
+                <span>34 reviews · Google</span>
+            </div>
+        </div>
+
+        <div class="trust-grid">
+
+            <div class="trust-card">
+                <h3>Data-Driven</h3>
+                <p>Every decision we make is grounded in conversion data. We don't optimize for clicks — we optimize for the events that actually drive revenue.</p>
+            </div>
+
+            <div class="trust-card">
+                <h3>Built for Your Business</h3>
+                <p>No cookie-cutter campaigns. Your setup is configured around Stoke Social's specific funnel — installs, trials, and subscriptions — not a generic e-commerce template.</p>
+            </div>
+
+            <div class="trust-card">
+                <h3>Responsive Support</h3>
+                <p>Questions don't wait for a monthly call. You have direct access to the team managing your account throughout the engagement.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" id="cta">
+        <h2>Ready to Get Started, Tyler?</h2>
+        <p>Let's get your conversion infrastructure in place and your first campaigns live. Reach out or grab a time below.</p>
+        <a href="mailto:jason@thesaltlickdenver.com" class="cta-btn">Email Jason</a>
+        <div class="cta-divider">or schedule a time</div>
+        <iframe src="https://links.thesaltlickdenver.com/widget/booking/inbr294BJqiwZNp8CJJb" style="width:100%;border:none;overflow:hidden;" scrolling="no" id="inbr294BJqiwZNp8CJJb_1767908251568"></iframe>
+        <script src="https://links.thesaltlickdenver.com/js/form_embed.js" type="text/javascript"></script>
+    </section>
+
+</div>
+
+<script>
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    navToggle.addEventListener('click', () => { navMenu.classList.toggle('active'); });
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                navMenu.classList.remove('active');
+            }
+        });
+    });
+
+    document.querySelectorAll('.pricing-row').forEach(row => {
+        row.addEventListener('click', function() {
+            const detailsId = this.id.replace('-row', '-details');
+            const details = document.getElementById(detailsId);
+            const icon = this.querySelector('.expand-icon');
+            if (details && details.classList.contains('active')) {
+                details.classList.remove('active');
+                if (icon) icon.textContent = '+';
+            } else if (details) {
+                document.querySelectorAll('.pricing-details').forEach(d => d.classList.remove('active'));
+                document.querySelectorAll('.expand-icon').forEach(i => { i.textContent = '+'; });
+                details.classList.add('active');
+                if (icon) icon.textContent = '\u2212';
+            }
+        });
+    });
+
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice) { document.body.classList.add('touch-device'); }
+</script>
+</body>
+</html>

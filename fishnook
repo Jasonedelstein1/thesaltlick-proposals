@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TG7P8PC');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fishnook × The Salt Lick Denver — Creative Production Proposal</title>
+<link rel="stylesheet" href="https://use.typekit.net/csj2hfl.css">
+<style>
+  :root {
+    --bg-gray: #e0dbd3;
+    --bg-cream: #f0ebe2;
+    --bg-card: #ffffff;
+    --bg-dark: #1a1a1a;
+    --accent-coral: #c85c4f;
+    --accent-coral-dark: #9e4535;
+    --accent-coral-tint: rgba(200, 92, 79, 0.08);
+    --accent-green: #1a6b30;
+    --accent-green-tint: rgba(26, 107, 48, 0.08);
+    --star-gold: #e8a32e;
+    --text-primary: #1a1a1a;
+    --text-secondary: #3d3d3d;
+    --text-muted: rgba(0, 0, 0, 0.45);
+    --text-faint: rgba(0, 0, 0, 0.35);
+    --text-inverse: #ffffff;
+    --border-subtle: rgba(0, 0, 0, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg-gray);
+    color: var(--text-primary);
+    font-family: "neue-haas-grotesk-text", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* NAVBAR */
+  .navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: var(--bg-cream);
+    border-bottom: 1px solid var(--border-subtle);
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+  .navbar-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .navbar-brand {
+    font-family: "neue-haas-grotesk-display", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+  }
+  .nav-menu {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+  .nav-menu a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-menu a:hover { color: var(--accent-coral); }
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--text-primary);
+  }
+
+  /* LAYOUT */
+  .page {
+    padding-top: 60px;
+  }
+  .panel {
+    max-width: 860px;
+    margin: 0 auto;
+    background: var(--bg-cream);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.06);
+    padding: 80px 32px 60px;
+  }
+  .section { margin-bottom: 72px; }
+  .section:last-child { margin-bottom: 0; }
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border-subtle);
+    margin: 0 auto 72px;
+    max-width: 100%;
+  }
+
+  /* TYPOGRAPHY */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+    margin-bottom: 12px;
+  }
+  h1, .heading_h1 {
+    font-family: "neue-haas-grotesk-display", sans-serif;
+    font-size: clamp(36px, 4vw, 44px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  h2, .heading_h2 {
+    font-family: "neue-haas-grotesk-display", sans-serif;
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin-bottom: 20px;
+  }
+  h3, .heading_h3 {
+    font-family: "neue-haas-grotesk-display", sans-serif;
+    font-size: clamp(18px, 2.5vw, 22px);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .body-text {
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+  .body-text:last-child { margin-bottom: 0; }
+
+  /* HERO */
+  .hero-subtitle {
+    color: var(--accent-coral);
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 24px;
+    line-height: 1.4;
+  }
+  .accent-bar {
+    width: 48px;
+    height: 3px;
+    background: var(--accent-coral);
+    margin-bottom: 28px;
+  }
+
+  /* TIER CARDS */
+  .tiers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  .tier-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 32px 28px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .tier-card.featured {
+    background: var(--bg-dark);
+    color: var(--text-inverse);
+    border: 1px solid var(--bg-dark);
+  }
+  .tier-card.featured .tier-name,
+  .tier-card.featured .tier-price,
+  .tier-card.featured .tier-description {
+    color: var(--text-inverse);
+  }
+  .tier-card.featured .tier-cadence {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .tier-card.featured .tier-summary-list li {
+    color: rgba(255, 255, 255, 0.85);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+  .tier-badge {
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    background: var(--accent-coral);
+    color: var(--text-inverse);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 5px 12px;
+    border-radius: 4px;
+  }
+  .tier-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+  }
+  .tier-tag.starter {
+    background: var(--accent-green-tint);
+    color: var(--accent-green);
+  }
+  .tier-tag.growth {
+    background: rgba(200, 92, 79, 0.2);
+    color: var(--accent-coral);
+  }
+  .tier-name {
+    font-family: "neue-haas-grotesk-display", sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .tier-description {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .tier-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .tier-price {
+    font-family: "neue-haas-grotesk-display", sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .tier-cadence {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .tier-summary-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .tier-summary-list li {
+    padding: 10px 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-subtle);
+    line-height: 1.5;
+  }
+  .tier-summary-list li:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+  .tier-summary-list li:last-child {
+    padding-bottom: 0;
+  }
+
+  /* INVESTMENT FOOTNOTES */
+  .investment-footnotes {
+    margin-top: 12px;
+    padding: 20px 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+  }
+  .investment-footnotes p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin-bottom: 8px;
+  }
+  .investment-footnotes p:last-child { margin-bottom: 0; }
+  .investment-footnotes strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* WHAT'S INCLUDED CARDS */
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .deliverable-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .deliverable-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: var(--accent-coral-tint);
+    color: var(--accent-coral-dark);
+    margin-bottom: 12px;
+  }
+  .deliverable-tag.core {
+    background: var(--accent-green-tint);
+    color: var(--accent-green);
+  }
+
+  /* DELIVERABLES ACCORDION */
+  .deliverables-intro {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  .pricing-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+  }
+  .pricing-table thead th {
+    background: rgba(0, 0, 0, 0.02);
+    padding: 14px 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-align: left;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .pricing-row {
+    cursor: pointer;
+    transition: background 0.15s ease;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .pricing-row:hover { background: rgba(200, 92, 79, 0.04); }
+  .pricing-row td {
+    padding: 18px 20px;
+    vertical-align: top;
+  }
+  .pricing-row td:first-child {
+    width: 42%;
+    font-weight: 600;
+    position: relative;
+    padding-right: 32px;
+  }
+  .pricing-row td:last-child {
+    color: var(--text-secondary);
+    font-size: 14px;
+  }
+  .expand-icon {
+    position: absolute;
+    right: 20px;
+    top: 18px;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--accent-coral);
+    transition: transform 0.2s ease;
+  }
+  .pricing-details {
+    display: none;
+    background: rgba(0, 0, 0, 0.02);
+  }
+  .pricing-details.active { display: table-row; }
+  .pricing-details td {
+    padding: 18px 24px 24px;
+    border-top: 1px dashed var(--border-subtle);
+  }
+  .pricing-details ul {
+    list-style: none;
+    padding: 0;
+  }
+  .pricing-details li {
+    padding: 6px 0 6px 24px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    position: relative;
+  }
+  .pricing-details li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent-coral);
+    font-weight: 500;
+  }
+  .tier-label {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .tier-label.starter {
+    background: var(--accent-green-tint);
+    color: var(--accent-green);
+  }
+  .tier-label.growth {
+    background: var(--accent-coral-tint);
+    color: var(--accent-coral-dark);
+  }
+
+  /* TIMELINE */
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .timeline-step {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 20px 18px;
+  }
+  .timeline-step-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent-coral);
+    margin-bottom: 8px;
+  }
+  .timeline-step-title {
+    font-family: "neue-haas-grotesk-display", sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  .timeline-step-detail {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+  .timeline-caption {
+    margin-top: 20px;
+    padding: 16px 20px;
+    background: rgba(200, 92, 79, 0.06);
+    border-left: 3px solid var(--accent-coral);
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  /* WHY SALT LICK */
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .why-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 28px 24px;
+  }
+  .why-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  .why-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  /* CREDENTIALS */
+  .reviews-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+  .stars {
+    color: var(--star-gold);
+    letter-spacing: 2px;
+    font-size: 16px;
+  }
+  .review-count {
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .review-source {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .trust-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .trust-card h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  .trust-card p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  /* CTA */
+  .cta-section {
+    background: var(--bg-dark);
+    color: var(--text-inverse);
+    border-radius: 16px;
+    padding: 48px 40px;
+    text-align: center;
+  }
+  .cta-section h2 {
+    color: var(--text-inverse);
+    margin-bottom: 16px;
+  }
+  .cta-section p {
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 480px;
+    margin: 0 auto 28px;
+    font-size: 15px;
+  }
+  .cta-button {
+    display: inline-block;
+    background: var(--accent-coral);
+    color: var(--text-inverse);
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .cta-button:hover {
+    background: #b04a3f;
+    transform: translateY(-1px);
+  }
+  .calendar-embed {
+    background: var(--bg-card);
+    border-radius: 12px;
+    margin-top: 32px;
+    padding: 20px;
+    min-height: 600px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .navbar-inner { padding: 14px 20px; }
+    .nav-toggle { display: block; }
+    .nav-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg-cream);
+      flex-direction: column;
+      padding: 16px 20px;
+      gap: 14px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .nav-menu.active { display: flex; }
+    .panel { padding: 60px 20px 40px; }
+    .section { margin-bottom: 56px; }
+    .section-divider { margin-bottom: 56px; }
+    .tiers-grid,
+    .services-grid,
+    .why-grid,
+    .trust-grid {
+      grid-template-columns: 1fr;
+    }
+    .timeline-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .pricing-row td:first-child { width: 50%; padding-right: 28px; }
+    .cta-section { padding: 36px 24px; }
+  }
+  @media (max-width: 480px) {
+    .timeline-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TG7P8PC"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="navbar-brand">The Salt Lick Denver</div>
+    <button class="nav-toggle" aria-label="Menu">☰</button>
+    <ul class="nav-menu">
+      <li><a href="#investment">Investment</a></li>
+      <li><a href="#whats-included">Included</a></li>
+      <li><a href="#deliverables">Deliverables</a></li>
+      <li><a href="#timeline">Timeline</a></li>
+      <li><a href="#cta">Schedule</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="panel">
+
+    <!-- 1. HERO -->
+    <section class="section" id="hero">
+      <div class="section-label">Proposal · Fishnook × The Salt Lick Denver</div>
+      <h1 class="heading_h1">Monthly Creative Production for Fishnook</h1>
+      <div class="accent-bar"></div>
+      <p class="hero-subtitle">Built for the testing cadence you're running. Shot for paid first, with usable footage for organic as part of the package.</p>
+      <p class="body-text">Jared&mdash; here's the proposal based on our call. With 30 brands and 250+ products running through one storefront, your creative needs to be genuinely different from piece to piece for Andromeda to do its job. Changing hooks on the same video doesn't move the needle like it used to. What moves it now is concept-level variety&mdash; different formats, different angles, different production approaches.</p>
+      <p class="body-text">Your media agency keeps running campaigns, targeting, and budgets. We handle creative production, upload the finished assets to your ad account, and pull the performance data to shape what we shoot next month.</p>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 2. INVESTMENT -->
+    <section class="section" id="investment">
+      <div class="section-label">Investment</div>
+      <h2 class="heading_h2">Two Options</h2>
+      <p class="body-text" style="margin-bottom: 32px;">Both tiers work the same way. The difference is shoot days, number of concepts, and how much strategy work we do around the production.</p>
+
+      <div class="tiers-grid">
+
+        <!-- STARTER TIER -->
+        <div class="tier-card">
+          <span class="tier-tag starter">Starter</span>
+          <div class="tier-name">Starter</div>
+          <div class="tier-description">One shoot day a month, six videos, and the fundamentals.</div>
+          <div class="tier-price-row">
+            <span class="tier-price">$4,000</span>
+            <span class="tier-cadence">/ month</span>
+          </div>
+          <ul class="tier-summary-list">
+            <li>1 shoot day per month</li>
+            <li>6 videos</li>
+            <li>4 static ad units</li>
+            <li>Color-graded footage library</li>
+            <li>Scripts &amp; pre-production</li>
+            <li>Monthly performance review</li>
+          </ul>
+        </div>
+
+        <!-- GROWTH TIER (FEATURED) -->
+        <div class="tier-card featured">
+          <span class="tier-badge">Recommended</span>
+          <span class="tier-tag growth">Growth</span>
+          <div class="tier-name">Growth</div>
+          <div class="tier-description">Two shoot days a month, twelve videos, a monthly strategy call, and an organic pipeline from content that fits warm audiences better.</div>
+          <div class="tier-price-row">
+            <span class="tier-price">$7,000</span>
+            <span class="tier-cadence">/ month</span>
+          </div>
+          <ul class="tier-summary-list">
+            <li>2 shoot days per month</li>
+            <li>12 videos</li>
+            <li>Up to 8 static ad units</li>
+            <li>Organic pipeline from warm-audience content</li>
+            <li>Color-graded footage library</li>
+            <li>Scripts &amp; pre-production</li>
+            <li>Monthly performance review + strategy call</li>
+            <li>Landing page consultation</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="investment-footnotes">
+        <p><strong>Month 1 billing:</strong> Paid in full when you sign, covering onboarding, pre-production, and the first production cycle (about 4&ndash;5 weeks). Every month after that is billed when the previous cycle's creative is delivered.</p>
+        <p><strong>Commitment:</strong> Month-to-month. No long-term contract.</p>
+        <p><strong>Travel:</strong> All Denver metro production (including Commerce City) is included. Shoots outside the metro get quoted separately.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 3. WHAT'S INCLUDED -->
+    <section class="section" id="whats-included">
+      <div class="section-label">What's Included</div>
+      <h2 class="heading_h2">What's in Every Tier</h2>
+      <p class="body-text" style="margin-bottom: 28px;">Both tiers include the same four pieces. The tier you pick changes the volume.</p>
+
+      <div class="services-grid">
+
+        <div class="deliverable-card">
+          <span class="deliverable-tag core">Strategy</span>
+          <h3 class="heading_h3">Pre-Production &amp; Scripts</h3>
+          <p class="body-text">Every concept gets a brief, a script, and a shot list. Scripts go out for approval before we shoot. Performance data from the previous month feeds into the next month's scripts.</p>
+        </div>
+
+        <div class="deliverable-card">
+          <span class="deliverable-tag">Production</span>
+          <h3 class="heading_h3">Video Production &amp; Edit</h3>
+          <p class="body-text">Shot at your Commerce City warehouse. A mix of hero videos (fully produced, multi-angle) and UGC-style pieces (single-angle, recipe-forward). Every video is its own creative direction. Delivered in vertical and square for Feed, Reels, and Stories.</p>
+        </div>
+
+        <div class="deliverable-card">
+          <span class="deliverable-tag">Production</span>
+          <h3 class="heading_h3">Static Ad Units</h3>
+          <p class="body-text">Statics pulled from the video shoots for retargeting, plus promotional statics for your monthly features and staff picks. Format varies&mdash; sometimes single images, sometimes carousels.</p>
+        </div>
+
+        <div class="deliverable-card">
+          <span class="deliverable-tag core">Performance</span>
+          <h3 class="heading_h3">Performance Review &amp; Iteration</h3>
+          <p class="body-text">We upload finished creative assets and pull performance data. Those learnings shape next month's scripts. Your media agency keeps running campaigns, targeting, and budgets&mdash; we're not touching those levers.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 4. DELIVERABLES -->
+    <section class="section" id="deliverables">
+      <div class="section-label">Deliverables</div>
+      <h2 class="heading_h2">Scope in Detail</h2>
+      <p class="deliverables-intro">Click any row to expand.</p>
+
+      <table class="pricing-table">
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- VIDEO PRODUCTION -->
+          <tr class="pricing-row" id="video-production-row">
+            <td><strong>Video Production</strong><span class="expand-icon">+</span></td>
+            <td>Different videos for different audiences, built for Meta's algorithm</td>
+          </tr>
+          <tr class="pricing-details" id="video-production-details">
+            <td colspan="2">
+              <ul>
+                <li><strong>Starter:</strong> 4 hero videos + 2 UGC-style videos per month (6 total)</li>
+                <li><strong>Growth:</strong> 8 hero videos + 4 UGC-style videos per month (12 total)</li>
+                <li><strong>Hero videos</strong> are fully produced&mdash; scripted, multi-angle, lit, color-graded. These carry the marketplace authority angle we talked about.</li>
+                <li><strong>UGC-style videos</strong> are simpler by design&mdash; single-angle, recipe-forward, authority-led. Lower production lift, still written specifically for paid with a cold-audience hook.</li>
+                <li>Every video is its own creative direction&mdash; different format, hook, POV, setting. No two videos are variants of each other.</li>
+                <li>Delivered in vertical (9:16) and square (1:1) for Reels, Stories, and Feed</li>
+                <li>1 round of revisions included per video</li>
+              </ul>
+            </td>
+          </tr>
+
+          <!-- STATIC ADS -->
+          <tr class="pricing-row" id="static-ads-row">
+            <td><strong>Static Ad Units</strong><span class="expand-icon">+</span></td>
+            <td>Retargeting and promotional statics pulled from production</td>
+          </tr>
+          <tr class="pricing-details" id="static-ads-details">
+            <td colspan="2">
+              <ul>
+                <li><strong>Starter:</strong> 4 static ad units per month</li>
+                <li><strong>Growth:</strong> Up to 8 static ad units per month (6 retargeting + 2 promotional)</li>
+                <li>Retargeting statics pulled from video stills, so your retargeting feels consistent with your top-of-funnel</li>
+                <li>Promotional statics built around your monthly promo calendar&mdash; staff picks, seasonal features, etc.</li>
+                <li>Format depends on what makes sense for the concept&mdash; single image, carousel, whatever fits</li>
+              </ul>
+            </td>
+          </tr>
+
+          <!-- ORGANIC CONTENT PIPELINE -->
+          <tr class="pricing-row" id="organic-first-row">
+            <td><strong>Organic Content Pipeline</strong> <span class="tier-label growth">Growth</span><span class="expand-icon">+</span></td>
+            <td>Content that fits warm audiences better than cold ones becomes your organic feed</td>
+          </tr>
+          <tr class="pricing-details" id="organic-first-details">
+            <td colspan="2">
+              <ul>
+                <li>Paid and organic work different audiences. Paid has to stop a cold scroll. Organic lives in front of warm audiences&mdash; people who already follow Fishnook and already know the category&mdash; where informational, authority-led content often performs well.</li>
+                <li>Some of the content we shoot will fit warm audiences better than cold ones. That's an audience-fit thing, not a quality thing.</li>
+                <li>When that happens, those pieces get repackaged for your social feed with social-appropriate pacing, so the content finds its right audience instead of sitting unused</li>
+                <li>This keeps the paid-first philosophy intact: we don't write organic content and push it as ads, but we do let paid content live a second life when it's better suited to organic</li>
+                <li>Growth tier only. Starter clients get color-graded footage library access to repurpose at their discretion.</li>
+              </ul>
+            </td>
+          </tr>
+
+          <!-- FOOTAGE LIBRARY -->
+          <tr class="pricing-row" id="selects-row">
+            <td><strong>Color-Graded Footage Library</strong><span class="expand-icon">+</span></td>
+            <td>Workable footage your team can post with</td>
+          </tr>
+          <tr class="pricing-details" id="selects-details">
+            <td colspan="2">
+              <ul>
+                <li>Color-graded selects from every shoot, delivered as a shared library for your team</li>
+                <li>Not raw footage. Organized, color-graded clips that are actually editable on your end.</li>
+                <li>Gives your team the material to post consistently on organic without another shoot</li>
+                <li>You and your team know tinned fish better than I do&mdash; the library lets you inject that voice directly into your social without a creative bottleneck</li>
+              </ul>
+            </td>
+          </tr>
+
+          <!-- PRE-PRODUCTION & SCRIPTS -->
+          <tr class="pricing-row" id="preproduction-row">
+            <td><strong>Scripts &amp; Pre-Production</strong><span class="expand-icon">+</span></td>
+            <td>Strategic briefing, scripting, and production planning</td>
+          </tr>
+          <tr class="pricing-details" id="preproduction-details">
+            <td colspan="2">
+              <ul>
+                <li>Monthly pre-production cycle: creative brief, scripts, and shot lists for every concept</li>
+                <li>Concepts shaped by what we learn from the previous month's performance and what comes up on our strategy calls</li>
+                <li>Scripts go out at the start of each billing cycle for your approval</li>
+                <li>Script approval within 5 business days so we can hit the shoot day</li>
+                <li>Coordination for on-camera roles&mdash; you, your team, whoever we decide works best for the concept</li>
+              </ul>
+            </td>
+          </tr>
+
+          <!-- PERFORMANCE REVIEW -->
+          <tr class="pricing-row" id="performance-row">
+            <td><strong>Performance Review</strong><span class="expand-icon">+</span></td>
+            <td>Creative iteration based on actual performance data</td>
+          </tr>
+          <tr class="pricing-details" id="performance-details">
+            <td colspan="2">
+              <ul>
+                <li>We upload finished creative assets to your Meta ad account. Your agency owns campaign setup, targeting, and budget decisions&mdash; we're not touching those levers.</li>
+                <li>Naming conventions and upload protocol coordinated with your media agency before the first upload, so the account stays clean</li>
+                <li>We pull performance reporting to inform next month's creative</li>
+                <li><strong>Starter:</strong> Monthly performance review summarizing concept-level results</li>
+                <li><strong>Growth:</strong> Monthly performance review plus strategy call to align on next month's creative direction</li>
+                <li>Concepts get better month over month as we see what's actually driving ROAS</li>
+                <li>Extra working sessions on request</li>
+              </ul>
+            </td>
+          </tr>
+
+          <!-- LANDING PAGE CONSULTATION -->
+          <tr class="pricing-row" id="landing-row">
+            <td><strong>Landing Page Consultation</strong> <span class="tier-label growth">Growth</span><span class="expand-icon">+</span></td>
+            <td>Review of your Shopify destinations against ad concepts</td>
+          </tr>
+          <tr class="pricing-details" id="landing-details">
+            <td colspan="2">
+              <ul>
+                <li>We'll review your Shopify collection and product pages against each ad concept's audience</li>
+                <li>Specific recommendations to make sure the landing experience matches what the ad promised</li>
+                <li>Implementation is on your team. This is consultation only.</li>
+                <li>Growth tier only</li>
+              </ul>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 5. TIMELINE -->
+    <section class="section" id="timeline">
+      <div class="section-label">Month 1 Timeline</div>
+      <h2 class="heading_h2">How Month 1 Runs</h2>
+      <p class="body-text">The first month takes about 4&ndash;5 weeks because of onboarding, strategy, and getting the Meta account set up. Every month after that is faster and more predictable.</p>
+
+      <div class="timeline-grid">
+        <div class="timeline-step">
+          <div class="timeline-step-label">Week 1</div>
+          <div class="timeline-step-title">Strategy &amp; Audit</div>
+          <div class="timeline-step-detail">Kickoff call. Meta account audit and performance baseline. Script development begins.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step-label">Week 2</div>
+          <div class="timeline-step-title">Approval &amp; Prep</div>
+          <div class="timeline-step-detail">Scripts go out for approval. Shot lists, talent, and shoot logistics locked in.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step-label">Week 3</div>
+          <div class="timeline-step-title">Production</div>
+          <div class="timeline-step-detail">Shoot days at the warehouse.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-step-label">Weeks 4&ndash;5</div>
+          <div class="timeline-step-title">Edit &amp; Deliver</div>
+          <div class="timeline-step-detail">Edit, revise, deliver finished creative, upload to Meta, start briefs for Month 2.</div>
+        </div>
+      </div>
+
+      <div class="timeline-caption">
+        <strong>After Month 1</strong> the cadence tightens up. Scripts hit at the start of each cycle, shoots happen about a week after approval, and finished work arrives before the cycle ends. The Month 1 ramp is a one-time thing&mdash; it doesn't repeat.
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 6. WHY SALT LICK -->
+    <section class="section" id="why-us">
+      <div class="section-label">Why Salt Lick</div>
+      <h2 class="heading_h2">Why Work With Us</h2>
+      <p class="body-text">The shoot day itself is the easy part. Figuring out what to shoot next month&mdash; based on what actually worked this month&mdash; is where the value is.</p>
+
+      <div class="why-grid">
+        <div class="why-card">
+          <h3 class="heading_h3">Built for Paid</h3>
+          <p>Everything we shoot is built for Meta ads first. The goal is concepts that hit with the algorithm and the audiences behind it.</p>
+        </div>
+        <div class="why-card">
+          <h3 class="heading_h3">Data Into the Brief</h3>
+          <p>We upload the ads ourselves and watch how they perform. Those learnings go straight into next month's scripts.</p>
+        </div>
+        <div class="why-card">
+          <h3 class="heading_h3">Clean Lanes With Your Agency</h3>
+          <p>You already have a good media agency. We stay focused on creative production, uploads, and iteration. They keep running the campaigns.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 7. CREDENTIALS -->
+    <section class="section" id="credentials">
+      <div class="section-label">Credentials</div>
+      <h2 class="heading_h2">What Clients Say</h2>
+
+      <div class="reviews-badge">
+        <span class="stars">★★★★★</span>
+        <span class="review-count">5.0 &middot; 29 reviews</span>
+        <span class="review-source">on Google</span>
+      </div>
+
+      <div class="trust-grid">
+        <div class="trust-card">
+          <h3 class="heading_h3">Data-Driven</h3>
+          <p>Performance data drives our creative calls. We test every concept, track what works, and bring it into the next brief.</p>
+        </div>
+        <div class="trust-card">
+          <h3 class="heading_h3">Bespoke Approach</h3>
+          <p>No two clients get the same playbook. The creative strategy we build is for Fishnook specifically&mdash; your brands, your audiences, your angle on the category.</p>
+        </div>
+        <div class="trust-card">
+          <h3 class="heading_h3">Responsive Support</h3>
+          <p>The monthly strategy call is the minimum. If something comes up mid-cycle and you want a working session, just ask.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- 8. CTA -->
+    <section class="section" id="cta">
+      <div class="cta-section">
+        <h2>Talk Tuesday?</h2>
+        <p>We're already on the calendar&mdash; I'll walk you through this then. If anything stands out or you want to adjust something before we talk, hit reply.</p>
+        <a href="mailto:jason@thesaltlickdenver.com" class="cta-button">jason@thesaltlickdenver.com</a>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+  // Mobile nav toggle
+  const navToggle = document.querySelector('.nav-toggle');
+  const navMenu = document.querySelector('.nav-menu');
+  navToggle.addEventListener('click', () => {
+    navMenu.classList.toggle('active');
+  });
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        navMenu.classList.remove('active');
+      }
+    });
+  });
+
+  // Accordion
+  document.querySelectorAll('.pricing-row').forEach(row => {
+    row.addEventListener('click', function() {
+      const detailsId = this.id.replace('-row', '-details');
+      const details = document.getElementById(detailsId);
+      const icon = this.querySelector('.expand-icon');
+      if (details && details.classList.contains('active')) {
+        details.classList.remove('active');
+        if (icon) icon.textContent = '+';
+      } else if (details) {
+        document.querySelectorAll('.pricing-details').forEach(d => d.classList.remove('active'));
+        document.querySelectorAll('.expand-icon').forEach(i => { i.textContent = '+'; });
+        details.classList.add('active');
+        if (icon) icon.textContent = '\u2212';
+      }
+    });
+  });
+
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  if (isTouchDevice) { document.body.classList.add('touch-device'); }
+</script>
+
+</body>
+</html>

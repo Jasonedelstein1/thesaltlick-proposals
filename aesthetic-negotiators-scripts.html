@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aesthetic Negotiators — Ad Campaign Scripts & Strategic Foundation</title>
+<style>
+  @import url('https://use.typekit.net/csj2hfl.css');
+
+  :root {
+    --bg-surround: #e0dbd3;
+    --bg-panel: #f0ebe2;
+    --bg-card: #ffffff;
+    --bg-dark: #1a1a1a;
+    --coral: #c85c4f;
+    --coral-dark: #9e4535;
+    --text-primary: #1a1a1a;
+    --text-secondary: #3d3d3d;
+    --text-muted: rgba(0,0,0,0.45);
+    --text-faint: rgba(0,0,0,0.35);
+    --border: rgba(0,0,0,0.08);
+    --border-medium: rgba(0,0,0,0.12);
+    --shadow: 0 0 40px rgba(0,0,0,0.06);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'neue-haas-grotesk-text', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text-primary);
+    background: var(--bg-surround);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .panel {
+    background: var(--bg-panel);
+    max-width: 860px;
+    margin: 0 auto;
+    box-shadow: var(--shadow);
+    min-height: 100vh;
+  }
+
+  .container {
+    padding: 0 48px;
+  }
+
+  @media (max-width: 680px) {
+    .container { padding: 0 24px; }
+  }
+
+  /* ── NAVBAR ── */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border-medium);
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .navbar-inner {
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  @media (max-width: 680px) {
+    .navbar-inner { padding: 0 24px; }
+  }
+
+  .nav-brand {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-right: auto;
+    padding: 18px 0;
+  }
+
+  .nav-tabs {
+    display: flex;
+    gap: 0;
+  }
+
+  .nav-tab {
+    padding: 18px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    user-select: none;
+    letter-spacing: 0.01em;
+  }
+
+  .nav-tab:hover {
+    color: var(--text-secondary);
+  }
+
+  .nav-tab.active {
+    color: var(--text-primary);
+    border-bottom-color: var(--coral);
+    font-weight: 600;
+  }
+
+  @media (max-width: 500px) {
+    .nav-tab { padding: 16px 14px; font-size: 12px; }
+  }
+
+  /* ── TAB CONTENT ── */
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  /* ── TYPOGRAPHY ── */
+  h1 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(30px, 4vw, 40px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text-primary);
+  }
+
+  h2 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(22px, 3vw, 28px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text-primary);
+  }
+
+  h3 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(17px, 2.2vw, 20px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-primary);
+  }
+
+  h4 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  p { color: var(--text-secondary); }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+    margin-bottom: 12px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 72px 0 64px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 32px;
+  }
+
+  .hero-meta span {
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  .hero h1 { margin-bottom: 12px; }
+
+  .coral-bar {
+    width: 48px;
+    height: 3px;
+    background: var(--coral);
+    margin: 16px 0 24px;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(16px, 2vw, 19px);
+    font-weight: 400;
+    color: var(--coral);
+    margin-bottom: 24px;
+    line-height: 1.45;
+  }
+
+  .hero-body {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 680px;
+    line-height: 1.7;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    padding: 64px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section:last-child { border-bottom: none; }
+
+  .section-header {
+    margin-bottom: 40px;
+  }
+
+  .section-header h2 { margin-top: 8px; }
+
+  /* ── BODY TEXT ── */
+  .prose p {
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  .prose p:last-child { margin-bottom: 0; }
+
+  /* ── SUBSECTIONS ── */
+  .subsection {
+    margin-bottom: 48px;
+  }
+
+  .subsection:last-child { margin-bottom: 0; }
+
+  .subsection-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--coral);
+    margin-bottom: 10px;
+  }
+
+  .subsection h3 {
+    margin-bottom: 20px;
+  }
+
+  /* ── CALLOUT CARDS ── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin-bottom: 16px;
+  }
+
+  .card:last-child { margin-bottom: 0; }
+
+  .card h4 { margin-bottom: 10px; }
+
+  .card p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  /* ── SIGNAL LIST ── */
+  .signal-list {
+    list-style: none;
+    margin-top: 20px;
+  }
+
+  .signal-list li {
+    padding: 20px 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  .signal-list li strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--coral);
+    margin-bottom: 6px;
+  }
+
+  /* ── COMPETITOR BULLETS ── */
+  .competitor-points {
+    list-style: none;
+    margin-top: 16px;
+  }
+
+  .competitor-points li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+    color: var(--text-secondary);
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+  }
+
+  .competitor-points li:last-child { border-bottom: none; }
+
+  .bullet-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--coral);
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  /* ── WIN / VULNERABLE CARDS ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  @media (max-width: 600px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+
+  .card-win {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px 28px;
+  }
+
+  .card-win h4 {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 14px;
+  }
+
+  .card-win.green h4 { color: #1a6b30; }
+  .card-win.red h4 { color: var(--coral); }
+
+  .card-win p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  /* ── COMPARISON TABLE ── */
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+    font-size: 15px;
+  }
+
+  .comparison-table thead tr {
+    border-bottom: 2px solid var(--border-medium);
+  }
+
+  .comparison-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+  }
+
+  .comparison-table th:last-child {
+    color: var(--coral);
+  }
+
+  .comparison-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .comparison-table tr:last-child td { border-bottom: none; }
+
+  .comparison-table td:first-child {
+    color: var(--text-muted);
+    font-size: 13px;
+    width: 200px;
+    font-style: italic;
+  }
+
+  .comparison-table td:nth-child(2) {
+    color: var(--text-secondary);
+  }
+
+  .comparison-table td:last-child {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  /* ── SCRIPT CARDS ── */
+  .script-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-medium);
+    border-radius: 8px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+
+  .script-card:last-child { margin-bottom: 0; }
+
+  .script-card-header {
+    padding: 28px 36px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .script-card-header-left h3 {
+    margin-bottom: 6px;
+  }
+
+  .script-role {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .script-runtime {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--coral);
+    background: rgba(200,92,79,0.08);
+    border: 1px solid rgba(200,92,79,0.15);
+    border-radius: 20px;
+    padding: 4px 14px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .script-body {
+    padding: 32px 36px;
+  }
+
+  .script-beat {
+    margin-bottom: 28px;
+  }
+
+  .script-beat:last-child { margin-bottom: 0; }
+
+  .beat-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+  }
+
+  .beat-text {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-primary);
+    font-weight: 400;
+  }
+
+  .beat-text em {
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 15px;
+  }
+
+  /* ── PRODUCTION NOTE ── */
+  .production-note {
+    background: rgba(200,92,79,0.05);
+    border: 1px solid rgba(200,92,79,0.12);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  .production-note strong {
+    color: var(--coral-dark);
+    font-weight: 600;
+  }
+
+  /* ── METHODOLOGY SECTION ── */
+  .methodology {
+    background: rgba(0,0,0,0.02);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 32px 36px;
+    margin-top: 32px;
+  }
+
+  .methodology h4 {
+    margin-bottom: 16px;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  .q-list {
+    list-style: none;
+    margin-bottom: 0;
+  }
+
+  .q-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+    color: var(--text-secondary);
+    display: flex;
+    gap: 14px;
+    line-height: 1.55;
+  }
+
+  .q-list li:last-child { border-bottom: none; }
+
+  .q-num {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--coral);
+    flex-shrink: 0;
+    width: 20px;
+    padding-top: 1px;
+  }
+
+  .teleprompter-block {
+    margin-bottom: 24px;
+  }
+
+  .teleprompter-block:last-child { margin-bottom: 0; }
+
+  .teleprompter-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+  }
+
+  .teleprompter-text {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 18px 22px;
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  /* ── GUIDANCE CARDS ── */
+  .guidance-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px 28px;
+    margin-bottom: 16px;
+  }
+
+  .guidance-card:last-child { margin-bottom: 0; }
+
+  .guidance-card h4 {
+    font-size: 12px;
+    margin-bottom: 12px;
+    color: var(--coral-dark);
+  }
+
+  .guidance-card p {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+
+  .guidance-card p:last-child { margin-bottom: 0; }
+
+  .guidance-card .soundbite {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 18px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    font-style: italic;
+    margin-top: 12px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    padding: 40px 0 48px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .footer-brand {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .footer-meta {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: right;
+  }
+
+  @media (max-width: 500px) {
+    .footer { flex-direction: column; align-items: flex-start; }
+    .footer-meta { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<div class="panel">
+
+  <!-- ── NAVBAR ── -->
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="nav-brand">The Salt Lick Denver</div>
+      <div class="nav-tabs">
+        <div class="nav-tab active" data-tab="scripts" onclick="switchTab('scripts')">Scripts</div>
+        <div class="nav-tab" data-tab="analysis" onclick="switchTab('analysis')">Market Analysis</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ── HERO ── -->
+    <header class="hero">
+      <div class="hero-meta">
+        <span>Prepared for Jason Peters — Aesthetic Negotiators</span>
+        <span>Prepared by The Salt Lick Denver &nbsp;·&nbsp; April 30, 2026</span>
+      </div>
+      <h1>Aesthetic Negotiators— Ad Campaign Scripts &amp; Strategic Foundation</h1>
+      <div class="coral-bar"></div>
+      <p class="hero-subtitle">Three video ads for the Free Insider Access launch campaign</p>
+      <p class="hero-body">This document contains the market analysis that shaped the creative strategy and the three resulting scripts. It is meant to be read as a working document— a record of the thinking, not a pitch. The analysis is here so you can interrogate it; the scripts are here so you can work from them directly in production.</p>
+    </header>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- TAB 1: SCRIPTS                                     -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <div id="tab-scripts" class="tab-content active">
+
+      <section class="section">
+        <div class="section-header">
+          <div class="section-label">Creative Deliverables</div>
+          <h2>The Three Scripts</h2>
+        </div>
+
+        <!-- Script 1 -->
+        <div class="script-card">
+          <div class="script-card-header">
+            <div class="script-card-header-left">
+              <h3>Script 1 — "Are You Sure?"</h3>
+              <div class="script-role">Owns: due diligence, expertise, risk avoidance</div>
+            </div>
+            <div class="script-runtime">~40 seconds</div>
+          </div>
+          <div class="script-body">
+            <div class="script-beat">
+              <div class="beat-label">Open — Audience Qualification</div>
+              <div class="beat-text">Med spa owners— there are over 500 medical aesthetic devices on the market right now. Are you sure you're picking the right one for your practice?</div>
+            </div>
+            <div class="script-beat">
+              <div class="beat-label">Pain</div>
+              <div class="beat-text">Sticker price is only half the equation. If you're not thinking about the cost of consumables, warranty terms, and financing structure, the wrong decision could easily cost you tens of thousands of dollars over the life of the equipment. I know it's overwhelming— but it doesn't have to be.</div>
+            </div>
+            <div class="script-beat">
+              <div class="beat-label">Authority + The Robyn Story</div>
+              <div class="beat-text">I spent 13 years inside this industry as a device rep. I know which devices deliver the results their marketing promises, and which ones quietly become dust collectors. Last year I helped a client walk away from a $150,000 purchase because I knew the manufacturer was having financial issues and might not be able to honor their warranty. Four months later, that manufacturer went under.</div>
+            </div>
+            <div class="script-beat">
+              <div class="beat-label">Relationship + Offer</div>
+              <div class="beat-text">I've worked with med spa owners all across the country. I want to get to know you and provide you with insider information— before you're looking for your next device. Schedule a free consultation with me to get Free Insider Access, plus a complimentary DermaSpaRX Skin Booster Gel— a $159 value from our partner lab.</div>
+            </div>
+            <div class="script-beat">
+              <div class="beat-label">CTA</div>
+              <div class="beat-text">Click Book Now to schedule a free consultation with us today.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Script 2A -->
+        <div class="script-card">
+          <div class="script-card-header">
+            <div class="script-card-header-left">
+              <h3>Script 2A — "Down the Street" <em style="font-size:14px; font-weight:400; color:var(--text-muted);">(sarcastic version)</em></h3>
+              <div class="script-role">Owns: savings + reinvestment, with sarcastic dismantling of the write-off rationalization</div>
+            </div>
+            <div class="script-runtime">~40 seconds</div>
+          </div>
+          <div class="script-body">
+            <div class="script-beat">
+              <div class="beat-label">Open — Social Proof Hook</div>
+              <div class="beat-text">A med spa down the street from you just bought the same device you're considering, for $30,000 less.</div>
+            </div>
+            <div class="script-beat">
+              <div class="beat-label">Pivot</div>
+              <div class="beat-text">And what did they do with that money? They spent it on ads to keep the new service they're offering booked up.</div>
+            </div>
+            <div class="script-beat">
+              <div class="beat-label">Sarcastic Dismantle</div>
+              <div class="beat-text">$30,000 might feel like a rounding error— some extra padding for your tax write-off. Sure. Who needs to save $30,000 on a $150,000 device? But just for fun, ask yourself— what could that money do for your practice this year? A new hire. A year of marketing. Bulk consumables. It could be the difference between a device that fills your treatment calendar and one that doesn't.</div>
+            </div>
+            <div class="script-beat">
+              <div class="beat-label">Authority</div>
+              <div class="beat-text">I spent 13 years inside this industry as a device rep. I know who actually has the authority to move price— and I know how to get them into the deal before you sign.</div>
+            </div>
+            <div class="script-beat">
+              <div class="beat-label">Offer + CTA</div>
+              <div class="beat-text">Aesthetic Negotiators just opened Free Insider Access. Schedule a free consultation with me before your next purchase, and you'll also receive a complimentary DermaSpaRX Skin Booster Gel— a $159 value from our partner lab. Click Book Now to schedule a free consultation with us today.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Script 2B -->
+        <div class="script-card">
+          <div class="script-card-header">
+            <div class="script-card-header-left">
+              <h3>Script 2B — "Down the Street" <em style="font-size:14px; font-weight:400; color:var(--text-muted);">(direct version)</em></h3>
+              <div class="script-role">Owns: savings + reinvestment, played straight without sarcastic frame</div>
+            </div>
+            <div class="script-runtime">~32 seconds</div>
+          </div>
+          <div class="script-body">
+            <div class="script-beat">
+              <div class="beat-label">Open — Social Proof Hook</div>
+              <div class="beat-text">A med spa down the street from you just bought the same device you're considering, for $30,000 less.</div>
+            </div>
+            <div class="script-beat">
+              <div class="beat-label">Pivot</div>
+              <div class="beat-text">And what did they do with that money? They spent it on ads to keep the new service they're offering booked up.</div>
+            </div>
+            <div class="script-beat">
+              <div class="beat-label">Direct Framing</div>
+              <div class="beat-text">Ask yourself— what could that money do for your practice this year? A new hire. A year of marketing. Bulk consumables. It could be the difference between a device that fills your treatment calendar and one that doesn't.</div>
+            </div>
+            <div class="script-beat">
+              <div class="beat-label">Authority</div>
+              <div class="beat-text">I spent 13 years inside this industry as a device rep. I know who actually has the authority to move price— and I know how to get them into the deal before you sign.</div>
+            </div>
+            <div class="script-beat">
+              <div class="beat-label">Offer + CTA</div>
+              <div class="beat-text">Aesthetic Negotiators just opened Free Insider Access. Schedule a free consultation with me before your next purchase, and you'll also receive a complimentary DermaSpaRX Skin Booster Gel— a $159 value from our partner lab. Click Book Now to schedule a free consultation with us today.</div>
+            </div>
+          </div>
+          <div class="production-note" style="margin: 0 36px 32px;">
+            <strong>Production note:</strong> Both A and B versions are shot in the same session, same setup, lit and framed identically. Two reads of the middle paragraph. This gives Meta two distinct creatives to A/B test once data is flowing, and gives Jason two takes to deliver without overhauling the production day.
+          </div>
+        </div>
+
+        <!-- Script 3 -->
+        <div class="script-card">
+          <div class="script-card-header">
+            <div class="script-card-header-left">
+              <h3>Script 3 — "Whose Side Is Your Rep On?"</h3>
+              <div class="script-role">Owns: social proof + rep-system reframe &nbsp;·&nbsp; Testimonial reel format</div>
+            </div>
+            <div class="script-runtime">~48 seconds</div>
+          </div>
+          <div class="script-body">
+            <div class="script-beat">
+              <div class="beat-label">Hook — Jason direct to camera (~6 sec)</div>
+              <div class="beat-text">Your device rep doesn't work for you. They work for the manufacturer— and the more you spend, the more they make.</div>
+            </div>
+            <div class="script-beat">
+              <div class="beat-label">Bridge — Jason direct (~6 sec)</div>
+              <div class="beat-text">I'm Jason Peters. I spent 13 years on that side of the table. Now I work for the providers. Don't take my word for it—</div>
+            </div>
+            <div class="script-beat">
+              <div class="beat-label">Testimonial #1 — The Problem (~7 sec)</div>
+              <div class="beat-text">When I started looking for a new device, all my information was coming from sales reps. I needed someone actually on my side.</div>
+            </div>
+            <div class="script-beat">
+              <div class="beat-label">Testimonial #2 — The Specific Outcome (~10 sec)</div>
+              <div class="beat-text">Jason saved us from a $150,000 mistake. He told us the manufacturer was in financial trouble— four months later they went under. We would have been left with a device that no one could service.</div>
+            </div>
+            <div class="script-beat">
+              <div class="beat-label">Testimonial #3 — The Ongoing Relationship (~7 sec)</div>
+              <div class="beat-text">He's not just there for one purchase. He helps us think through which technology to phase out and which to bring in. That's the kind of partner every practice should have.</div>
+            </div>
+            <div class="script-beat">
+              <div class="beat-label">CTA — Jason direct (~12 sec)</div>
+              <div class="beat-text">Aesthetic Negotiators just opened Free Insider Access. Schedule a free consultation with me, and you'll also receive a complimentary DermaSpaRX Skin Booster Gel— a $159 value from our partner lab. Click Book Now to schedule a free consultation with us today.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TESTIMONIAL CAPTURE -->
+      <section class="section">
+        <div class="section-header">
+          <div class="section-label">Production Details</div>
+          <h2>Testimonial Capture — Zoom Recording Method</h2>
+        </div>
+        <div class="prose">
+          <p>Script 3 requires three testimonial clips. The format is a Zoom call where Jason asks each client a series of questions while the client is on camera from their phone or computer. Jason records his screen during the call so we capture both the video feed and the conversational dynamic. This approach gets real, unpolished reactions— which is what the ad needs— without requiring anyone to travel or set up equipment.</p>
+          <p>Below is the run-of-show for each guest: the conversational questions Jason should ask, the specific soundbites we need to extract for the ad edit, and technical guidance for the guests to get usable footage from their end.</p>
+        </div>
+
+        <!-- FORMAT -->
+        <div class="methodology" style="margin-top: 32px;">
+          <h4>Format &amp; Technical Setup</h4>
+          <div class="prose" style="margin-top: 8px;">
+            <p>Each Zoom call should run 10-15 minutes. Jason leads the conversation— the goal is a natural discussion, not a read. The guest should not see the soundbites below beforehand. If they go off-script and say something better, that's the take we use.</p>
+          </div>
+          <ul class="competitor-points" style="margin-top: 12px;">
+            <li><span class="bullet-dot"></span><span><strong>Jason's setup:</strong> Record the Zoom call with gallery view or speaker view, whichever captures the guest's face cleanly. Screen recording the Zoom window is the backup.</span></li>
+            <li><span class="bullet-dot"></span><span><strong>Guest guidance to send before the call:</strong> Find a quiet room with natural light (window in front of you, not behind). Hold your phone at eye level or prop it on a stack of books— no looking down. Landscape mode if possible. Earbuds or AirPods are fine for audio. Close the door.</span></li>
+            <li><span class="bullet-dot"></span><span><strong>Audio priority:</strong> The guest's voice quality matters more than video quality. Earbuds with a built-in mic will outperform the phone's speaker in most rooms. If the room has echo, suggest they move to a smaller space or a car.</span></li>
+            <li><span class="bullet-dot"></span><span><strong>What we'll extract:</strong> Short 7-10 second clips. One or two sentences per guest. The edit will cut between Jason's studio footage and these Zoom clips, so slight quality differences actually reinforce authenticity.</span></li>
+          </ul>
+        </div>
+
+        <!-- INTERVIEW QUESTIONS -->
+        <div class="methodology" style="margin-top: 24px;">
+          <h4>Jason's Interview Questions</h4>
+          <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.55;">Ask these in order. Let the guest talk— don't cut them off. The soundbite usually emerges naturally from one of these prompts. If it doesn't, guide them toward the language below.</p>
+          <ol class="q-list">
+            <li><span class="q-num">1</span><span>Walk me through your practice— how busy are you, and how much time do you actually have to research new equipment?</span></li>
+            <li><span class="q-num">2</span><span>Before we started working together, where were you getting your information about new devices?</span></li>
+            <li><span class="q-num">3</span><span>What's the difference between working with a device rep and working with someone like me?</span></li>
+            <li><span class="q-num">4</span><span>Was there a specific moment where my input changed a decision you were about to make?</span></li>
+            <li><span class="q-num">5</span><span>What do you think would have happened if you'd gone through with that purchase without my input?</span></li>
+            <li><span class="q-num">6</span><span>How do you describe what I do to other practice owners?</span></li>
+            <li><span class="q-num">7</span><span>Would you have figured this out on your own?</span></li>
+          </ol>
+        </div>
+
+        <!-- SOUNDBITES -->
+        <div class="methodology" style="margin-top: 24px;">
+          <h4>Target Soundbites for the Edit</h4>
+          <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.55;">These are what we need to cut into the ad. If the guest delivers something close enough in their own words, that's the version we use. If they struggle, Jason can paraphrase the gist and ask them to repeat it back naturally. The exact wording below is the fallback— not the target.</p>
+
+          <div class="guidance-card">
+            <h4>Testimonial Slot #1 — The Problem</h4>
+            <p>This guest establishes the pain point: information asymmetry. They were relying on reps and had no independent source. We need one sentence that names the problem.</p>
+            <div class="soundbite">When I started looking for a new device, all my information was coming from sales reps. I needed someone actually on my side.</div>
+          </div>
+
+          <div class="guidance-card">
+            <h4>Testimonial Slot #2 — The Specific Outcome</h4>
+            <p>This is the Robyn story slot— the $150K manufacturer-going-under save. Ideally Robyn herself tells this. We need the dollar figure, the financial trouble detail, and the outcome in two sentences.</p>
+            <div class="soundbite">Jason saved us from a $150,000 mistake. He told us the manufacturer was in financial trouble— four months later they went under. We would have been left with a device that no one could service.</div>
+            <p style="margin-top: 12px; font-size: 13px; color: var(--text-muted);"><strong>Alternative (generic version, any guest):</strong></p>
+            <div class="soundbite">Jason saved us tens of thousands of dollars on the last device we bought. But more than that— he made sure we bought the right one. He looked at the specs, the alternatives, the warranty. We bought a device that actually does what we needed it to do.</div>
+          </div>
+
+          <div class="guidance-card">
+            <h4>Testimonial Slot #3 — The Ongoing Relationship</h4>
+            <p>This guest sells the retainer model— the idea that Jason isn't a one-time transaction. We need a sentence that makes the relationship sound ongoing and strategic.</p>
+            <div class="soundbite">He's not just there for one purchase. He helps us think through which technology to phase out and which to bring in. That's the kind of partner every practice should have.</div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /tab-scripts -->
+
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- TAB 2: MARKET ANALYSIS                             -->
+    <!-- ══════════════════════════════════════════════════ -->
+    <div id="tab-analysis" class="tab-content">
+
+      <!-- EXECUTIVE SUMMARY -->
+      <section class="section">
+        <div class="section-header">
+          <div class="section-label">Overview</div>
+          <h2>Executive Summary</h2>
+        </div>
+        <div class="prose">
+          <p>Aesthetic Negotiators is launching three Meta video ads to generate Free Insider Access signups from a national audience of med spa owners, dermatologists, and plastic surgeons. This document presents the market analysis that drove the creative strategy, and the three resulting scripts. Each script is structured around Meta's algorithmic requirements— particularly first-three-seconds audience qualification— and differentiated from the only direct competitor in the category, Aesthetic Influence. The goal is not to outsell them on statistics. The goal is to make their approach look like what it is: a transaction. Yours is a relationship.</p>
+        </div>
+      </section>
+
+      <!-- MARKET ANALYSIS -->
+      <section class="section">
+        <div class="section-header">
+          <div class="section-label">Research &amp; Strategy</div>
+          <h2>Market Analysis</h2>
+        </div>
+
+        <!-- 3.1 Competitive Landscape -->
+        <div class="subsection">
+          <div class="subsection-label">3.1</div>
+          <h3>The Competitive Landscape</h3>
+          <div class="prose">
+            <p>There is one direct competitor in the aesthetic device negotiation category running paid Meta acquisition: <strong>Aesthetic Influence</strong>. Their parent company (<em>aestheticinfluence.co</em>) positions as a medical aesthetics growth agency— marketing, growth strategy, broader practice consulting. Device negotiation is one product among several. Their dedicated offering lives at <em>device.aestheticinfluence.co</em>.</p>
+            <p>This is significant. Aesthetic Influence is a generalist agency that bolts negotiation onto a broader service mix. Aesthetic Negotiators is dedicated to negotiation as the only service. That structural difference is one of the cleanest differentiators in the category and informs how every ad is positioned.</p>
+          </div>
+
+          <div style="margin-top: 28px;">
+            <div class="section-label" style="margin-bottom: 16px;">Their landing page mechanics</div>
+            <ul class="competitor-points">
+              <li><span class="bullet-dot"></span><span>$300 paid strategy call, fully refundable as service credit</span></li>
+              <li><span class="bullet-dot"></span><span>"Guaranteed 10x savings or your $300 back" risk reversal</span></li>
+              <li><span class="bullet-dot"></span><span>Hero stats: 1,000+ doctors helped, 50+ manufacturers, $42K average savings</span></li>
+              <li><span class="bullet-dot"></span><span>Pain framing: $30-70K overpayment, bad financing, unfulfilled rep promises, no market fit</span></li>
+              <li><span class="bullet-dot"></span><span>Manufacturer name-drop: InMode, BTL, Cartessa, Candela, Alma, Syneron, Lumenis, Cynosure, Cutera, Sciton, Rohrer, Aerolase</span></li>
+              <li><span class="bullet-dot"></span><span>Application-style funnel: form → training → strategy call</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 3.2 Ad Library Analysis -->
+        <div class="subsection">
+          <div class="subsection-label">3.2</div>
+          <h3>Aesthetic Influence Ad Library Analysis</h3>
+          <div class="prose">
+            <p>We analyzed four Aesthetic Influence Meta ads running in March 2026. All four follow the same structural pattern:</p>
+          </div>
+
+          <ul class="competitor-points" style="margin-top: 16px;">
+            <li><span class="bullet-dot"></span><span><strong>Audience callout in first 2-3 seconds—</strong> <em>"Med spa owners,"</em> <em>"Doctors, injectors,"</em> <em>"If you're buying..."</em></span></li>
+            <li><span class="bullet-dot"></span><span><strong>Pain point with specific dollar number—</strong> $30-70K overpayment, repeated across multiple ads</span></li>
+            <li><span class="bullet-dot"></span><span><strong>Authority stack—</strong> former rep, both sides of the table, 1,000+ doctors, 500+ devices, every top manufacturer</span></li>
+            <li><span class="bullet-dot"></span><span><strong>10x ROI guarantee—</strong> appears in 3 of 4 ads</span></li>
+            <li><span class="bullet-dot"></span><span><strong>Application-style CTA—</strong> click → application → training → schedule call (selectivity signaling)</span></li>
+            <li><span class="bullet-dot"></span><span><strong>Soft sign-off—</strong> "Thanks so much, talk to you soon"</span></li>
+          </ul>
+
+          <div class="prose" style="margin-top: 24px;">
+            <p>Tonal characteristics: stat-heavy, closer-style, hard-CTA, semi-UGC production with talking head and on-screen captions. The first three seconds of every ad satisfy Meta's algorithmic feedback loop. Their hooks work, structurally— they qualify the audience fast and earn the watch-time.</p>
+          </div>
+
+          <div class="two-col">
+            <div class="card-win green">
+              <h4>Where they win</h4>
+              <p>Algorithmic discipline, volume claims, risk-reversal aggression, manufacturer name-drop signaling competence.</p>
+            </div>
+            <div class="card-win red">
+              <h4>Where they're vulnerable</h4>
+              <p>All four ads sound identical. Same speaker, same structure, same tonal register. A sophisticated audience reads them as repetitive. Their stat race also commodifies them— the audience can't tell whether to trust the $42K or the $30-70K, and any new entrant making bigger claims becomes more credible by definition.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3.3 Existing Funnel -->
+        <div class="subsection">
+          <div class="subsection-label">3.3</div>
+          <h3>Our Read of Aesthetic Negotiators' Existing Funnel</h3>
+          <div class="prose">
+            <p>Three signals from prior conversations and the existing positioning informed our strategy:</p>
+          </div>
+
+          <ul class="signal-list">
+            <li>
+              <strong>Signal 1 — Organic content has produced zero leads</strong>
+              Peters' own assessment: the messaging needs to be simplified, the audience qualification needs to happen faster, and the broad-expertise framing isn't converting cold traffic.
+            </li>
+            <li>
+              <strong>Signal 2 — Previous self-managed Meta spend was wasted (~$1,000)</strong>
+              No tracking infrastructure, no audience qualification, no offer alignment. The lesson: get the structural foundation right before optimizing creative.
+            </li>
+            <li>
+              <strong>Signal 3 — The membership offer is too complex for cold traffic</strong>
+              Three tiers, partner products, banked credits toward negotiation success fees. Peters himself acknowledged the structure can't be sold in 30 seconds. The conversion event for these ads is the <strong>Free Insider Access</strong> signup— low friction, builds list, allows the actual selling to happen on the consult call.
+            </li>
+          </ul>
+
+          <div class="section-label" style="margin-top: 32px; margin-bottom: 16px;">What we took from the strategy call to inform the scripts</div>
+          <ul class="competitor-points">
+            <li><span class="bullet-dot"></span><span>"Like a lawyer on retainer"— Peters' own positioning frame for the membership</span></li>
+            <li><span class="bullet-dot"></span><span>The 500-devices-on-the-market complexity problem (raised by Peters' father, a former surgical instruments business owner)</span></li>
+            <li><span class="bullet-dot"></span><span>The reinvestment story— what $20-50K in savings actually does for a practice over the following year</span></li>
+            <li><span class="bullet-dot"></span><span>The "what if?" framing— Peters' own articulation of the consultative tone he wants</span></li>
+            <li><span class="bullet-dot"></span><span>The "conversation above the rep's head" line— Peters' own writing, his strongest original line</span></li>
+            <li><span class="bullet-dot"></span><span>Peters' explicit anti-stat positioning— he refuses to compete in Aesthetic Influence's car-salesman lane</span></li>
+            <li><span class="bullet-dot"></span><span>His 13 years inside the industry as a device rep— the credential that makes everything else credible</span></li>
+            <li><span class="bullet-dot"></span><span>The Robyn / $150K story from his testimonials— a manufacturer-going-under save that proves expertise more powerfully than any savings stat</span></li>
+          </ul>
+        </div>
+
+        <!-- 3.4 Translation -->
+        <div class="subsection">
+          <div class="subsection-label">3.4</div>
+          <h3>How the Analysis Translates Into the Scripts</h3>
+          <div class="prose">
+            <p>The strategic posture, distilled:</p>
+          </div>
+
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Aesthetic Influence</th>
+                <th>Aesthetic Negotiators</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Business model</td><td>Generalist agency</td><td>Dedicated specialist</td></tr>
+              <tr><td>Entry point</td><td>Paid ($300, refundable)</td><td>Free Insider Access</td></tr>
+              <tr><td>Funnel gate</td><td>Application gating</td><td>Direct relationship</td></tr>
+              <tr><td>Credibility mechanism</td><td>Stat race ($42K, 10x guarantee)</td><td>Conservative, story-driven</td></tr>
+              <tr><td>Relationship model</td><td>Transactional strategy calls</td><td>Recurring— insider on retainer</td></tr>
+              <tr><td>Production style</td><td>Talking head, semi-UGC</td><td>Polished cinematic at Salt Lick studio</td></tr>
+            </tbody>
+          </table>
+
+          <div class="prose" style="margin-top: 28px;">
+            <p>Each of the three scripts owns a different lane to avoid internal redundancy and maximize coverage of the audience's possible mental states. Each script also uses a structurally different audience qualification mechanism in its first three seconds, so Meta's algorithm reads them as three distinct creatives rather than variations of one.</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px;">
+            <div class="card" style="margin-bottom: 0;">
+              <h4 style="color: var(--coral); margin-bottom: 8px;">Script 1</h4>
+              <p style="font-size: 14px;"><strong>Due diligence + expertise</strong><br>For the buyer who's anxious about complexity</p>
+            </div>
+            <div class="card" style="margin-bottom: 0;">
+              <h4 style="color: var(--coral); margin-bottom: 8px;">Script 2</h4>
+              <p style="font-size: 14px;"><strong>Savings + reinvestment</strong><br>For the buyer who's already decided and is rationalizing the spend</p>
+            </div>
+            <div class="card" style="margin-bottom: 0;">
+              <h4 style="color: var(--coral); margin-bottom: 8px;">Script 3</h4>
+              <p style="font-size: 14px;"><strong>Social proof + system reframe</strong><br>For the buyer who needs validation from peers and a reason to distrust the default rep relationship</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /tab-analysis -->
+
+  </div><!-- /container -->
+
+  <!-- FOOTER -->
+  <div class="container">
+    <footer class="footer">
+      <div class="footer-brand">The Salt Lick Denver</div>
+      <div class="footer-meta">
+        Prepared for Jason Peters — Aesthetic Negotiators<br>
+        April 30, 2026
+      </div>
+    </footer>
+  </div>
+
+</div><!-- /panel -->
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.querySelectorAll('.nav-tab').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.getElementById('tab-' + tabName).classList.add('active');
+  document.querySelector('.nav-tab[data-tab="' + tabName + '"]').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

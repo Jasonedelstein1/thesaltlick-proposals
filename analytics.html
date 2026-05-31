@@ -4,19 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Salt Lick Denver — Analytics</title>
-
 <script>
 const CONFIG = {
   GA4_PROPERTY:  'properties/381732329',
   CLIENT_ID:     '747535226184-qhv035vqnf1solb61mvu5rspkrvimsn4.apps.googleusercontent.com',
 };
 </script>
-
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
 <style>
 /* ── VARIABLES ─────────────────────────────────────── */
 :root {
@@ -56,17 +53,14 @@ const CONFIG = {
   --font: 'Inter', -apple-system, 'Segoe UI', sans-serif;
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 /* ── RESET ─────────────────────────────────────────── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.5; min-height:100vh; -webkit-font-smoothing:antialiased; }
-
 /* ── SCROLLBAR ─────────────────────────────────────── */
 ::-webkit-scrollbar { width:6px; height:6px; }
 ::-webkit-scrollbar-track { background:transparent; }
 ::-webkit-scrollbar-thumb { background:#333; border-radius:3px; }
 ::-webkit-scrollbar-thumb:hover { background:#555; }
-
 /* ── GATES ─────────────────────────────────────────── */
 .gate-screen {
   display:flex; align-items:center; justify-content:center; min-height:100vh;
@@ -89,7 +83,6 @@ body { font-family:var(--font); background:var(--bg); color:var(--text); line-he
   font-family:var(--font); cursor:pointer; transition:0.2s var(--ease);
 }
 .btn:hover { background:#c9674e; box-shadow:0 4px 20px rgba(224,122,95,0.35); }
-
 /* ── LAYOUT ────────────────────────────────────────── */
 #dashboard { display:none; }
 .dash-header {
@@ -118,14 +111,12 @@ input[type="date"]:focus, select:focus { outline:none; border-color:var(--terrac
 .btn-sm:hover { background:#c9674e; }
 .btn-ghost { background:transparent; border:1px solid var(--border); color:var(--text-secondary); }
 .btn-ghost:hover { border-color:var(--terracotta); color:var(--terracotta); background:var(--terracotta-dim); }
-
 /* ── FILTER BAR ────────────────────────────────────── */
 .filters-bar {
   display:flex; align-items:center; gap:10px; padding:10px 24px;
   background:var(--bg-raised); border-bottom:1px solid var(--border); flex-wrap:wrap;
 }
 .filters-bar label { font-size:10px; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.05em; }
-
 /* ── SIDEBAR ───────────────────────────────────────── */
 .dash-body { display:flex; }
 .sidebar {
@@ -140,7 +131,6 @@ input[type="date"]:focus, select:focus { outline:none; border-color:var(--terrac
 .sidebar a.active { color:var(--terracotta); background:var(--terracotta-dim); border-right:2px solid var(--terracotta); }
 .sidebar .nav-group { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); padding:16px 20px 6px; }
 .main-content { flex:1; min-width:0; padding:20px 24px; min-height:calc(100vh - 92px); }
-
 /* ── MOBILE NAV ────────────────────────────────────── */
 .mobile-nav-toggle {
   display:none; background:none; border:1px solid var(--border); color:var(--text);
@@ -152,7 +142,6 @@ input[type="date"]:focus, select:focus { outline:none; border-color:var(--terrac
   backdrop-filter:blur(2px); z-index:199;
 }
 .sidebar-overlay.active { display:block; }
-
 @media (max-width:900px) {
   .mobile-nav-toggle { display:flex; }
   .sidebar {
@@ -164,13 +153,11 @@ input[type="date"]:focus, select:focus { outline:none; border-color:var(--terrac
   .dash-header { padding:10px 16px; }
   .filters-bar { padding:8px 16px; }
 }
-
 /* ── SECTIONS ──────────────────────────────────────── */
 .section { display:none; }
 .section.active { display:block; }
 .section-title { font-size:20px; font-weight:700; margin-bottom:4px; }
 .section-desc { font-size:13px; color:var(--text-secondary); margin-bottom:20px; }
-
 /* ── GRID ──────────────────────────────────────────── */
 .grid { display:grid; gap:16px; }
 .grid-2 { grid-template-columns:1fr 1fr; }
@@ -180,7 +167,6 @@ input[type="date"]:focus, select:focus { outline:none; border-color:var(--terrac
 .grid-full { grid-column:1/-1; }
 @media (max-width:900px) { .grid-2,.grid-3,.grid-4,.grid-5 { grid-template-columns:1fr; } }
 @media (min-width:901px) and (max-width:1200px) { .grid-3,.grid-4,.grid-5 { grid-template-columns:1fr 1fr; } }
-
 /* ── CARD ──────────────────────────────────────────── */
 .card {
   background:var(--bg-card); border-radius:var(--radius); padding:20px;
@@ -195,7 +181,6 @@ input[type="date"]:focus, select:focus { outline:none; border-color:var(--terrac
 .tag-gold { background:var(--gold-dim); color:var(--gold); }
 .tag-blue { background:var(--blue-dim); color:var(--blue); }
 .tag-red { background:var(--red-dim); color:var(--red); }
-
 .card-insight {
   font-size:12px; color:var(--text-secondary); line-height:1.5;
   padding:10px 14px; background:var(--bg-raised); border-radius:var(--radius-sm);
@@ -203,7 +188,6 @@ input[type="date"]:focus, select:focus { outline:none; border-color:var(--terrac
 }
 .card-insight:empty { display:none; }
 .card-insight strong { color:var(--text); }
-
 /* ── STAT CARDS ────────────────────────────────────── */
 .stat {
   padding:16px; border-radius:var(--radius-sm); text-align:center;
@@ -215,7 +199,7 @@ input[type="date"]:focus, select:focus { outline:none; border-color:var(--terrac
 .stat.sage .stat-val { color:var(--sage); }
 .stat.gold .stat-val { color:var(--gold); }
 .stat.blue .stat-val { color:var(--blue); }
-
+.stat.red .stat-val { color:var(--red); }
 /* ── AD CARDS ──────────────────────────────────────── */
 .ad-card {
   background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-hover) 100%);
@@ -229,7 +213,6 @@ input[type="date"]:focus, select:focus { outline:none; border-color:var(--terrac
 .ad-card .ad-stat { text-align:center; }
 .ad-card .ad-stat-val { font-size:18px; font-weight:800; }
 .ad-card .ad-stat-label { font-size:9px; font-weight:600; color:var(--text-muted); text-transform:uppercase; }
-
 /* ── REALTIME ──────────────────────────────────────── */
 .rt-grid { display:grid; grid-template-columns:220px 1fr; gap:16px; }
 @media (max-width:900px) { .rt-grid { grid-template-columns:1fr; } }
@@ -239,18 +222,15 @@ input[type="date"]:focus, select:focus { outline:none; border-color:var(--terrac
 .rt-pulse { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; color:var(--green); margin-bottom:12px; }
 .rt-dot { width:7px; height:7px; border-radius:50%; background:var(--green); animation:pulse 2s ease infinite; }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.4)} }
-
 .rt-page-list { font-size:12px; }
 .rt-page-row { display:flex; align-items:center; gap:10px; padding:6px 0; border-bottom:1px solid var(--border); }
 .rt-page-row:last-child { border:none; }
 .rt-page-count { font-weight:700; min-width:28px; color:var(--green); }
 .rt-page-path { color:var(--text-secondary); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-
 .rt-events { max-height:300px; overflow-y:auto; }
 .rt-event-row { display:flex; align-items:center; gap:10px; padding:5px 0; border-bottom:1px solid var(--border); font-size:11px; }
 .rt-event-name { font-weight:600; color:var(--terracotta); min-width:140px; }
 .rt-event-count { font-weight:700; min-width:36px; text-align:right; }
-
 /* ── FUNNEL ────────────────────────────────────────── */
 .funnel { display:flex; flex-direction:column; gap:3px; }
 .funnel-step { display:flex; align-items:center; gap:10px; padding:4px 0; }
@@ -270,7 +250,6 @@ input[type="date"]:focus, select:focus { outline:none; border-color:var(--terrac
 .funnel-val { font-size:14px; font-weight:700; }
 .funnel-drop { font-size:10px; color:var(--red); font-weight:600; }
 .funnel-drop.ok { color:var(--sage); }
-
 /* ── TABLES ────────────────────────────────────────── */
 .table-wrap { overflow-x:auto; }
 table.dt { width:100%; border-collapse:collapse; font-size:12px; }
@@ -280,8 +259,8 @@ table.dt th {
   border-bottom:1px solid var(--border); white-space:nowrap; cursor:pointer; user-select:none;
 }
 table.dt th:hover { color:var(--text); }
-table.dt th.sorted-asc::after { content:' \u25B2'; font-size:8px; }
-table.dt th.sorted-desc::after { content:' \u25BC'; font-size:8px; }
+table.dt th.sorted-asc::after { content:' ▲'; font-size:8px; }
+table.dt th.sorted-desc::after { content:' ▼'; font-size:8px; }
 table.dt td { padding:8px 10px; border-bottom:1px solid var(--border); }
 table.dt tr:hover td { background:rgba(224,122,95,0.04); }
 table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight:500; }
@@ -289,7 +268,6 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
 .raw-id { color:var(--text-muted); font-size:10px; display:block; font-family:monospace; }
 .chart-wrap { position:relative; width:100%; }
 .chart-wrap canvas { width:100% !important; }
-
 /* ── PROPOSAL LOG ──────────────────────────────────── */
 .proposal-log-row { display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid var(--border); cursor:pointer; transition:0.15s; }
 .proposal-log-row:hover { background:var(--terracotta-dim); margin:0 -10px; padding:8px 10px; border-radius:var(--radius-xs); }
@@ -301,13 +279,11 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
 .proposal-date-row { padding:3px 0; display:flex; gap:12px; }
 .proposal-date-row .date { color:var(--text-muted); min-width:80px; }
 .proposal-date-row .count { color:var(--terracotta); font-weight:600; }
-
 /* ── LOADING / EMPTY ───────────────────────────────── */
 .loading { text-align:center; padding:40px; color:var(--text-muted); font-size:13px; }
 .loading::after { content:''; display:inline-block; width:16px; height:16px; border:2px solid var(--terracotta); border-top-color:transparent; border-radius:50%; animation:spin 0.6s linear infinite; margin-left:8px; vertical-align:middle; }
 @keyframes spin { to{transform:rotate(360deg)} }
 .empty { text-align:center; padding:32px; color:var(--text-muted); font-size:12px; }
-
 /* ── NAME MANAGER MODAL ────────────────────────────── */
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:1000; align-items:center; justify-content:center; }
 .modal-overlay.active { display:flex; }
@@ -325,7 +301,6 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
 </style>
 </head>
 <body>
-
 <!-- ═══ OAUTH GATE ═══ -->
 <div class="gate-screen" id="oauth-screen">
   <div class="gate-box">
@@ -339,7 +314,6 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
     <p id="oauth-error" style="color:var(--red);font-size:12px;margin-top:10px;display:none"></p>
   </div>
 </div>
-
 <!-- ═══ DASHBOARD ═══ -->
 <div id="dashboard">
   <!-- Header -->
@@ -356,7 +330,6 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
       <button class="btn-sm btn-ghost" onclick="openNameManager()">Names</button>
     </div>
   </div>
-
   <!-- Global Filters -->
   <div class="filters-bar">
     <label>Page</label>
@@ -366,7 +339,6 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
     <label>Source</label><select id="filter-source"><option value="">All</option></select>
     <label>Placement</label><select id="filter-medium"><option value="">All</option></select>
   </div>
-
   <div class="dash-body">
     <!-- Sidebar overlay (mobile) -->
     <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleMobileNav()"></div>
@@ -379,6 +351,7 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
       <a data-section="sec-home" onclick="showSection(this)">Homepage</a>
       <a data-section="sec-strategy" onclick="showSection(this)">Strategy Session</a>
       <a data-section="sec-proposals" onclick="showSection(this)">Proposals</a>
+      <a data-section="sec-quiz" onclick="showSection(this)">Quiz Responses</a>
       <div class="nav-group">Content</div>
       <a data-section="sec-video" onclick="showSection(this)">Video</a>
       <a data-section="sec-calculator" onclick="showSection(this)">ROI Calculator</a>
@@ -388,10 +361,8 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
       <a data-section="sec-ads" onclick="showSection(this)">Ad Performance</a>
       <a data-section="sec-funnel" onclick="showSection(this)">Booking Funnel</a>
     </nav>
-
     <!-- Main Content -->
     <div class="main-content">
-
       <!-- ═══ 1. LIVE ACTIVITY ═══ -->
       <div class="section active" id="sec-realtime">
         <div class="section-title">Live Activity</div>
@@ -420,7 +391,6 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
           </div>
         </div>
       </div>
-
       <!-- ═══ 2. USER JOURNEY ═══ -->
       <div class="section" id="sec-journey">
         <div class="section-title">User Journey &mdash; Ad to Booking</div>
@@ -431,7 +401,6 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
           <div id="journey-content" class="loading">Loading&hellip;</div>
         </div>
       </div>
-
       <!-- ═══ 3. HOMEPAGE ENGAGEMENT ═══ -->
       <div class="section" id="sec-home">
         <div class="section-title">Homepage Engagement</div>
@@ -452,7 +421,6 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
           <div class="chart-wrap"><canvas id="chart-home-buttons"></canvas></div>
         </div>
       </div>
-
       <!-- ═══ 4. STRATEGY SESSION ═══ -->
       <div class="section" id="sec-strategy">
         <div class="section-title">Strategy Session Page</div>
@@ -473,7 +441,6 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
           <div class="chart-wrap"><canvas id="chart-strategy-buttons"></canvas></div>
         </div>
       </div>
-
       <!-- ═══ 5. PROPOSALS ═══ -->
       <div class="section" id="sec-proposals">
         <div class="section-title">Proposal Engagement</div>
@@ -488,7 +455,39 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
           <div class="chart-wrap"><canvas id="chart-proposal"></canvas></div>
         </div>
       </div>
-
+      <!-- ═══ 5b. QUIZ RESPONSES ═══ -->
+      <div class="section" id="sec-quiz">
+        <div class="section-title">Quiz Responses</div>
+        <div class="section-desc">Who's completing the quiz at quiz.thesaltlickdenver.com and what they say. Pies are built from completed quizzes (qualified + disqualified).</div>
+        <div class="grid grid-4" id="quiz-stats" style="margin-bottom:16px"></div>
+        <div class="card-insight" id="quiz-insight" style="margin-bottom:16px"></div>
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="card-header"><h3>Business Category</h3><span class="tag tag-coral">Completed</span></div>
+            <div class="chart-wrap"><canvas id="chart-quiz-business"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Hardest Part of Selling</h3><span class="tag tag-sage">Qualified</span></div>
+            <div class="chart-wrap"><canvas id="chart-quiz-hardpart"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Growth Pace</h3><span class="tag tag-sage">Qualified</span></div>
+            <div class="chart-wrap"><canvas id="chart-quiz-pace"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Order / Job Value Tier</h3><span class="tag tag-sage">Qualified</span></div>
+            <div class="chart-wrap"><canvas id="chart-quiz-value"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Daily Ad Budget</h3><span class="tag tag-coral">Completed</span></div>
+            <div class="chart-wrap"><canvas id="chart-quiz-budget"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Lead Tier</h3><span class="tag tag-gold">Qualified</span></div>
+            <div class="chart-wrap"><canvas id="chart-quiz-tier"></canvas></div>
+          </div>
+        </div>
+      </div>
       <!-- ═══ 6. VIDEO ═══ -->
       <div class="section" id="sec-video">
         <div class="section-title">Video Engagement</div>
@@ -498,7 +497,6 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
           <div class="chart-wrap"><canvas id="chart-video"></canvas></div>
         </div>
       </div>
-
       <!-- ═══ 7. ROI CALCULATOR ═══ -->
       <div class="section" id="sec-calculator">
         <div class="section-title">ROI Calculator</div>
@@ -509,7 +507,6 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
           <div class="chart-wrap"><canvas id="chart-calc"></canvas></div>
         </div>
       </div>
-
       <!-- ═══ 8. PORTFOLIO ═══ -->
       <div class="section" id="sec-portfolio">
         <div class="section-title">Portfolio Interactions</div>
@@ -519,7 +516,6 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
           <div class="chart-wrap"><canvas id="chart-portfolio"></canvas></div>
         </div>
       </div>
-
       <!-- ═══ 9. FAQ ═══ -->
       <div class="section" id="sec-faq">
         <div class="section-title">FAQ Engagement</div>
@@ -528,7 +524,6 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
           <div class="chart-wrap"><canvas id="chart-faq"></canvas></div>
         </div>
       </div>
-
       <!-- ═══ 10. AD PERFORMANCE ═══ -->
       <div class="section" id="sec-ads">
         <div class="section-title">Ad Performance & Attribution</div>
@@ -556,7 +551,6 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
           </div>
         </div>
       </div>
-
       <!-- ═══ 11. BOOKING FUNNEL ═══ -->
       <div class="section" id="sec-funnel">
         <div class="section-title">Booking Funnel</div>
@@ -584,11 +578,9 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
           <div id="ad-funnel-content"><div class="loading">Loading&hellip;</div></div>
         </div>
       </div>
-
     </div><!-- /main-content -->
   </div><!-- /dash-body -->
 </div>
-
 <!-- ═══ NAME MANAGER MODAL ═══ -->
 <div class="modal-overlay" id="name-manager-overlay" onclick="if(event.target===this)closeNameManager()">
   <div class="modal">
@@ -610,14 +602,12 @@ table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight
     </div>
   </div>
 </div>
-
 <script>
 // ═══════════════════════════════════════════════════════════
 // CHART.JS — UMD build auto-registers all controllers, elements,
 // scales and plugins. No Chart.register() call needed.
 // See Documentation/chartjs/integration.md — Script Tag section.
 // ═══════════════════════════════════════════════════════════
-
 // ═══════════════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════════════
@@ -628,7 +618,6 @@ let attrData = [];
 let attrSortCol = -1;
 let attrSortAsc = true;
 let rtInterval = null;
-
 // ═══════════════════════════════════════════════════════════
 // HELPERS
 // ═══════════════════════════════════════════════════════════
@@ -636,7 +625,6 @@ function esc(s) { const d = document.createElement('div'); d.textContent = s; re
 function num(v) { return parseInt(v) || 0; }
 function pct(a, b) { return b > 0 ? ((a / b) * 100).toFixed(1) + '%' : '0%'; }
 function fmtN(n) { return n.toLocaleString(); }
-
 // Name Manager helpers
 function loadNameMap() { try { const s = localStorage.getItem('sl_name_map'); if (s) nameMap = JSON.parse(s); } catch (e) {} }
 function saveNameMapLS() { localStorage.setItem('sl_name_map', JSON.stringify(nameMap)); }
@@ -653,7 +641,38 @@ function fc(type, id) {
   return `<span style="font-family:monospace;font-size:11px">${esc(id)}</span>`;
 }
 loadNameMap();
-
+// ═══════════════════════════════════════════════════════════
+// QUIZ FRIENDLY-LABEL MAPS (mirrored from quiz source index.html)
+// Keys are the raw customEvent:quiz_*_key values; values are display labels.
+// ═══════════════════════════════════════════════════════════
+const QUIZ_LABELS = {
+  business: {
+    home: 'Home services', health: 'Health & wellness', restaurant: 'Restaurant',
+    retail: 'Retail', pro: 'Professional services', ecom: 'E-commerce',
+    osvc: 'Online business', other: 'Other',
+  },
+  hard_part: {
+    none: 'No paid ads yet', failed: "Ads didn't pay off", seen: 'Not enough awareness',
+    look: "Visitors don't reach out", fit: 'Wrong customers', blind: "Can't tell what works",
+  },
+  pace: {
+    '0': 'Current pace, steadier', '1': 'Grow steadily', '2': 'Push hard / waitlist',
+    q: 'Better customers, not just more',
+  },
+  value: {
+    a: 'Tier A (lowest)', b: 'Tier B', c: 'Tier C', d: 'Tier D',
+    e: 'Tier E (highest)', x: 'Varies / not sure',
+  },
+  budget: {
+    b1: 'Under $40/day', b2: '$40–80/day', b3: '$80–200/day',
+    b4: '$200–500/day', b5: '$500+/day',
+  },
+};
+// Look up a friendly label; fall back to the raw key (or "(not set)").
+function quizLabel(map, key) {
+  if (key === null || key === undefined || key === '' || key === '(not set)') return '(not set)';
+  return (QUIZ_LABELS[map] && QUIZ_LABELS[map][key]) || key;
+}
 // ═══════════════════════════════════════════════════════════
 // NAV
 // ═══════════════════════════════════════════════════════════
@@ -666,12 +685,10 @@ function showSection(el) {
   const sidebar = document.getElementById('sidebar-nav');
   if (sidebar.classList.contains('open')) toggleMobileNav();
 }
-
 function toggleMobileNav() {
   document.getElementById('sidebar-nav').classList.toggle('open');
   document.getElementById('sidebar-overlay').classList.toggle('active');
 }
-
 // ═══════════════════════════════════════════════════════════
 // AUTH — Token cached in sessionStorage so user doesn't
 // re-authenticate on every page load within the same session.
@@ -683,7 +700,6 @@ function saveToken(token) {
   sessionStorage.setItem('sl_ga4_token', token);
   sessionStorage.setItem('sl_ga4_token_ts', Date.now().toString());
 }
-
 function loadCachedToken() {
   const token = sessionStorage.getItem('sl_ga4_token');
   const ts = parseInt(sessionStorage.getItem('sl_ga4_token_ts') || '0');
@@ -693,7 +709,6 @@ function loadCachedToken() {
   sessionStorage.removeItem('sl_ga4_token_ts');
   return null;
 }
-
 function initOAuth() {
   const client = google.accounts.oauth2.initTokenClient({
     client_id: CONFIG.CLIENT_ID,
@@ -712,7 +727,6 @@ function initOAuth() {
   });
   client.requestAccessToken();
 }
-
 // On page load, check for a cached token and skip OAuth if valid
 function tryAutoLogin() {
   const cached = loadCachedToken();
@@ -725,10 +739,8 @@ function tryAutoLogin() {
   }
   return false;
 }
-
 // Auto-login runs after GIS library loads; if no cached token, OAuth gate shows
 window.addEventListener('load', () => { tryAutoLogin(); });
-
 // ═══════════════════════════════════════════════════════════
 // DATE RANGE & GA4 API
 // ═══════════════════════════════════════════════════════════
@@ -740,7 +752,6 @@ function initDateRange() {
 }
 function fmtDate(d) { return d.toISOString().split('T')[0]; }
 function getDR() { return { startDate: document.getElementById('date-start').value, endDate: document.getElementById('date-end').value }; }
-
 function handleAuthExpired() {
   // Token expired — clear cache and show OAuth gate
   sessionStorage.removeItem('sl_ga4_token');
@@ -750,7 +761,6 @@ function handleAuthExpired() {
   document.getElementById('oauth-screen').classList.remove('hidden');
   if (rtInterval) { clearInterval(rtInterval); rtInterval = null; }
 }
-
 async function ga4(body) {
   const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/${CONFIG.GA4_PROPERTY}:runReport`, {
     method: 'POST',
@@ -761,7 +771,6 @@ async function ga4(body) {
   if (!r.ok) { const t = await r.text(); console.error('GA4 error:', r.status, t); throw new Error('GA4 ' + r.status); }
   return r.json();
 }
-
 async function ga4RT(body) {
   const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/${CONFIG.GA4_PROPERTY}:runRealtimeReport`, {
     method: 'POST',
@@ -772,7 +781,6 @@ async function ga4RT(body) {
   if (!r.ok) { const t = await r.text(); console.error('RT error:', r.status, t); throw new Error('RT ' + r.status); }
   return r.json();
 }
-
 // ═══════════════════════════════════════════════════════════
 // FILTER BUILDER
 // ═══════════════════════════════════════════════════════════
@@ -792,7 +800,6 @@ function buildFilters() {
   if (f.length === 1) return f[0];
   return { andGroup: { expressions: f } };
 }
-
 function mergeFilters(a, b) {
   if (!a && !b) return undefined;
   if (!a) return b;
@@ -802,14 +809,12 @@ function mergeFilters(a, b) {
   if (b.andGroup) e.push(...b.andGroup.expressions); else e.push(b);
   return { andGroup: { expressions: e } };
 }
-
 function baseReq(overrides) {
   const r = { dateRanges: [getDR()], ...overrides };
   const f = buildFilters();
   if (f) r.dimensionFilter = mergeFilters(r.dimensionFilter, f);
   return r;
 }
-
 // ═══════════════════════════════════════════════════════════
 // CHART DEFAULTS
 // ═══════════════════════════════════════════════════════════
@@ -822,23 +827,19 @@ Chart.defaults.font.size = 11;
 // not a registered element".  See Documentation/chartjs/configuration.md.
 Object.assign(Chart.defaults.datasets.bar, { maxBarThickness: 40, barPercentage: 0.7, categoryPercentage: 0.8 });
 const PALETTE = ['#e07a5f', '#81b29a', '#f2cc8f', '#f2a894', '#7eb8da', '#b8a0d4', '#6ec87a', '#ef6461'];
-
 function dc(key) {
   if (charts[key]) { charts[key].destroy(); delete charts[key]; }
 }
-
 function safeChart(key, canvasId, config) {
   dc(key);
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
-
   // Also destroy any chart already attached to this canvas (handles cases
   // where a prior new Chart() claimed the canvas but threw before we could
   // store the reference in charts[]).  Chart.getChart is a static helper
   // documented in Documentation/chartjs/api.md.
   const existing = Chart.getChart(canvas);
   if (existing) existing.destroy();
-
   const hasData = config.data && config.data.labels && config.data.labels.length > 0;
   if (!hasData) {
     canvas.style.display = 'none';
@@ -852,11 +853,9 @@ function safeChart(key, canvasId, config) {
   if (el) el.remove();
   charts[key] = new Chart(canvas, config);
 }
-
 function statHTML(items) {
   return items.map(s => `<div class="stat ${s.c}"><div class="stat-val">${fmtN(s.v)}</div><div class="stat-label">${s.l}</div></div>`).join('');
 }
-
 function renderFunnel(steps, maxVal) {
   const max = maxVal || Math.max(...steps.map(s => s.users), 1);
   let html = '<div class="funnel">';
@@ -873,7 +872,6 @@ function renderFunnel(steps, maxVal) {
   html += '</div>';
   return html;
 }
-
 // ═══════════════════════════════════════════════════════════
 // INIT & REFRESH
 // ═══════════════════════════════════════════════════════════
@@ -882,7 +880,6 @@ function initDashboard() {
   refreshAll();
   startRT();
 }
-
 async function refreshAll() {
   // Clear pie chart caches so they re-fetch on refresh
   placementRaw = []; sourceRaw = [];
@@ -895,13 +892,14 @@ async function refreshAll() {
   await batch(loadCalc, loadPortfolio, loadFAQ);
   await batch(loadAds, loadPlacement, loadSource);
   await batch(loadFunnel, loadAdFunnel, loadPrebook);
+  // Quiz section: 7 GA4 calls fired together inside loadQuiz (its own batch,
+  // stays under the ~10 concurrent quota).
+  await batch(loadQuiz);
 }
-
 // Attach filter change listeners
 ['filter-page-type', 'filter-campaign', 'filter-ad', 'filter-source', 'filter-medium'].forEach(id => {
   document.getElementById(id).addEventListener('change', refreshAll);
 });
-
 // ═══════════════════════════════════════════════════════════
 // POPULATE FILTER DROPDOWNS
 // ═══════════════════════════════════════════════════════════
@@ -919,7 +917,6 @@ async function populateFilters() {
     fillSelect('filter-medium', meds);
   } catch (e) { console.error('Filters:', e); }
 }
-
 function fillSelect(id, result, nameType) {
   const sel = document.getElementById(id);
   const cur = sel.value;
@@ -935,14 +932,12 @@ function fillSelect(id, result, nameType) {
   });
   sel.value = cur;
 }
-
 // ═══════════════════════════════════════════════════════════
 // 1. REALTIME
 // Uses only valid RT dimensions: unifiedScreenName, eventName, deviceCategory
 // Does NOT use pagePath, hostName, sessionSource, or customEvent: dims
 // ═══════════════════════════════════════════════════════════
 function startRT() { loadRT(); rtInterval = setInterval(loadRT, 30000); }
-
 async function loadRT() {
   try {
     // Active users by page title (unifiedScreenName is valid for RT)
@@ -965,10 +960,9 @@ async function loadRT() {
       try {
         const simple = await ga4RT({ metrics: [{ name: 'activeUsers' }] });
         document.getElementById('rt-users').textContent = simple.rows ? num(simple.rows[0].metricValues[0].value) : 0;
-      } catch (e2) { document.getElementById('rt-users').textContent = '\u2014'; }
+      } catch (e2) { document.getElementById('rt-users').textContent = '—'; }
       document.getElementById('rt-pages').innerHTML = '<div class="empty">Page breakdown unavailable</div>';
     }
-
     // Events in last 30 min (eventName is valid for RT)
     try {
       const events = await ga4RT({ dimensions: [{ name: 'eventName' }], metrics: [{ name: 'eventCount' }] });
@@ -981,7 +975,6 @@ async function loadRT() {
     } catch (e) {
       document.getElementById('rt-events').innerHTML = '<div class="empty">Events unavailable</div>';
     }
-
     // Traffic sources — use deviceCategory since sessionSource is NOT valid for RT
     try {
       const devices = await ga4RT({ dimensions: [{ name: 'deviceCategory' }], metrics: [{ name: 'activeUsers' }] });
@@ -996,16 +989,15 @@ async function loadRT() {
     }
   } catch (e) {
     console.error('RT fatal:', e);
-    document.getElementById('rt-users').textContent = '\u2014';
+    document.getElementById('rt-users').textContent = '—';
   }
 }
-
 // ═══════════════════════════════════════════════════════════
 // 2. USER JOURNEY
 // ═══════════════════════════════════════════════════════════
 async function loadJourney() {
   const el = document.getElementById('journey-content');
-  el.className = 'loading'; el.textContent = 'Loading\u2026';
+  el.className = 'loading'; el.textContent = 'Loading…';
   try {
     const data = await ga4(baseReq({
       dimensions: [{ name: 'eventName' }],
@@ -1016,7 +1008,6 @@ async function loadJourney() {
       ev[r.dimensionValues[0].value] = num(r.metricValues[0].value);
       us[r.dimensionValues[0].value] = num(r.metricValues[1].value);
     });
-
     const stages = [
       { label: 'Page View', key: 'page_view', color: '#e07a5f' },
       { label: 'Section Viewed', key: 'section_view', color: '#f2a894' },
@@ -1026,7 +1017,6 @@ async function loadJourney() {
       { label: 'Calendar Opened', key: 'calendar_funnel_step', color: '#7eb8da' },
       { label: 'Booking Submitted', key: 'schedule_meeting', color: '#6ec87a' },
     ];
-
     const pvCount = ev.page_view || 0, bk = ev.schedule_meeting || 0, cal = ev.calendar_funnel_step || 0;
     const totalUsers = us.page_view || 0;
     document.getElementById('journey-stats').innerHTML = statHTML([
@@ -1035,19 +1025,16 @@ async function loadJourney() {
       { v: bk, l: 'Bookings', c: 'sage' },
       { v: totalUsers, l: 'Total Users', c: 'blue' },
     ]);
-
     const ins = document.getElementById('journey-insight');
     const parts = [];
-    if (pvCount > 0 && bk > 0) parts.push(`<strong>${pct(bk, pvCount)}</strong> of page views \u2192 booking`);
-    if (cal > 0 && bk > 0) parts.push(`<strong>${pct(bk, cal)}</strong> calendar \u2192 booking`);
-    ins.innerHTML = parts.join(' \u00B7 ') || 'Waiting for data\u2026';
-
+    if (pvCount > 0 && bk > 0) parts.push(`<strong>${pct(bk, pvCount)}</strong> of page views → booking`);
+    if (cal > 0 && bk > 0) parts.push(`<strong>${pct(bk, cal)}</strong> calendar → booking`);
+    ins.innerHTML = parts.join(' · ') || 'Waiting for data…';
     const steps = stages.map(s => ({ label: s.label, users: us[s.key] || 0, events: ev[s.key] || 0, color: s.color }));
     el.className = '';
     el.innerHTML = renderFunnel(steps);
   } catch (e) { el.className = 'empty'; el.textContent = 'Failed: ' + e.message; }
 }
-
 // ═══════════════════════════════════════════════════════════
 // 3. HOMEPAGE ENGAGEMENT (mirrors Strategy Session layout)
 // ═══════════════════════════════════════════════════════════
@@ -1057,7 +1044,6 @@ async function loadHome() {
       { filter: { fieldName: 'hostName', stringFilter: { value: 'www.thesaltlickdenver.com', matchType: 'EXACT' } } },
       { filter: { fieldName: 'pagePath', stringFilter: { value: '/', matchType: 'EXACT' } } },
     ] } };
-
     const [scrollData, eventData, statsData, buttonData] = await Promise.all([
       ga4(baseReq({
         dimensions: [{ name: 'customEvent:section_name' }],
@@ -1081,7 +1067,6 @@ async function loadHome() {
         orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 15,
       })),
     ]);
-
     // Stats
     const ev = {};
     if (eventData.rows) eventData.rows.forEach(r => ev[r.dimensionValues[0].value] = num(r.metricValues[0].value));
@@ -1093,7 +1078,6 @@ async function loadHome() {
       { v: ev.section_view || 0, l: 'Sections Seen', c: 'gold' },
       { v: ev.button_click || 0, l: 'Button Clicks', c: 'sage' },
     ]);
-
     // Scroll chart
     const sLabels = [], sVals = [];
     if (scrollData.rows) scrollData.rows.forEach(r => { sLabels.push(r.dimensionValues[0].value); sVals.push(num(r.metricValues[0].value)); });
@@ -1102,7 +1086,6 @@ async function loadHome() {
       data: { labels: sLabels, datasets: [{ label: 'Views', data: sVals, backgroundColor: PALETTE[1] + '99', borderColor: PALETTE[1], borderWidth: 1 }] },
       options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } },
     });
-
     // Event chart
     const eLabels = [], eVals = [];
     if (eventData.rows) eventData.rows.sort((a, b) => num(b.metricValues[0].value) - num(a.metricValues[0].value))
@@ -1112,7 +1095,6 @@ async function loadHome() {
       data: { labels: eLabels, datasets: [{ label: 'Count', data: eVals, backgroundColor: PALETTE.map(c => c + '99'), borderColor: PALETTE, borderWidth: 1 }] },
       options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } },
     });
-
     // Button clicks chart
     const bLabels = [], bVals = [];
     if (buttonData.rows) buttonData.rows.forEach(r => {
@@ -1128,7 +1110,6 @@ async function loadHome() {
     });
   } catch (e) { console.error('Home:', e); }
 }
-
 // ═══════════════════════════════════════════════════════════
 // 4. STRATEGY SESSION
 // ═══════════════════════════════════════════════════════════
@@ -1138,7 +1119,6 @@ async function loadStrategy() {
       { filter: { fieldName: 'hostName', stringFilter: { value: 'www.thesaltlickdenver.com', matchType: 'EXACT' } } },
       { filter: { fieldName: 'pagePath', stringFilter: { value: '/free-strategy-session', matchType: 'EXACT' } } },
     ] } };
-
     const [scrollData, eventData, statsData, buttonData] = await Promise.all([
       ga4(baseReq({
         dimensions: [{ name: 'customEvent:section_name' }],
@@ -1162,7 +1142,6 @@ async function loadStrategy() {
         orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 15,
       })),
     ]);
-
     // Stats
     const ev = {};
     if (eventData.rows) eventData.rows.forEach(r => ev[r.dimensionValues[0].value] = num(r.metricValues[0].value));
@@ -1173,7 +1152,6 @@ async function loadStrategy() {
       { v: ev.schedule_meeting || 0, l: 'Bookings', c: 'sage' },
       { v: ev.calendar_funnel_step || 0, l: 'Calendar Opens', c: 'blue' },
     ]);
-
     // Scroll chart
     const sLabels = [], sVals = [];
     if (scrollData.rows) scrollData.rows.forEach(r => { sLabels.push(r.dimensionValues[0].value); sVals.push(num(r.metricValues[0].value)); });
@@ -1182,7 +1160,6 @@ async function loadStrategy() {
       data: { labels: sLabels, datasets: [{ label: 'Views', data: sVals, backgroundColor: PALETTE[1] + '99', borderColor: PALETTE[1], borderWidth: 1 }] },
       options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } },
     });
-
     // Event chart
     const eLabels = [], eVals = [];
     if (eventData.rows) eventData.rows.sort((a, b) => num(b.metricValues[0].value) - num(a.metricValues[0].value))
@@ -1192,7 +1169,6 @@ async function loadStrategy() {
       data: { labels: eLabels, datasets: [{ label: 'Count', data: eVals, backgroundColor: PALETTE.map(c => c + '99'), borderColor: PALETTE, borderWidth: 1 }] },
       options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } },
     });
-
     // Button clicks chart
     const bLabels = [], bVals = [];
     if (buttonData.rows) buttonData.rows.forEach(r => {
@@ -1208,7 +1184,6 @@ async function loadStrategy() {
     });
   } catch (e) { console.error('Strategy:', e); }
 }
-
 // ═══════════════════════════════════════════════════════════
 // 5. PROPOSALS
 // ═══════════════════════════════════════════════════════════
@@ -1216,7 +1191,6 @@ async function loadProposals() {
   const el = document.getElementById('proposal-pages');
   try {
     const docsFilter = { filter: { fieldName: 'hostName', stringFilter: { value: 'docs.thesaltlickdenver.com', matchType: 'EXACT' } } };
-
     const [pageData, eventData, dateData] = await Promise.all([
       ga4(baseReq({
         dimensions: [{ name: 'pagePath' }],
@@ -1236,7 +1210,6 @@ async function loadProposals() {
         orderBys: [{ dimension: { dimensionName: 'date' }, desc: true }], limit: 200,
       })),
     ]);
-
     // Stats
     const ev = {};
     if (eventData.rows) eventData.rows.forEach(r => ev[r.dimensionValues[0].value] = num(r.metricValues[0].value));
@@ -1247,7 +1220,6 @@ async function loadProposals() {
       { v: ev.proposal_accordion_click || 0, l: 'Accordion Clicks', c: 'sage' },
       { v: ev.proposal_cta_click || 0, l: 'CTA Clicks', c: 'blue' },
     ]);
-
     // Build date map
     const dateMap = {};
     if (dateData.rows) dateData.rows.forEach(r => {
@@ -1257,7 +1229,6 @@ async function loadProposals() {
       if (!dateMap[path]) dateMap[path] = [];
       dateMap[path].push({ date: date.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), views });
     });
-
     // Page list
     if (!pageData.rows || !pageData.rows.length) {
       el.innerHTML = '<div class="empty">No proposal views in this date range.</div>';
@@ -1276,7 +1247,6 @@ async function loadProposals() {
         </div>`;
       }).join('');
     }
-
     // Section & interaction chart
     const [secData] = await Promise.all([
       ga4(baseReq({
@@ -1298,7 +1268,91 @@ async function loadProposals() {
     });
   } catch (e) { console.error('Proposals:', e); el.innerHTML = '<div class="empty">Failed to load proposals.</div>'; }
 }
+// ═══════════════════════════════════════════════════════════
+// 5b. QUIZ RESPONSES
+// 4 stat cards (Starts / Completed / Qualified / Disqualified) +
+// 6 doughnut pies on completed quizzes. Mirrors loadPlacement/loadSource:
+// one ga4() call per pie grouping a customEvent:quiz_* dimension, filtered
+// to completed events via orGroup. Friendly labels applied in JS.
+//
+// Param availability per the GTM audit:
+//   - quiz_business_key, quiz_budget_key  → forwarded on BOTH qualified
+//     and disqualified, so those pies are filtered to both events.
+//   - quiz_hard_part_key, quiz_pace_key, quiz_value_key, quiz_tier
+//     → only forwarded on qualified, so those pies filter to qualified only.
+// ═══════════════════════════════════════════════════════════
+// Filter helpers reused across the quiz pies
+const QUIZ_COMPLETED = { orGroup: { expressions: [
+  { filter: { fieldName: 'eventName', stringFilter: { value: 'quiz_qualified', matchType: 'EXACT' } } },
+  { filter: { fieldName: 'eventName', stringFilter: { value: 'quiz_disqualified', matchType: 'EXACT' } } },
+] } };
+const QUIZ_QUALIFIED = { filter: { fieldName: 'eventName', stringFilter: { value: 'quiz_qualified', matchType: 'EXACT' } } };
+async function loadQuiz() {
+  // ── Stat cards: counts of start / completed / qualified / disqualified ──
+  try {
+    const countData = await ga4(baseReq({
+      dimensions: [{ name: 'eventName' }],
+      metrics: [{ name: 'eventCount' }],
+      dimensionFilter: { orGroup: { expressions: [
+        { filter: { fieldName: 'eventName', stringFilter: { value: 'quiz_start', matchType: 'EXACT' } } },
+        { filter: { fieldName: 'eventName', stringFilter: { value: 'quiz_qualified', matchType: 'EXACT' } } },
+        { filter: { fieldName: 'eventName', stringFilter: { value: 'quiz_disqualified', matchType: 'EXACT' } } },
+      ] } },
+    }));
+    const ec = {};
+    if (countData.rows) countData.rows.forEach(r => ec[r.dimensionValues[0].value] = num(r.metricValues[0].value));
+    const starts = ec.quiz_start || 0;
+    const qualified = ec.quiz_qualified || 0;
+    const disqualified = ec.quiz_disqualified || 0;
+    const completed = qualified + disqualified;
+    document.getElementById('quiz-stats').innerHTML = statHTML([
+      { v: starts, l: 'Starts', c: 'coral' },
+      { v: completed, l: 'Completed', c: 'blue' },
+      { v: qualified, l: 'Qualified', c: 'sage' },
+      { v: disqualified, l: 'Disqualified', c: 'red' },
+    ]);
+    const ins = document.getElementById('quiz-insight');
+    const parts = [];
+    if (starts > 0 && completed > 0) parts.push(`<strong>${pct(completed, starts)}</strong> of starts completed the quiz`);
+    if (completed > 0 && qualified > 0) parts.push(`<strong>${pct(qualified, completed)}</strong> of completions qualified`);
+    ins.innerHTML = parts.join(' · ') || 'Waiting for quiz data…';
+  } catch (e) { console.error('Quiz stats:', e); }
 
+  // ── 6 pies ── one ga4() call each, fired together (6 + 1 stat = 7 calls).
+  // Each spec: dim = the customEvent dimension, filter = which events,
+  // map = which QUIZ_LABELS table to apply (null = use raw value, e.g. tier).
+  const pies = [
+    { key: 'quizBusiness', canvas: 'chart-quiz-business', dim: 'customEvent:quiz_business_key', filter: QUIZ_COMPLETED, map: 'business' },
+    { key: 'quizHardPart', canvas: 'chart-quiz-hardpart', dim: 'customEvent:quiz_hard_part_key', filter: QUIZ_QUALIFIED, map: 'hard_part' },
+    { key: 'quizPace',     canvas: 'chart-quiz-pace',     dim: 'customEvent:quiz_pace_key',      filter: QUIZ_QUALIFIED, map: 'pace' },
+    { key: 'quizValue',    canvas: 'chart-quiz-value',    dim: 'customEvent:quiz_value_key',     filter: QUIZ_QUALIFIED, map: 'value' },
+    { key: 'quizBudget',   canvas: 'chart-quiz-budget',   dim: 'customEvent:quiz_budget_key',    filter: QUIZ_COMPLETED, map: 'budget' },
+    { key: 'quizTier',     canvas: 'chart-quiz-tier',     dim: 'customEvent:quiz_tier',          filter: QUIZ_QUALIFIED, map: null },
+  ];
+  const results = await Promise.allSettled(pies.map(p => ga4(baseReq({
+    dimensions: [{ name: p.dim }],
+    metrics: [{ name: 'eventCount' }],
+    dimensionFilter: p.filter,
+    orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+    limit: 25,
+  }))));
+  results.forEach((res, i) => {
+    const p = pies[i];
+    if (res.status !== 'fulfilled') { console.error('Quiz pie failed:', p.key, res.reason); return; }
+    const rows = res.value.rows || [];
+    const labels = [], vals = [];
+    rows.forEach(r => {
+      const raw = r.dimensionValues[0].value;
+      labels.push(p.map ? quizLabel(p.map, raw) : (raw && raw !== '(not set)' ? raw : '(not set)'));
+      vals.push(num(r.metricValues[0].value));
+    });
+    safeChart(p.key, p.canvas, {
+      type: 'doughnut',
+      data: { labels, datasets: [{ data: vals, backgroundColor: PALETTE.slice(0, labels.length) }] },
+      options: { responsive: true, plugins: { legend: { position: 'right' } } },
+    });
+  });
+}
 // ═══════════════════════════════════════════════════════════
 // 6. VIDEO
 // ═══════════════════════════════════════════════════════════
@@ -1310,7 +1364,6 @@ async function loadVideo() {
       dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { value: 'video_engagement', matchType: 'EXACT' } } },
       orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 40,
     }));
-
     const titles = new Set();
     const actionMap = {};
     if (data.rows) data.rows.forEach(r => {
@@ -1320,7 +1373,6 @@ async function loadVideo() {
       if (!actionMap[action]) actionMap[action] = {};
       actionMap[action][title] = num(r.metricValues[0].value);
     });
-
     const titleArr = [...titles];
     const actions = ['play', 'milestone', 'pause', 'complete'];
     const datasets = actions.filter(a => actionMap[a]).map((a, i) => ({
@@ -1330,13 +1382,11 @@ async function loadVideo() {
       borderColor: PALETTE[i],
       borderWidth: 1,
     }));
-
     // Insight
     const ins = document.getElementById('video-insight');
     const totalPlays = Object.values(actionMap.play || {}).reduce((s, v) => s + v, 0);
     const totalComplete = Object.values(actionMap.complete || {}).reduce((s, v) => s + v, 0);
     if (totalPlays > 0) ins.innerHTML = `<strong>${totalPlays}</strong> plays, <strong>${totalComplete}</strong> completions (<strong>${pct(totalComplete, totalPlays)}</strong> completion rate)`;
-
     safeChart('video', 'chart-video', {
       type: 'bar',
       data: { labels: titleArr, datasets },
@@ -1344,7 +1394,6 @@ async function loadVideo() {
     });
   } catch (e) { console.error('Video:', e); }
 }
-
 // ═══════════════════════════════════════════════════════════
 // 7. ROI CALCULATOR
 // ═══════════════════════════════════════════════════════════
@@ -1355,24 +1404,20 @@ async function loadCalc() {
       metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
       dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { value: 'calculator_interaction', matchType: 'EXACT' } } },
     }));
-
     const ev = {}, us = {};
     if (data.rows) data.rows.forEach(r => {
       ev[r.dimensionValues[0].value] = num(r.metricValues[0].value);
       us[r.dimensionValues[0].value] = num(r.metricValues[1].value);
     });
-
     document.getElementById('calc-stats').innerHTML = statHTML([
       { v: ev.first_interaction || 0, l: 'First Interaction', c: 'coral' },
       { v: ev.input_change || 0, l: 'Input Changes', c: 'gold' },
       { v: ev.slider_change || 0, l: 'Slider Changes', c: 'sage' },
       { v: ev.cta_click || 0, l: 'CTA Clicks', c: 'blue' },
     ]);
-
     const ins = document.getElementById('calc-insight');
     const fi = us.first_interaction || 0, cta = us.cta_click || 0;
     if (fi > 0 && cta > 0) ins.innerHTML = `<strong>${pct(cta, fi)}</strong> of users who started the calculator clicked the CTA.`;
-
     const labels = Object.keys(ev);
     const vals = Object.values(ev);
     safeChart('calc', 'chart-calc', {
@@ -1382,7 +1427,6 @@ async function loadCalc() {
     });
   } catch (e) { console.error('Calc:', e); }
 }
-
 // ═══════════════════════════════════════════════════════════
 // 8. PORTFOLIO
 // ═══════════════════════════════════════════════════════════
@@ -1394,7 +1438,6 @@ async function loadPortfolio() {
       dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { value: 'portfolio_interaction', matchType: 'EXACT' } } },
       orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 50,
     }));
-
     const clients = new Set();
     const actionMap = {};
     if (data.rows) data.rows.forEach(r => {
@@ -1404,7 +1447,6 @@ async function loadPortfolio() {
       if (!actionMap[action]) actionMap[action] = {};
       actionMap[action][client] = num(r.metricValues[0].value);
     });
-
     const clientArr = [...clients];
     const actKeys = Object.keys(actionMap);
     const datasets = actKeys.map((a, i) => ({
@@ -1414,7 +1456,6 @@ async function loadPortfolio() {
       borderColor: PALETTE[i % PALETTE.length],
       borderWidth: 1,
     }));
-
     const ins = document.getElementById('portfolio-insight');
     if (clientArr.length > 0) {
       const totals = {};
@@ -1422,7 +1463,6 @@ async function loadPortfolio() {
       const top = Object.entries(totals).sort((a, b) => b[1] - a[1])[0];
       ins.innerHTML = `Most viewed client: <strong>${esc(top[0])}</strong> with ${top[1]} interactions.`;
     }
-
     safeChart('portfolio', 'chart-portfolio', {
       type: 'bar',
       data: { labels: clientArr, datasets },
@@ -1430,7 +1470,6 @@ async function loadPortfolio() {
     });
   } catch (e) { console.error('Portfolio:', e); }
 }
-
 // ═══════════════════════════════════════════════════════════
 // 9. FAQ
 // ═══════════════════════════════════════════════════════════
@@ -1455,7 +1494,6 @@ async function loadFAQ() {
     });
   } catch (e) { console.error('FAQ:', e); }
 }
-
 // ═══════════════════════════════════════════════════════════
 // 10. AD PERFORMANCE & ATTRIBUTION
 // ═══════════════════════════════════════════════════════════
@@ -1475,7 +1513,6 @@ async function loadAds() {
       orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
       limit: 200,
     }));
-
     // Step 2: Get per-ad event breakdown (separate call for detail stats)
     let detailData = null;
     try {
@@ -1485,7 +1522,6 @@ async function loadAds() {
         limit: 500,
       }));
     } catch (e2) { console.warn('Ad detail call failed, building cards from table data:', e2); }
-
     // Build per-ad event map from detail data (if available)
     const adEvents = {};
     if (detailData && detailData.rows) detailData.rows.forEach(r => {
@@ -1494,7 +1530,6 @@ async function loadAds() {
       if (!adEvents[adId]) adEvents[adId] = {};
       adEvents[adId][event] = (adEvents[adId][event] || 0) + num(r.metricValues[0].value);
     });
-
     // Build table data
     attrData = [];
     if (data.rows) data.rows.forEach(r => {
@@ -1512,7 +1547,6 @@ async function loadAds() {
         calendar: ae.calendar_funnel_step || 0,
       });
     });
-
     // Top 5 ad cards — aggregate per ad_id, excluding (not set)
     const adTotals = {};
     // Prefer detail data if available, otherwise fall back to table data
@@ -1533,7 +1567,6 @@ async function loadAds() {
         adTotals[r.ad].events += r.events;
       });
     }
-
     console.log('Top ads found:', Object.keys(adTotals).length, adTotals);
     const top5 = Object.entries(adTotals).sort((a, b) => b[1].events - a[1].events).slice(0, 5);
     topEl.innerHTML = top5.length ? top5.map(([id, s], i) => `
@@ -1548,7 +1581,6 @@ async function loadAds() {
         </div>
       </div>
     `).join('') : '<div class="empty" style="grid-column:1/-1">No ad data with identified IDs in this date range.</div>';
-
     renderAttrTable();
   } catch (e) {
     console.error('Ads:', e);
@@ -1556,11 +1588,9 @@ async function loadAds() {
     topEl.innerHTML = '<div class="empty" style="grid-column:1/-1">Failed to load top ads.</div>';
   }
 }
-
 function renderAttrTable() {
   const el = document.getElementById('attribution-content');
   if (!attrData.length) { el.innerHTML = '<div class="empty">No attribution data.</div>'; return; }
-
   // Sort
   if (attrSortCol >= 0) {
     const cols = ['src', 'med', 'camp', 'ad', 'events', 'users', 'bookings', 'sections', 'calendar'];
@@ -1571,7 +1601,6 @@ function renderAttrTable() {
       return attrSortAsc ? String(av).localeCompare(String(bv)) : String(bv).localeCompare(String(av));
     });
   }
-
   const headers = ['Source', 'Placement', 'Campaign', 'Ad', 'Events', 'Users', 'Bookings', 'Sections', 'Calendar'];
   let html = '<div class="table-wrap"><table class="dt"><thead><tr>';
   headers.forEach((h, i) => {
@@ -1595,18 +1624,14 @@ function renderAttrTable() {
   html += '</tbody></table></div>';
   el.innerHTML = html;
 }
-
 function sortAttr(col) {
   if (attrSortCol === col) attrSortAsc = !attrSortAsc;
   else { attrSortCol = col; attrSortAsc = true; }
   renderAttrTable();
 }
-
 // Cache raw pie chart data so the toggle can re-render without re-fetching
 let placementRaw = [], sourceRaw = [];
-
 function hideNotSet() { return document.getElementById('hide-notset').checked; }
-
 async function loadPlacement() {
   try {
     // Only fetch if cache is empty (first load); toggle re-renders from cache
@@ -1628,7 +1653,6 @@ async function loadPlacement() {
     });
   } catch (e) { console.error('Placement:', e); }
 }
-
 async function loadSource() {
   try {
     if (!sourceRaw.length) {
@@ -1649,7 +1673,6 @@ async function loadSource() {
     });
   } catch (e) { console.error('Source:', e); }
 }
-
 // ═══════════════════════════════════════════════════════════
 // 11. BOOKING FUNNEL
 // ═══════════════════════════════════════════════════════════
@@ -1665,13 +1688,11 @@ async function loadFunnel() {
         { filter: { fieldName: 'eventName', stringFilter: { value: 'schedule_meeting', matchType: 'EXACT' } } },
       ] } },
     }));
-
     const ev = {}, us = {};
     if (data.rows) data.rows.forEach(r => {
       ev[r.dimensionValues[0].value] = num(r.metricValues[0].value);
       us[r.dimensionValues[0].value] = num(r.metricValues[1].value);
     });
-
     const funnelSteps = [
       { label: 'Calendar View', key: 'calendar_view', color: '#e07a5f' },
       { label: 'Date Selected', key: 'date_selected', color: '#f2a894' },
@@ -1680,9 +1701,7 @@ async function loadFunnel() {
       { label: 'Form Interaction', key: 'form_interaction', color: '#7eb8da' },
       { label: 'Booking Submitted', key: 'booking_submitted', color: '#6ec87a' },
     ];
-
     const steps = funnelSteps.map(s => ({ label: s.label, users: us[s.key] || 0, events: ev[s.key] || 0, color: s.color }));
-
     // Stats
     const calView = us.calendar_view || 0;
     const booked = us.booking_submitted || 0;
@@ -1692,13 +1711,10 @@ async function loadFunnel() {
       { v: booked, l: 'Booked', c: 'sage' },
       { v: us.form_interaction || 0, l: 'Form Starts', c: 'blue' },
     ]);
-
     // Insight
     const ins = document.getElementById('funnel-insight');
     if (calView > 0 && booked > 0) ins.innerHTML = `<strong>${pct(booked, calView)}</strong> calendar-to-booking conversion rate.`;
-
     el.innerHTML = renderFunnel(steps);
-
     // Form abandonment
     const formShown = us.form_shown || 0;
     const formInt = us.form_interaction || 0;
@@ -1719,7 +1735,6 @@ async function loadFunnel() {
     }
   } catch (e) { console.error('Funnel:', e); el.innerHTML = '<div class="empty">Failed to load funnel.</div>'; }
 }
-
 async function loadPrebook() {
   const el = document.getElementById('prebook-content');
   try {
@@ -1731,19 +1746,16 @@ async function loadPrebook() {
       dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { value: 'schedule_meeting', matchType: 'EXACT' } } },
     }));
     const totalBookers = bookerData.rows ? num(bookerData.rows[0].metricValues[0].value) : 0;
-
     if (totalBookers === 0) {
       el.innerHTML = '<div class="empty">No booking data to analyze.</div>';
       return;
     }
-
     // Get all event types and their user counts
     const allData = await ga4(baseReq({
       dimensions: [{ name: 'eventName' }],
       metrics: [{ name: 'totalUsers' }],
       orderBys: [{ metric: { metricName: 'totalUsers' }, desc: true }],
     }));
-
     const relevantEvents = ['section_view', 'video_engagement', 'calculator_interaction', 'portfolio_interaction', 'faq_click', 'button_click', 'periodic_card_click'];
     const rows = [];
     if (allData.rows) allData.rows.forEach(r => {
@@ -1752,7 +1764,6 @@ async function loadPrebook() {
         rows.push({ name, users: num(r.metricValues[0].value) });
       }
     });
-
     let html = '<div style="display:flex;flex-direction:column;gap:6px">';
     rows.forEach(r => {
       const overlap = Math.min(r.users, totalBookers);
@@ -1771,7 +1782,6 @@ async function loadPrebook() {
     el.innerHTML = html;
   } catch (e) { console.error('Prebook:', e); el.innerHTML = '<div class="empty">Failed to load.</div>'; }
 }
-
 async function loadAdFunnel() {
   const el = document.getElementById('ad-funnel-content');
   try {
@@ -1784,7 +1794,6 @@ async function loadAdFunnel() {
       ] } },
       orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 200,
     }));
-
     const adMap = {};
     if (data.rows) data.rows.forEach(r => {
       const ad = r.dimensionValues[0].value;
@@ -1794,13 +1803,10 @@ async function loadAdFunnel() {
       adMap[ad].ev[action] = num(r.metricValues[0].value);
       adMap[ad].us[action] = num(r.metricValues[1].value);
     });
-
     const funnelKeys = ['calendar_view', 'date_selected', 'time_selected', 'form_shown', 'booking_submitted'];
     const funnelLabels = ['Calendar View', 'Date Selected', 'Time Selected', 'Form Shown', 'Booked'];
     const adIds = Object.keys(adMap);
-
     if (!adIds.length) { el.innerHTML = '<div class="empty">No ad funnel data.</div>'; return; }
-
     // Build a table
     let html = '<div class="table-wrap"><table class="dt"><thead><tr><th>Ad</th>';
     funnelLabels.forEach(l => html += `<th>${l}</th>`);
@@ -1815,7 +1821,6 @@ async function loadAdFunnel() {
     el.innerHTML = html;
   } catch (e) { console.error('Ad funnel:', e); el.innerHTML = '<div class="empty">Failed to load.</div>'; }
 }
-
 // ═══════════════════════════════════════════════════════════
 // NAME MANAGER
 // ═══════════════════════════════════════════════════════════
@@ -1823,11 +1828,9 @@ function openNameManager() {
   document.getElementById('name-manager-overlay').classList.add('active');
   renderNameRows();
 }
-
 function closeNameManager() {
   document.getElementById('name-manager-overlay').classList.remove('active');
 }
-
 function renderNameRows() {
   ['campaign', 'ad'].forEach(type => {
     const list = document.getElementById(type === 'campaign' ? 'campaign-names-list' : 'ad-names-list');
@@ -1841,7 +1844,6 @@ function renderNameRows() {
     });
   });
 }
-
 function addNameRow(type) {
   const list = document.getElementById(type === 'campaign' ? 'campaign-names-list' : 'ad-names-list');
   const row = document.createElement('div');
@@ -1849,7 +1851,6 @@ function addNameRow(type) {
   row.innerHTML = `<input placeholder="ID" data-type="${type}"><input placeholder="Friendly name"><button class="btn-icon" onclick="this.parentElement.remove()">&times;</button>`;
   list.appendChild(row);
 }
-
 function saveNameManager() {
   nameMap = { campaigns: {}, ads: {} };
   document.querySelectorAll('#campaign-names-list .name-row').forEach(row => {
@@ -1866,14 +1867,12 @@ function saveNameManager() {
   closeNameManager();
   refreshAll();
 }
-
 function exportCSV() {
   const lines = ['type,id,name'];
   Object.entries(nameMap.campaigns).forEach(([id, name]) => lines.push(`campaign,${id},${name}`));
   Object.entries(nameMap.ads).forEach(([id, name]) => lines.push(`ad,${id},${name}`));
   document.getElementById('csv-area').value = lines.join('\n');
 }
-
 function importCSV() {
   const text = document.getElementById('csv-area').value.trim();
   if (!text) return;

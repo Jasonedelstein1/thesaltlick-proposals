@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aesthetic Negotiators — Landing Page Analytics</title>
+<script>
+const CONFIG = {
+  GA4_PROPERTY:  'properties/540421078',   // Aesthetic Negotiators (G-F50YGXJ3PW)
+  CLIENT_ID:     '747535226184-qhv035vqnf1solb61mvu5rspkrvimsn4.apps.googleusercontent.com',
+};
+</script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── VARIABLES — Aesthetic Negotiators light theme ─── */
+:root {
+  --bg: #f5f8fc;
+  --bg-raised: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f9fbfe;
+  --bg-input: #f1f5fa;
+  --bg-tint: #e8eff8;
+  --border: #d9e3f0;
+  --border-light: #e4ecf6;
+  --text: #3d4042;
+  --text-secondary: #6b7480;
+  --text-muted: #98a3b3;
+  --blue: #437bc2;
+  --blue-dim: rgba(67,123,194,0.10);
+  --blue-glow: rgba(67,123,194,0.22);
+  --coral: #f4806b;
+  --coral-dim: rgba(244,128,107,0.12);
+  --navy: #3f5ca1;
+  --navy-dim: rgba(63,92,161,0.10);
+  --sage: #5ba884;
+  --sage-dim: rgba(91,168,132,0.12);
+  --gold: #d9a441;
+  --gold-dim: rgba(217,164,65,0.12);
+  --red: #d95757;
+  --red-dim: rgba(217,87,87,0.10);
+  --green: #3f9e63;
+  --green-dim: rgba(63,158,99,0.12);
+  --purple: #8a7fc7;
+  --purple-dim: rgba(138,127,199,0.10);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --radius-xs: 5px;
+  --shadow: 0 2px 8px rgba(63,92,161,0.08);
+  --shadow-lg: 0 8px 32px rgba(63,92,161,0.14);
+  --font: 'Be Vietnam Pro', -apple-system, 'Segoe UI', sans-serif;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* ── RESET ─────────────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.5; min-height:100vh; -webkit-font-smoothing:antialiased; }
+/* ── SCROLLBAR ─────────────────────────────────────── */
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:#c4d2e4; border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:#a8bbd4; }
+/* ── GATES ─────────────────────────────────────────── */
+.gate-screen {
+  display:flex; align-items:center; justify-content:center; min-height:100vh;
+  background: radial-gradient(ellipse at 30% 20%, rgba(67,123,194,0.10) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 80%, rgba(244,128,107,0.08) 0%, transparent 50%),
+              var(--bg-tint);
+}
+.gate-screen.hidden { display:none; }
+.gate-box {
+  background:var(--bg-card); border-radius:20px; padding:48px 40px; text-align:center;
+  max-width:380px; width:92%; box-shadow:var(--shadow-lg); border:1px solid var(--border);
+}
+.gate-box .logo { font-size:18px; letter-spacing:0.01em; color:var(--blue); margin-bottom:28px; }
+.gate-box .logo .lt { font-weight:200; }
+.gate-box .logo .bd { font-weight:700; }
+.gate-box h1 { font-size:24px; font-weight:300; margin-bottom:6px; color:var(--blue); }
+.gate-box p { font-size:13px; color:var(--text-secondary); margin-bottom:24px; }
+.btn {
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  width:100%; padding:12px; border:none; border-radius:var(--radius-sm);
+  background:var(--coral); color:#fff; font-size:13px; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.06em;
+  font-family:var(--font); cursor:pointer; transition:0.2s var(--ease);
+}
+.btn:hover { background:#e76a54; box-shadow:0 4px 20px rgba(244,128,107,0.4); }
+/* ── LAYOUT ────────────────────────────────────────── */
+#dashboard { display:none; }
+.dash-header {
+  display:flex; align-items:center; justify-content:space-between; padding:14px 24px;
+  background:var(--bg-tint); border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:100; flex-wrap:wrap; gap:10px;
+}
+.dash-header-left { display:flex; align-items:center; gap:12px; }
+.dash-header-left .logo-mark { font-size:16px; color:var(--blue); white-space:nowrap; }
+.dash-header-left .logo-mark .lt { font-weight:200; }
+.dash-header-left .logo-mark .bd { font-weight:700; }
+.dash-header-left h1 { font-size:13px; font-weight:400; color:var(--text-secondary); border-left:1px solid var(--border); padding-left:12px; }
+.dash-controls { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.dash-controls label { font-size:10px; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.05em; }
+input[type="date"], select {
+  padding:7px 10px; border:1px solid var(--border); border-radius:var(--radius-xs);
+  background:var(--bg-raised); color:var(--text); font-family:var(--font); font-size:12px; transition:0.2s;
+}
+input[type="date"]:focus, select:focus { outline:none; border-color:var(--blue); }
+.btn-sm {
+  padding:7px 14px; border:none; border-radius:var(--radius-xs);
+  background:var(--coral); color:#fff; font-size:11px; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.05em;
+  font-family:var(--font); cursor:pointer; transition:0.15s;
+}
+.btn-sm:hover { background:#e76a54; }
+.btn-ghost { background:transparent; border:1px solid var(--border); color:var(--text-secondary); }
+.btn-ghost:hover { border-color:var(--blue); color:var(--blue); background:var(--blue-dim); }
+/* ── FILTER BAR ────────────────────────────────────── */
+.filters-bar {
+  display:flex; align-items:center; gap:10px; padding:10px 24px;
+  background:var(--bg-raised); border-bottom:1px solid var(--border); flex-wrap:wrap;
+}
+.filters-bar label { font-size:10px; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.05em; }
+/* ── SIDEBAR ───────────────────────────────────────── */
+.dash-body { display:flex; }
+.sidebar {
+  width:200px; flex-shrink:0; background:var(--bg-raised); border-right:1px solid var(--border);
+  padding:16px 0; position:sticky; top:92px; height:calc(100vh - 92px); overflow-y:auto;
+}
+.sidebar a {
+  display:flex; align-items:center; gap:8px; padding:9px 20px; font-size:12px; font-weight:500;
+  color:var(--text-secondary); text-decoration:none; transition:0.15s; cursor:pointer;
+}
+.sidebar a:hover { color:var(--text); background:var(--bg-tint); }
+.sidebar a.active { color:var(--blue); background:var(--blue-dim); border-right:2px solid var(--blue); font-weight:600; }
+.sidebar .nav-group { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); padding:16px 20px 6px; }
+.main-content { flex:1; min-width:0; padding:20px 24px; min-height:calc(100vh - 92px); }
+/* ── MOBILE NAV ────────────────────────────────────── */
+.mobile-nav-toggle {
+  display:none; background:none; border:1px solid var(--border); color:var(--text);
+  border-radius:var(--radius-xs); width:36px; height:36px; cursor:pointer;
+  font-size:18px; align-items:center; justify-content:center; flex-shrink:0;
+}
+.sidebar-overlay {
+  display:none; position:fixed; inset:0; background:rgba(61,64,66,0.35);
+  backdrop-filter:blur(2px); z-index:199;
+}
+.sidebar-overlay.active { display:block; }
+@media (max-width:900px) {
+  .mobile-nav-toggle { display:flex; }
+  .sidebar {
+    position:fixed; left:-260px; top:0; height:100vh; z-index:200;
+    width:240px; transition:left 0.25s var(--ease); box-shadow:var(--shadow-lg);
+  }
+  .sidebar.open { left:0; }
+  .main-content { padding:16px; }
+  .dash-header { padding:10px 16px; }
+  .filters-bar { padding:8px 16px; }
+  .dash-header-left h1 { display:none; }
+}
+/* ── SECTIONS ──────────────────────────────────────── */
+.section { display:none; }
+.section.active { display:block; }
+.section-title { font-size:22px; font-weight:300; margin-bottom:4px; color:var(--blue); }
+.section-desc { font-size:13px; color:var(--text-secondary); margin-bottom:20px; }
+/* ── GRID ──────────────────────────────────────────── */
+.grid { display:grid; gap:16px; }
+.grid-2 { grid-template-columns:1fr 1fr; }
+.grid-3 { grid-template-columns:1fr 1fr 1fr; }
+.grid-4 { grid-template-columns:repeat(4,1fr); }
+.grid-full { grid-column:1/-1; }
+@media (max-width:900px) { .grid-2,.grid-3,.grid-4 { grid-template-columns:1fr; } }
+@media (min-width:901px) and (max-width:1200px) { .grid-3,.grid-4 { grid-template-columns:1fr 1fr; } }
+/* ── CARD ──────────────────────────────────────────── */
+.card {
+  background:var(--bg-card); border-radius:var(--radius); padding:20px;
+  border:1px solid var(--border); box-shadow:var(--shadow); transition:0.2s var(--ease);
+}
+.card:hover { border-color:#c2d2e8; }
+.card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.card-header h3 { font-size:13px; font-weight:600; color:var(--navy); display:flex; align-items:center; gap:6px; }
+.card-header .tag { font-size:10px; font-weight:600; padding:2px 8px; border-radius:20px; }
+.tag-coral { background:var(--coral-dim); color:#d96047; }
+.tag-blue { background:var(--blue-dim); color:var(--blue); }
+.tag-sage { background:var(--sage-dim); color:var(--sage); }
+.tag-gold { background:var(--gold-dim); color:#b3832a; }
+.tag-red { background:var(--red-dim); color:var(--red); }
+.card-insight {
+  font-size:12px; color:var(--text-secondary); line-height:1.5;
+  padding:10px 14px; background:var(--bg-tint); border-radius:var(--radius-sm);
+  margin-bottom:14px; border-left:2px solid var(--coral);
+}
+.card-insight:empty { display:none; }
+.card-insight strong { color:var(--blue); }
+/* ── STAT CARDS ────────────────────────────────────── */
+.stat {
+  padding:16px; border-radius:var(--radius-sm); text-align:center;
+  background:var(--bg-card); border:1px solid var(--border); box-shadow:var(--shadow);
+}
+.stat .stat-val { font-size:28px; font-weight:200; letter-spacing:-0.02em; color:var(--blue); }
+.stat .stat-label { font-size:10px; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em; margin-top:2px; }
+.stat.coral .stat-val { color:var(--coral); }
+.stat.blue .stat-val { color:var(--blue); }
+.stat.navy .stat-val { color:var(--navy); }
+.stat.sage .stat-val { color:var(--sage); }
+.stat.gold .stat-val { color:var(--gold); }
+.stat.red .stat-val { color:var(--red); }
+/* ── REALTIME ──────────────────────────────────────── */
+.rt-big-number { text-align:center; padding:24px; }
+.rt-big-number .number { font-size:56px; font-weight:100; color:var(--green); letter-spacing:-0.03em; line-height:1; }
+.rt-big-number .label { font-size:12px; color:var(--text-secondary); margin-top:6px; font-weight:500; }
+.rt-pulse { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; color:var(--green); margin-bottom:12px; }
+.rt-dot { width:7px; height:7px; border-radius:50%; background:var(--green); animation:pulse 2s ease infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.4)} }
+.rt-page-list { font-size:12px; }
+.rt-page-row { display:flex; align-items:center; gap:10px; padding:6px 0; border-bottom:1px solid var(--border-light); }
+.rt-page-row:last-child { border:none; }
+.rt-page-count { font-weight:700; min-width:28px; color:var(--green); }
+.rt-page-path { color:var(--text-secondary); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.rt-events { max-height:300px; overflow-y:auto; }
+.rt-event-row { display:flex; align-items:center; gap:10px; padding:5px 0; border-bottom:1px solid var(--border-light); font-size:11px; }
+.rt-event-name { font-weight:600; color:var(--blue); min-width:140px; }
+.rt-event-count { font-weight:700; min-width:36px; text-align:right; }
+/* ── FUNNEL ────────────────────────────────────────── */
+.funnel { display:flex; flex-direction:column; gap:3px; }
+.funnel-step { display:flex; align-items:center; gap:10px; padding:4px 0; }
+.funnel-num {
+  font-size:10px; font-weight:800; color:#fff; background:var(--blue);
+  width:20px; height:20px; border-radius:50%; display:flex; align-items:center;
+  justify-content:center; flex-shrink:0;
+}
+.funnel-label { font-size:12px; font-weight:500; min-width:120px; }
+.funnel-bar-wrap { flex:1; height:28px; background:var(--bg-tint); border-radius:var(--radius-xs); overflow:hidden; }
+.funnel-bar {
+  height:100%; border-radius:var(--radius-xs); transition:width 0.8s var(--ease);
+  display:flex; align-items:center; justify-content:flex-end; padding-right:8px; min-width:3px;
+}
+.funnel-bar span { font-size:11px; font-weight:700; color:#fff; text-shadow:0 1px 3px rgba(0,0,0,0.3); }
+.funnel-meta { text-align:right; min-width:55px; }
+.funnel-val { font-size:14px; font-weight:700; color:var(--navy); }
+.funnel-drop { font-size:10px; color:var(--red); font-weight:600; display:block; }
+.funnel-drop.ok { color:var(--sage); }
+/* ── TABLES ────────────────────────────────────────── */
+.table-wrap { overflow-x:auto; }
+table.dt { width:100%; border-collapse:collapse; font-size:12px; }
+table.dt th {
+  text-align:left; padding:8px 10px; font-weight:600; font-size:10px;
+  text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted);
+  border-bottom:1px solid var(--border); white-space:nowrap; cursor:pointer; user-select:none;
+}
+table.dt th:hover { color:var(--blue); }
+table.dt th.sorted-asc::after { content:' ▲'; font-size:8px; }
+table.dt th.sorted-desc::after { content:' ▼'; font-size:8px; }
+table.dt td { padding:8px 10px; border-bottom:1px solid var(--border-light); }
+table.dt tr:hover td { background:var(--blue-dim); }
+table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight:500; }
+.chart-wrap { position:relative; width:100%; }
+.chart-wrap canvas { width:100% !important; }
+/* ── LOADING / EMPTY ───────────────────────────────── */
+.loading { text-align:center; padding:40px; color:var(--text-muted); font-size:13px; }
+.loading::after { content:''; display:inline-block; width:16px; height:16px; border:2px solid var(--blue); border-top-color:transparent; border-radius:50%; animation:spin 0.6s linear infinite; margin-left:8px; vertical-align:middle; }
+@keyframes spin { to{transform:rotate(360deg)} }
+.empty { text-align:center; padding:32px; color:var(--text-muted); font-size:12px; }
+</style>
+</head>
+<body>
+<!-- ═══ OAUTH GATE ═══ -->
+<div class="gate-screen" id="oauth-screen">
+  <div class="gate-box">
+    <div class="logo"><span class="lt">Aesthetic</span><span class="bd">Negotiators</span></div>
+    <h1>Connect Analytics</h1>
+    <p>Sign in with Google to access GA4 data for ads.aestheticnegotiators.com.</p>
+    <button class="btn" onclick="initOAuth()">
+      <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.9 33.4 29.4 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 3l5.7-5.7C34 5.9 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.2-2.7-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.5 18.8 12 24 12c3 0 5.8 1.1 7.9 3l5.7-5.7C34 5.9 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.8 13.4-5l-6.2-5.2C29.2 35.2 26.7 36 24 36c-5.3 0-9.9-3.6-11.3-8.5l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4.1 5.5l6.2 5.2C36.8 39.2 44 34 44 24c0-1.3-.2-2.7-.4-3.9z"/></svg>
+      Sign in with Google
+    </button>
+    <p id="oauth-error" style="color:var(--red);font-size:12px;margin-top:10px;display:none"></p>
+  </div>
+</div>
+<!-- ═══ DASHBOARD ═══ -->
+<div id="dashboard">
+  <!-- Header -->
+  <div class="dash-header">
+    <div class="dash-header-left">
+      <button class="mobile-nav-toggle" onclick="toggleMobileNav()" aria-label="Menu">&#9776;</button>
+      <span class="logo-mark"><span class="lt">Aesthetic</span><span class="bd">Negotiators</span></span>
+      <h1>Landing Page Analytics</h1>
+    </div>
+    <div class="dash-controls">
+      <label>From</label><input type="date" id="date-start">
+      <label>To</label><input type="date" id="date-end">
+      <button class="btn-sm" onclick="refreshAll()">Refresh</button>
+    </div>
+  </div>
+  <!-- Global Filters -->
+  <div class="filters-bar">
+    <label>Source</label><select id="filter-source"><option value="">All</option></select>
+    <label>Medium</label><select id="filter-medium"><option value="">All</option></select>
+    <label>Campaign</label><select id="filter-campaign"><option value="">All</option></select>
+    <label>Device</label>
+    <select id="filter-device"><option value="">All</option><option value="desktop">Desktop</option><option value="mobile">Mobile</option><option value="tablet">Tablet</option></select>
+  </div>
+  <div class="dash-body">
+    <!-- Sidebar overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleMobileNav()"></div>
+    <!-- Sidebar Nav -->
+    <nav class="sidebar" id="sidebar-nav">
+      <div class="nav-group">Overview</div>
+      <a class="active" data-section="sec-realtime" onclick="showSection(this)">Live Activity</a>
+      <a data-section="sec-overview" onclick="showSection(this)">Bookings Overview</a>
+      <div class="nav-group">Engagement</div>
+      <a data-section="sec-cta" onclick="showSection(this)">CTA &amp; Contact Clicks</a>
+      <a data-section="sec-scroll" onclick="showSection(this)">Scroll &amp; Sections</a>
+      <a data-section="sec-widget" onclick="showSection(this)">Booking Widget</a>
+      <a data-section="sec-faq" onclick="showSection(this)">FAQ</a>
+      <div class="nav-group">Traffic</div>
+      <a data-section="sec-traffic" onclick="showSection(this)">Sources &amp; Campaigns</a>
+    </nav>
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- ═══ 1. LIVE ACTIVITY ═══ -->
+      <div class="section active" id="sec-realtime">
+        <div class="section-title">Live Activity</div>
+        <div class="section-desc">What's happening on the landing page right now. Updates every 30 seconds.</div>
+        <div class="grid grid-2" style="margin-bottom:16px">
+          <div class="card">
+            <div class="rt-big-number">
+              <div class="rt-pulse"><div class="rt-dot"></div> LIVE NOW</div>
+              <div class="number" id="rt-users">&mdash;</div>
+              <div class="label">active users on site</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Active Pages</h3></div>
+            <div class="rt-page-list" id="rt-pages"><div class="loading">Loading&hellip;</div></div>
+          </div>
+        </div>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><h3>Live Events</h3><span class="tag tag-coral">30min</span></div>
+            <div class="rt-events" id="rt-events"><div class="loading">Loading&hellip;</div></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Devices</h3></div>
+            <div id="rt-sources"><div class="loading">Loading&hellip;</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- ═══ 2. BOOKINGS OVERVIEW ═══ -->
+      <div class="section" id="sec-overview">
+        <div class="section-title">Bookings Overview</div>
+        <div class="section-desc">schedule_meeting is the primary conversion (key event). Trend and conversion rate against sessions and users.</div>
+        <div class="grid grid-4" id="overview-stats" style="margin-bottom:16px"></div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><h3>Bookings Trend</h3><span class="tag tag-coral">Daily</span></div>
+          <div class="card-insight" id="overview-insight">Loading booking data&hellip;</div>
+          <div class="chart-wrap"><canvas id="chart-bookings-trend"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Page Funnel — Sessions to Booking</h3><span class="tag tag-blue">Conversion</span></div>
+          <div id="overview-funnel"><div class="loading">Loading&hellip;</div></div>
+        </div>
+      </div>
+      <!-- ═══ 3. CTA & CONTACT CLICKS ═══ -->
+      <div class="section" id="sec-cta">
+        <div class="section-title">CTA &amp; Contact Clicks</div>
+        <div class="section-desc">cta_click broken down by location and text, plus phone and email clicks from the utility bar.</div>
+        <div class="grid grid-4" id="cta-stats" style="margin-bottom:16px"></div>
+        <div class="grid grid-2" style="margin-bottom:16px">
+          <div class="card">
+            <div class="card-header"><h3>CTA Clicks by Location</h3><span class="tag tag-coral">cta_location</span></div>
+            <div class="chart-wrap"><canvas id="chart-cta-location"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>CTA Clicks by Text</h3><span class="tag tag-blue">cta_text</span></div>
+            <div class="chart-wrap"><canvas id="chart-cta-text"></canvas></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Nav Clicks by Target</h3><span class="tag tag-sage">nav_target</span></div>
+          <div class="chart-wrap"><canvas id="chart-nav"></canvas></div>
+        </div>
+      </div>
+      <!-- ═══ 4. SCROLL & SECTIONS ═══ -->
+      <div class="section" id="sec-scroll">
+        <div class="section-title">Scroll Depth &amp; Section Reach</div>
+        <div class="section-desc">How far visitors scroll (25 / 50 / 75 / 90%) and which page sections they actually reach.</div>
+        <div class="grid grid-4" id="scroll-stats" style="margin-bottom:16px"></div>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><h3>Scroll Depth Distribution</h3><span class="tag tag-blue">percent_scrolled</span></div>
+            <div class="card-insight" id="scroll-insight"></div>
+            <div class="chart-wrap"><canvas id="chart-scroll"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Section Reach Funnel</h3><span class="tag tag-coral">section_view</span></div>
+            <div class="card-insight" id="section-insight">Unique users who reached each section (50% visible).</div>
+            <div id="section-funnel"><div class="loading">Loading&hellip;</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- ═══ 5. BOOKING WIDGET ═══ -->
+      <div class="section" id="sec-widget">
+        <div class="section-title">Booking Widget</div>
+        <div class="section-desc">booking_widget_view by placement (hero vs footer) and the widget-view → schedule_meeting drop-off — the abandonment proxy, since the GHL form is cross-origin.</div>
+        <div class="grid grid-4" id="widget-stats" style="margin-bottom:16px"></div>
+        <div class="grid grid-2" style="margin-bottom:16px">
+          <div class="card">
+            <div class="card-header"><h3>Widget Views by Location</h3><span class="tag tag-blue">widget_location</span></div>
+            <div class="chart-wrap"><canvas id="chart-widget-location"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Widget View &rarr; Booking</h3><span class="tag tag-red">Drop-off</span></div>
+            <div class="card-insight" id="widget-insight"></div>
+            <div id="widget-funnel"><div class="loading">Loading&hellip;</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Calendar Steps</h3><span class="tag tag-gold">calendar_step</span></div>
+          <div class="card-insight">From the GHL bridge script (ghl_calendar_step). Currently only calendar_view is recoverable — the widget emits no intermediate postMessages.</div>
+          <div class="chart-wrap"><canvas id="chart-calendar-step"></canvas></div>
+        </div>
+      </div>
+      <!-- ═══ 6. FAQ ═══ -->
+      <div class="section" id="sec-faq">
+        <div class="section-title">FAQ Engagement</div>
+        <div class="section-desc">faq_open by question — which objections visitors care about most.</div>
+        <div class="card">
+          <div class="card-header"><h3>FAQ Opens by Question</h3><span class="tag tag-coral">faq_question</span></div>
+          <div class="card-insight" id="faq-insight"></div>
+          <div class="chart-wrap"><canvas id="chart-faq"></canvas></div>
+        </div>
+      </div>
+      <!-- ═══ 7. TRAFFIC ═══ -->
+      <div class="section" id="sec-traffic">
+        <div class="section-title">Traffic Sources &amp; Campaigns</div>
+        <div class="section-desc">Sessions, users and bookings by source / medium, campaign, device, and top referrers.</div>
+        <div class="grid grid-4" id="traffic-stats" style="margin-bottom:16px"></div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><h3>Source / Medium</h3><span class="tag tag-coral">Sortable</span></div>
+          <div class="card-insight" id="traffic-insight">Click any column header to sort.</div>
+          <div id="traffic-table"><div class="loading">Loading&hellip;</div></div>
+        </div>
+        <div class="grid grid-3" style="margin-bottom:16px">
+          <div class="card">
+            <div class="card-header"><h3>By Campaign</h3></div>
+            <div class="chart-wrap"><canvas id="chart-campaign"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>By Device</h3></div>
+            <div class="chart-wrap"><canvas id="chart-device"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Top Referrers</h3></div>
+            <div class="chart-wrap"><canvas id="chart-referrer"></canvas></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Sessions Trend</h3><span class="tag tag-blue">Daily</span></div>
+          <div class="chart-wrap"><canvas id="chart-sessions-trend"></canvas></div>
+        </div>
+      </div>
+    </div><!-- /main-content -->
+  </div><!-- /dash-body -->
+</div>
+<script>
+// ═══════════════════════════════════════════════════════════
+// AESTHETIC NEGOTIATORS — LANDING PAGE ANALYTICS
+// GA4 property 540421078 (G-F50YGXJ3PW) — ads.aestheticnegotiators.com
+//
+// Registered event-scoped custom dimensions (exact parameter names):
+//   cta_location, cta_text, section_name, widget_location,
+//   faq_question, nav_target, calendar_step, consent_source, external_id
+// Events: schedule_meeting (key event), cta_click, phone_click,
+//   email_click, nav_click, scroll (percent_scrolled), section_view,
+//   booking_widget_view, faq_open, ghl_calendar_step, consent_update
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+let accessToken = null;
+let charts = {};
+let trafficData = [];
+let trafficSortCol = -1;
+let trafficSortAsc = true;
+let rtInterval = null;
+// ═══════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function num(v) { return parseInt(v) || 0; }
+function pct(a, b) { return b > 0 ? ((a / b) * 100).toFixed(1) + '%' : '0%'; }
+function fmtN(n) { return n.toLocaleString(); }
+// Friendly labels for section_name values pushed by GTM
+const SECTION_LABELS = {
+  hero_booking: 'Hero Booking (#book)',
+  book: 'Hero Booking (#book)',
+  what_you_get: 'What You Get (#what)',
+  what: 'What You Get (#what)',
+  why_us: 'Why Us (#different)',
+  different: 'Why Us (#different)',
+  testimonials: 'Testimonials',
+  faq: 'FAQ',
+  final_booking: 'Final Booking',
+  final: 'Final Booking',
+};
+// Expected page order, used to sort the section funnel top-to-bottom
+const SECTION_ORDER = ['book', 'hero_booking', 'what', 'what_you_get', 'different', 'why_us', 'testimonials', 'faq', 'final', 'final_booking'];
+function sectionLabel(key) { return SECTION_LABELS[key] || key; }
+function sectionOrder(key) { const i = SECTION_ORDER.indexOf(key); return i === -1 ? 99 : i; }
+// ═══════════════════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════════════════
+function showSection(el) {
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(el.dataset.section).classList.add('active');
+  const sidebar = document.getElementById('sidebar-nav');
+  if (sidebar.classList.contains('open')) toggleMobileNav();
+}
+function toggleMobileNav() {
+  document.getElementById('sidebar-nav').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('active');
+}
+// ═══════════════════════════════════════════════════════════
+// AUTH — Google Identity Services token client. Token cached in
+// sessionStorage so user doesn't re-authenticate on every page
+// load within the same session.
+// ═══════════════════════════════════════════════════════════
+function saveToken(token) {
+  accessToken = token;
+  sessionStorage.setItem('an_ga4_token', token);
+  sessionStorage.setItem('an_ga4_token_ts', Date.now().toString());
+}
+function loadCachedToken() {
+  const token = sessionStorage.getItem('an_ga4_token');
+  const ts = parseInt(sessionStorage.getItem('an_ga4_token_ts') || '0');
+  // Google access tokens expire after ~3600s; treat as valid if < 50 min old
+  if (token && (Date.now() - ts) < 50 * 60 * 1000) return token;
+  sessionStorage.removeItem('an_ga4_token');
+  sessionStorage.removeItem('an_ga4_token_ts');
+  return null;
+}
+function initOAuth() {
+  const client = google.accounts.oauth2.initTokenClient({
+    client_id: CONFIG.CLIENT_ID,
+    scope: 'https://www.googleapis.com/auth/analytics.readonly',
+    callback: (resp) => {
+      if (resp.error) {
+        document.getElementById('oauth-error').textContent = 'Auth failed: ' + resp.error;
+        document.getElementById('oauth-error').style.display = 'block';
+        return;
+      }
+      saveToken(resp.access_token);
+      document.getElementById('oauth-screen').classList.add('hidden');
+      document.getElementById('dashboard').style.display = 'block';
+      initDashboard();
+    },
+  });
+  client.requestAccessToken();
+}
+function tryAutoLogin() {
+  const cached = loadCachedToken();
+  if (cached) {
+    accessToken = cached;
+    document.getElementById('oauth-screen').classList.add('hidden');
+    document.getElementById('dashboard').style.display = 'block';
+    initDashboard();
+    return true;
+  }
+  return false;
+}
+window.addEventListener('load', () => { tryAutoLogin(); });
+// ═══════════════════════════════════════════════════════════
+// DATE RANGE & GA4 API
+// ═══════════════════════════════════════════════════════════
+function initDateRange() {
+  const end = new Date(), start = new Date();
+  start.setDate(end.getDate() - 30);
+  document.getElementById('date-start').value = fmtDate(start);
+  document.getElementById('date-end').value = fmtDate(end);
+}
+function fmtDate(d) { return d.toISOString().split('T')[0]; }
+function getDR() { return { startDate: document.getElementById('date-start').value, endDate: document.getElementById('date-end').value }; }
+function handleAuthExpired() {
+  sessionStorage.removeItem('an_ga4_token');
+  sessionStorage.removeItem('an_ga4_token_ts');
+  accessToken = null;
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('oauth-screen').classList.remove('hidden');
+  if (rtInterval) { clearInterval(rtInterval); rtInterval = null; }
+}
+async function ga4(body) {
+  const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/${CONFIG.GA4_PROPERTY}:runReport`, {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (r.status === 401) { handleAuthExpired(); throw new Error('Token expired'); }
+  if (!r.ok) { const t = await r.text(); console.error('GA4 error:', r.status, t); throw new Error('GA4 ' + r.status); }
+  return r.json();
+}
+async function ga4RT(body) {
+  const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/${CONFIG.GA4_PROPERTY}:runRealtimeReport`, {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (r.status === 401) { handleAuthExpired(); throw new Error('Token expired'); }
+  if (!r.ok) { const t = await r.text(); console.error('RT error:', r.status, t); throw new Error('RT ' + r.status); }
+  return r.json();
+}
+// ═══════════════════════════════════════════════════════════
+// FILTER BUILDER — global filters use standard GA4 dimensions
+// (sessionSource / sessionMedium / sessionCampaignName / deviceCategory)
+// ═══════════════════════════════════════════════════════════
+function buildFilters() {
+  const f = [];
+  const sv = document.getElementById('filter-source').value;
+  const mv = document.getElementById('filter-medium').value;
+  const cv = document.getElementById('filter-campaign').value;
+  const dv = document.getElementById('filter-device').value;
+  if (sv) f.push({ filter: { fieldName: 'sessionSource', stringFilter: { value: sv, matchType: 'EXACT' } } });
+  if (mv) f.push({ filter: { fieldName: 'sessionMedium', stringFilter: { value: mv, matchType: 'EXACT' } } });
+  if (cv) f.push({ filter: { fieldName: 'sessionCampaignName', stringFilter: { value: cv, matchType: 'EXACT' } } });
+  if (dv) f.push({ filter: { fieldName: 'deviceCategory', stringFilter: { value: dv, matchType: 'EXACT' } } });
+  if (!f.length) return undefined;
+  if (f.length === 1) return f[0];
+  return { andGroup: { expressions: f } };
+}
+function mergeFilters(a, b) {
+  if (!a && !b) return undefined;
+  if (!a) return b;
+  if (!b) return a;
+  const e = [];
+  if (a.andGroup) e.push(...a.andGroup.expressions); else e.push(a);
+  if (b.andGroup) e.push(...b.andGroup.expressions); else e.push(b);
+  return { andGroup: { expressions: e } };
+}
+function evFilter(name) {
+  return { filter: { fieldName: 'eventName', stringFilter: { value: name, matchType: 'EXACT' } } };
+}
+function baseReq(overrides) {
+  const r = { dateRanges: [getDR()], ...overrides };
+  const f = buildFilters();
+  if (f) r.dimensionFilter = mergeFilters(r.dimensionFilter, f);
+  return r;
+}
+// ═══════════════════════════════════════════════════════════
+// CHART DEFAULTS — light theme
+// ═══════════════════════════════════════════════════════════
+Chart.defaults.color = '#6b7480';
+Chart.defaults.borderColor = '#e4ecf6';
+Chart.defaults.font.family = "'Be Vietnam Pro',-apple-system,sans-serif";
+Chart.defaults.font.size = 11;
+// Merge into existing defaults — do NOT replace the object, or internal
+// element-type references are wiped and Chart.js throws.
+Object.assign(Chart.defaults.datasets.bar, { maxBarThickness: 40, barPercentage: 0.7, categoryPercentage: 0.8 });
+// AN palette: blue, coral, navy, sage, gold, purple, green, red
+const PALETTE = ['#437bc2', '#f4806b', '#3f5ca1', '#5ba884', '#d9a441', '#8a7fc7', '#3f9e63', '#d95757'];
+function dc(key) {
+  if (charts[key]) { charts[key].destroy(); delete charts[key]; }
+}
+function safeChart(key, canvasId, config) {
+  dc(key);
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const existing = Chart.getChart(canvas);
+  if (existing) existing.destroy();
+  const hasData = config.data && config.data.labels && config.data.labels.length > 0;
+  if (!hasData) {
+    canvas.style.display = 'none';
+    let el = canvas.parentElement.querySelector('.chart-empty');
+    if (!el) { el = document.createElement('div'); el.className = 'chart-empty empty'; canvas.parentElement.appendChild(el); }
+    el.textContent = 'No data available for this date range.';
+    return;
+  }
+  canvas.style.display = '';
+  const el = canvas.parentElement.querySelector('.chart-empty');
+  if (el) el.remove();
+  charts[key] = new Chart(canvas, config);
+}
+function statHTML(items) {
+  return items.map(s => `<div class="stat ${s.c}"><div class="stat-val">${typeof s.v === 'string' ? s.v : fmtN(s.v)}</div><div class="stat-label">${s.l}</div></div>`).join('');
+}
+function renderFunnel(steps, maxVal) {
+  const max = maxVal || Math.max(...steps.map(s => s.users), 1);
+  let html = '<div class="funnel">';
+  steps.forEach((s, i) => {
+    const w = Math.max((s.users / max) * 100, 2);
+    const drop = i > 0 && steps[0].users > 0 ? pct(s.users, steps[0].users) : '';
+    html += `<div class="funnel-step">
+      <span class="funnel-num">${i + 1}</span>
+      <span class="funnel-label">${esc(s.label)}</span>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:${w}%;background:${s.color || PALETTE[i % PALETTE.length]}"><span>${fmtN(s.users)}</span></div></div>
+      <div class="funnel-meta"><span class="funnel-val">${fmtN(s.events)}</span><span class="funnel-drop ${i === 0 ? 'ok' : ''}">${drop}</span></div>
+    </div>`;
+  });
+  html += '</div>';
+  return html;
+}
+// ═══════════════════════════════════════════════════════════
+// INIT & REFRESH
+// ═══════════════════════════════════════════════════════════
+function initDashboard() {
+  initDateRange();
+  refreshAll();
+  startRT();
+}
+async function refreshAll() {
+  // GA4 API has a concurrent request quota (~10 simultaneous).
+  // Batch into small groups to avoid 429 RESOURCE_EXHAUSTED errors.
+  async function batch(...fns) { await Promise.allSettled(fns.map(f => f())); }
+  await batch(loadRT, populateFilters);
+  await batch(loadOverview, loadCTA);
+  await batch(loadScroll, loadSections);
+  await batch(loadWidget, loadFAQ);
+  await batch(loadTraffic);
+}
+// Attach filter change listeners
+['filter-source', 'filter-medium', 'filter-campaign', 'filter-device'].forEach(id => {
+  document.getElementById(id).addEventListener('change', refreshAll);
+});
+// ═══════════════════════════════════════════════════════════
+// POPULATE FILTER DROPDOWNS (standard GA4 traffic dims)
+// ═══════════════════════════════════════════════════════════
+async function populateFilters() {
+  try {
+    const [srcs, meds, camps] = await Promise.allSettled([
+      ga4(baseReq({ dimensions: [{ name: 'sessionSource' }], metrics: [{ name: 'sessions' }], orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: 25 })),
+      ga4(baseReq({ dimensions: [{ name: 'sessionMedium' }], metrics: [{ name: 'sessions' }], orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: 25 })),
+      ga4(baseReq({ dimensions: [{ name: 'sessionCampaignName' }], metrics: [{ name: 'sessions' }], orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: 50 })),
+    ]);
+    fillSelect('filter-source', srcs);
+    fillSelect('filter-medium', meds);
+    fillSelect('filter-campaign', camps);
+  } catch (e) { console.error('Filters:', e); }
+}
+function fillSelect(id, result) {
+  const sel = document.getElementById(id);
+  const cur = sel.value;
+  while (sel.options.length > 1) sel.remove(1);
+  if (result.status !== 'fulfilled' || !result.value.rows) return;
+  result.value.rows.forEach(r => {
+    const v = r.dimensionValues[0].value;
+    if (!v || v === '(not set)') return;
+    const opt = document.createElement('option');
+    opt.value = v;
+    opt.textContent = v;
+    sel.appendChild(opt);
+  });
+  sel.value = cur;
+}
+// ═══════════════════════════════════════════════════════════
+// 1. REALTIME
+// Uses only valid RT dimensions: unifiedScreenName, eventName, deviceCategory
+// ═══════════════════════════════════════════════════════════
+function startRT() { loadRT(); rtInterval = setInterval(loadRT, 30000); }
+async function loadRT() {
+  try {
+    try {
+      const pages = await ga4RT({ dimensions: [{ name: 'unifiedScreenName' }], metrics: [{ name: 'activeUsers' }] });
+      let total = 0;
+      const pageList = [];
+      if (pages.rows) pages.rows.forEach(r => {
+        const c = num(r.metricValues[0].value);
+        total += c;
+        pageList.push({ page: r.dimensionValues[0].value, users: c });
+      });
+      document.getElementById('rt-users').textContent = total;
+      pageList.sort((a, b) => b.users - a.users);
+      document.getElementById('rt-pages').innerHTML = pageList.length
+        ? pageList.map(p => `<div class="rt-page-row"><span class="rt-page-count">${p.users}</span><span class="rt-page-path">${esc(p.page)}</span></div>`).join('')
+        : '<div class="empty">No active pages right now</div>';
+    } catch (e) {
+      console.error('RT pages:', e);
+      try {
+        const simple = await ga4RT({ metrics: [{ name: 'activeUsers' }] });
+        document.getElementById('rt-users').textContent = simple.rows ? num(simple.rows[0].metricValues[0].value) : 0;
+      } catch (e2) { document.getElementById('rt-users').textContent = '—'; }
+      document.getElementById('rt-pages').innerHTML = '<div class="empty">Page breakdown unavailable</div>';
+    }
+    try {
+      const events = await ga4RT({ dimensions: [{ name: 'eventName' }], metrics: [{ name: 'eventCount' }] });
+      const evList = [];
+      if (events.rows) events.rows.forEach(r => evList.push({ name: r.dimensionValues[0].value, count: num(r.metricValues[0].value) }));
+      evList.sort((a, b) => b.count - a.count);
+      document.getElementById('rt-events').innerHTML = evList.length
+        ? evList.map(e => `<div class="rt-event-row"><span class="rt-event-name">${esc(e.name)}</span><span class="rt-event-count">${e.count}</span></div>`).join('')
+        : '<div class="empty">No events in last 30 min</div>';
+    } catch (e) {
+      document.getElementById('rt-events').innerHTML = '<div class="empty">Events unavailable</div>';
+    }
+    try {
+      const devices = await ga4RT({ dimensions: [{ name: 'deviceCategory' }], metrics: [{ name: 'activeUsers' }] });
+      const srcList = [];
+      if (devices.rows) devices.rows.forEach(r => srcList.push({ src: r.dimensionValues[0].value, users: num(r.metricValues[0].value) }));
+      srcList.sort((a, b) => b.users - a.users);
+      document.getElementById('rt-sources').innerHTML = srcList.length
+        ? srcList.map(s => `<div class="rt-page-row"><span class="rt-page-count">${s.users}</span><span class="rt-page-path">${esc(s.src)}</span></div>`).join('')
+        : '<div class="empty">No active devices</div>';
+    } catch (e) {
+      document.getElementById('rt-sources').innerHTML = '<div class="empty">Devices unavailable</div>';
+    }
+  } catch (e) {
+    console.error('RT fatal:', e);
+    document.getElementById('rt-users').textContent = '—';
+  }
+}
+// ═══════════════════════════════════════════════════════════
+// 2. BOOKINGS OVERVIEW — schedule_meeting (key event)
+// ═══════════════════════════════════════════════════════════
+async function loadOverview() {
+  try {
+    const [totals, eventTotals, trend] = await Promise.all([
+      // Sessions / users / page views in range
+      ga4(baseReq({ metrics: [{ name: 'sessions' }, { name: 'totalUsers' }, { name: 'screenPageViews' }] })),
+      // Per-event counts + users (for funnel and booking count)
+      ga4(baseReq({
+        dimensions: [{ name: 'eventName' }],
+        metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+      })),
+      // Daily bookings trend
+      ga4(baseReq({
+        dimensions: [{ name: 'date' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: evFilter('schedule_meeting'),
+        orderBys: [{ dimension: { dimensionName: 'date' } }],
+        limit: 400,
+      })),
+    ]);
+    const sessions = totals.rows ? num(totals.rows[0].metricValues[0].value) : 0;
+    const users = totals.rows ? num(totals.rows[0].metricValues[1].value) : 0;
+    const ev = {}, us = {};
+    if (eventTotals.rows) eventTotals.rows.forEach(r => {
+      ev[r.dimensionValues[0].value] = num(r.metricValues[0].value);
+      us[r.dimensionValues[0].value] = num(r.metricValues[1].value);
+    });
+    const bookings = ev.schedule_meeting || 0;
+    document.getElementById('overview-stats').innerHTML = statHTML([
+      { v: bookings, l: 'Bookings', c: 'coral' },
+      { v: sessions, l: 'Sessions', c: 'blue' },
+      { v: users, l: 'Users', c: 'navy' },
+      { v: pct(bookings, sessions), l: 'Booking Rate / Session', c: 'sage' },
+    ]);
+    const ins = document.getElementById('overview-insight');
+    const parts = [];
+    if (sessions > 0) parts.push(`<strong>${pct(bookings, sessions)}</strong> of sessions → booking`);
+    if (users > 0) parts.push(`<strong>${pct(us.schedule_meeting || 0, users)}</strong> of users booked`);
+    ins.innerHTML = parts.join(' · ') || 'Waiting for booking data…';
+    // Trend chart
+    const tLabels = [], tVals = [];
+    if (trend.rows) trend.rows.forEach(r => {
+      tLabels.push(r.dimensionValues[0].value.replace(/(\d{4})(\d{2})(\d{2})/, '$2/$3'));
+      tVals.push(num(r.metricValues[0].value));
+    });
+    safeChart('bookingsTrend', 'chart-bookings-trend', {
+      type: 'line',
+      data: { labels: tLabels, datasets: [{ label: 'Bookings', data: tVals, borderColor: PALETTE[1], backgroundColor: 'rgba(244,128,107,0.15)', fill: true, tension: 0.3, pointRadius: 3 }] },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+    // Page funnel: sessions → widget seen → calendar opened → booked
+    const funnelSteps = [
+      { label: 'Sessions', users: sessions, events: sessions, color: PALETTE[0] },
+      { label: 'Widget Seen', users: us.booking_widget_view || 0, events: ev.booking_widget_view || 0, color: PALETTE[2] },
+      { label: 'Calendar Opened', users: us.ghl_calendar_step || 0, events: ev.ghl_calendar_step || 0, color: PALETTE[4] },
+      { label: 'Booked', users: us.schedule_meeting || 0, events: bookings, color: PALETTE[6] },
+    ];
+    document.getElementById('overview-funnel').innerHTML = renderFunnel(funnelSteps);
+  } catch (e) {
+    console.error('Overview:', e);
+    document.getElementById('overview-funnel').innerHTML = '<div class="empty">Failed to load.</div>';
+  }
+}
+// ═══════════════════════════════════════════════════════════
+// 3. CTA & CONTACT CLICKS — cta_click / phone_click / email_click / nav_click
+// ═══════════════════════════════════════════════════════════
+async function loadCTA() {
+  try {
+    const [counts, byLocation, byText, byNav] = await Promise.all([
+      ga4(baseReq({
+        dimensions: [{ name: 'eventName' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: { orGroup: { expressions: [
+          evFilter('cta_click'), evFilter('phone_click'), evFilter('email_click'), evFilter('nav_click'),
+        ] } },
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:cta_location' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: evFilter('cta_click'),
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 15,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:cta_text' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: evFilter('cta_click'),
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 15,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:nav_target' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: evFilter('nav_click'),
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 15,
+      })),
+    ]);
+    const ev = {};
+    if (counts.rows) counts.rows.forEach(r => ev[r.dimensionValues[0].value] = num(r.metricValues[0].value));
+    document.getElementById('cta-stats').innerHTML = statHTML([
+      { v: ev.cta_click || 0, l: 'CTA Clicks', c: 'coral' },
+      { v: ev.phone_click || 0, l: 'Phone Clicks', c: 'blue' },
+      { v: ev.email_click || 0, l: 'Email Clicks', c: 'navy' },
+      { v: ev.nav_click || 0, l: 'Nav Clicks', c: 'sage' },
+    ]);
+    // By location (bar)
+    const lLabels = [], lVals = [];
+    if (byLocation.rows) byLocation.rows.forEach(r => {
+      const v = r.dimensionValues[0].value;
+      if (!v || v === '(not set)') return;
+      lLabels.push(v); lVals.push(num(r.metricValues[0].value));
+    });
+    safeChart('ctaLocation', 'chart-cta-location', {
+      type: 'bar',
+      data: { labels: lLabels, datasets: [{ label: 'Clicks', data: lVals, backgroundColor: PALETTE[1] + '99', borderColor: PALETTE[1], borderWidth: 1 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+    // By text (bar)
+    const tLabels = [], tVals = [];
+    if (byText.rows) byText.rows.forEach(r => {
+      const txt = r.dimensionValues[0].value;
+      if (!txt || txt === '(not set)') return;
+      tLabels.push(txt.length > 40 ? txt.substring(0, 37) + '...' : txt);
+      tVals.push(num(r.metricValues[0].value));
+    });
+    safeChart('ctaText', 'chart-cta-text', {
+      type: 'bar',
+      data: { labels: tLabels, datasets: [{ label: 'Clicks', data: tVals, backgroundColor: PALETTE[0] + '99', borderColor: PALETTE[0], borderWidth: 1 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+    // Nav targets (bar)
+    const nLabels = [], nVals = [];
+    if (byNav.rows) byNav.rows.forEach(r => {
+      const v = r.dimensionValues[0].value;
+      if (!v || v === '(not set)') return;
+      nLabels.push(v); nVals.push(num(r.metricValues[0].value));
+    });
+    safeChart('nav', 'chart-nav', {
+      type: 'bar',
+      data: { labels: nLabels, datasets: [{ label: 'Clicks', data: nVals, backgroundColor: PALETTE[3] + '99', borderColor: PALETTE[3], borderWidth: 1 }] },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+  } catch (e) { console.error('CTA:', e); }
+}
+// ═══════════════════════════════════════════════════════════
+// 4a. SCROLL DEPTH — scroll event, percent_scrolled (25/50/75/90)
+// percent_scrolled is registered as an event-scoped custom dimension,
+// so customEvent:percent_scrolled covers both GTM-fired thresholds
+// and Enhanced Measurement's 90%.
+// ═══════════════════════════════════════════════════════════
+async function loadScroll() {
+  try {
+    const [scrollData, pvData] = await Promise.all([
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:percent_scrolled' }],
+        metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+        dimensionFilter: evFilter('scroll'),
+        limit: 20,
+      })),
+      ga4(baseReq({ metrics: [{ name: 'screenPageViews' }, { name: 'totalUsers' }] })),
+    ]);
+    const pvs = pvData.rows ? num(pvData.rows[0].metricValues[0].value) : 0;
+    const totalUsers = pvData.rows ? num(pvData.rows[0].metricValues[1].value) : 0;
+    const depthEv = {}, depthUs = {};
+    if (scrollData.rows) scrollData.rows.forEach(r => {
+      const d = r.dimensionValues[0].value;
+      depthEv[d] = (depthEv[d] || 0) + num(r.metricValues[0].value);
+      depthUs[d] = (depthUs[d] || 0) + num(r.metricValues[1].value);
+    });
+    const depths = ['25', '50', '75', '90'];
+    document.getElementById('scroll-stats').innerHTML = statHTML(depths.map((d, i) => ({
+      v: depthUs[d] || 0, l: `Reached ${d}%`, c: ['coral', 'blue', 'navy', 'sage'][i],
+    })));
+    const ins = document.getElementById('scroll-insight');
+    if (totalUsers > 0 && (depthUs['90'] || 0) > 0) {
+      ins.innerHTML = `<strong>${pct(depthUs['90'], totalUsers)}</strong> of users scrolled to 90% — past the final booking section.`;
+    } else if (totalUsers > 0 && (depthUs['50'] || 0) > 0) {
+      ins.innerHTML = `<strong>${pct(depthUs['50'], totalUsers)}</strong> of users reached the halfway point.`;
+    } else { ins.innerHTML = 'Waiting for scroll data…'; }
+    safeChart('scroll', 'chart-scroll', {
+      type: 'bar',
+      data: {
+        labels: depths.map(d => d + '%'),
+        datasets: [{ label: 'Users', data: depths.map(d => depthUs[d] || 0), backgroundColor: PALETTE[0] + '99', borderColor: PALETTE[0], borderWidth: 1 }],
+      },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+  } catch (e) { console.error('Scroll:', e); }
+}
+// ═══════════════════════════════════════════════════════════
+// 4b. SECTION REACH — section_view by section_name, funnel-style
+// ═══════════════════════════════════════════════════════════
+async function loadSections() {
+  const el = document.getElementById('section-funnel');
+  try {
+    const data = await ga4(baseReq({
+      dimensions: [{ name: 'customEvent:section_name' }],
+      metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+      dimensionFilter: evFilter('section_view'),
+      limit: 25,
+    }));
+    const rows = [];
+    if (data.rows) data.rows.forEach(r => {
+      const key = r.dimensionValues[0].value;
+      if (!key || key === '(not set)') return;
+      rows.push({ key, events: num(r.metricValues[0].value), users: num(r.metricValues[1].value) });
+    });
+    if (!rows.length) { el.innerHTML = '<div class="empty">No section_view data in this date range.</div>'; return; }
+    rows.sort((a, b) => sectionOrder(a.key) - sectionOrder(b.key) || b.users - a.users);
+    const steps = rows.map((r, i) => ({ label: sectionLabel(r.key), users: r.users, events: r.events, color: PALETTE[i % PALETTE.length] }));
+    el.innerHTML = renderFunnel(steps);
+  } catch (e) { console.error('Sections:', e); el.innerHTML = '<div class="empty">Failed to load.</div>'; }
+}
+// ═══════════════════════════════════════════════════════════
+// 5. BOOKING WIDGET — booking_widget_view by widget_location
+//    + widget-view → schedule_meeting drop-off (abandonment proxy)
+//    + ghl_calendar_step by calendar_step
+// ═══════════════════════════════════════════════════════════
+async function loadWidget() {
+  const fEl = document.getElementById('widget-funnel');
+  try {
+    const [byLocation, eventTotals, calSteps] = await Promise.all([
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:widget_location' }],
+        metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+        dimensionFilter: evFilter('booking_widget_view'),
+        limit: 10,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'eventName' }],
+        metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+        dimensionFilter: { orGroup: { expressions: [
+          evFilter('booking_widget_view'), evFilter('ghl_calendar_step'), evFilter('schedule_meeting'),
+        ] } },
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:calendar_step' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: evFilter('ghl_calendar_step'),
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 15,
+      })),
+    ]);
+    // Per-location breakdown
+    const loc = {};
+    if (byLocation.rows) byLocation.rows.forEach(r => {
+      const k = r.dimensionValues[0].value;
+      loc[k] = { events: num(r.metricValues[0].value), users: num(r.metricValues[1].value) };
+    });
+    const ev = {}, us = {};
+    if (eventTotals.rows) eventTotals.rows.forEach(r => {
+      ev[r.dimensionValues[0].value] = num(r.metricValues[0].value);
+      us[r.dimensionValues[0].value] = num(r.metricValues[1].value);
+    });
+    const widgetUsers = us.booking_widget_view || 0;
+    const bookings = us.schedule_meeting || 0;
+    document.getElementById('widget-stats').innerHTML = statHTML([
+      { v: widgetUsers, l: 'Saw Widget', c: 'blue' },
+      { v: (loc.hero || {}).users || 0, l: 'Hero Widget Views', c: 'navy' },
+      { v: (loc.footer || {}).users || 0, l: 'Footer Widget Views', c: 'gold' },
+      { v: bookings, l: 'Booked', c: 'coral' },
+    ]);
+    // Location doughnut
+    const wLabels = [], wVals = [];
+    Object.entries(loc).forEach(([k, v]) => {
+      if (!k || k === '(not set)') return;
+      wLabels.push(k); wVals.push(v.events);
+    });
+    safeChart('widgetLocation', 'chart-widget-location', {
+      type: 'doughnut',
+      data: { labels: wLabels, datasets: [{ data: wVals, backgroundColor: PALETTE.slice(0, wLabels.length) }] },
+      options: { responsive: true, plugins: { legend: { position: 'right' } } },
+    });
+    // Drop-off funnel (abandonment proxy — form is cross-origin)
+    const wIns = document.getElementById('widget-insight');
+    if (widgetUsers > 0) {
+      wIns.innerHTML = `<strong>${pct(bookings, widgetUsers)}</strong> of users who saw the booking widget completed a booking. The remaining <strong>${pct(widgetUsers - bookings, widgetUsers)}</strong> abandoned (proxy — form fields are cross-origin and untrackable).`;
+    } else { wIns.innerHTML = 'Waiting for widget data…'; }
+    const steps = [
+      { label: 'Widget Seen', users: widgetUsers, events: ev.booking_widget_view || 0, color: PALETTE[0] },
+      { label: 'Calendar Opened', users: us.ghl_calendar_step || 0, events: ev.ghl_calendar_step || 0, color: PALETTE[4] },
+      { label: 'Booked', users: bookings, events: ev.schedule_meeting || 0, color: PALETTE[6] },
+    ];
+    fEl.innerHTML = renderFunnel(steps);
+    // Calendar step chart
+    const cLabels = [], cVals = [];
+    if (calSteps.rows) calSteps.rows.forEach(r => {
+      const v = r.dimensionValues[0].value;
+      if (!v || v === '(not set)') return;
+      cLabels.push(v); cVals.push(num(r.metricValues[0].value));
+    });
+    safeChart('calendarStep', 'chart-calendar-step', {
+      type: 'bar',
+      data: { labels: cLabels, datasets: [{ label: 'Events', data: cVals, backgroundColor: PALETTE[4] + '99', borderColor: PALETTE[4], borderWidth: 1 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+  } catch (e) { console.error('Widget:', e); fEl.innerHTML = '<div class="empty">Failed to load.</div>'; }
+}
+// ═══════════════════════════════════════════════════════════
+// 6. FAQ — faq_open by faq_question
+// ═══════════════════════════════════════════════════════════
+async function loadFAQ() {
+  try {
+    const data = await ga4(baseReq({
+      dimensions: [{ name: 'customEvent:faq_question' }],
+      metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+      dimensionFilter: evFilter('faq_open'),
+      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 20,
+    }));
+    const labels = [], vals = [];
+    let topQ = null, total = 0;
+    if (data.rows) data.rows.forEach(r => {
+      const q = r.dimensionValues[0].value;
+      if (!q || q === '(not set)') return;
+      if (!topQ) topQ = q;
+      total += num(r.metricValues[0].value);
+      labels.push(q.length > 60 ? q.substring(0, 57) + '...' : q);
+      vals.push(num(r.metricValues[0].value));
+    });
+    const ins = document.getElementById('faq-insight');
+    if (topQ) ins.innerHTML = `Most opened: <strong>${esc(topQ)}</strong> (${fmtN(total)} total FAQ opens).`;
+    safeChart('faq', 'chart-faq', {
+      type: 'bar',
+      data: { labels, datasets: [{ label: 'Opens', data: vals, backgroundColor: PALETTE[1] + '99', borderColor: PALETTE[1], borderWidth: 1 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+  } catch (e) { console.error('FAQ:', e); }
+}
+// ═══════════════════════════════════════════════════════════
+// 7. TRAFFIC — sessions/users/bookings by source/medium,
+//    campaign, device, top referrers, daily sessions trend
+// ═══════════════════════════════════════════════════════════
+async function loadTraffic() {
+  const tEl = document.getElementById('traffic-table');
+  try {
+    const [srcMed, bookBySrc, byCampaign, byDevice, byReferrer, trend, totals] = await Promise.all([
+      ga4(baseReq({
+        dimensions: [{ name: 'sessionSource' }, { name: 'sessionMedium' }],
+        metrics: [{ name: 'sessions' }, { name: 'totalUsers' }, { name: 'engagementRate' }],
+        orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: 50,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'sessionSource' }, { name: 'sessionMedium' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: evFilter('schedule_meeting'),
+        limit: 50,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'sessionCampaignName' }],
+        metrics: [{ name: 'sessions' }],
+        orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: 10,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'deviceCategory' }],
+        metrics: [{ name: 'sessions' }],
+        orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: 5,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'pageReferrer' }],
+        metrics: [{ name: 'sessions' }],
+        orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: 12,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'date' }],
+        metrics: [{ name: 'sessions' }, { name: 'totalUsers' }],
+        orderBys: [{ dimension: { dimensionName: 'date' } }],
+        limit: 400,
+      })),
+      ga4(baseReq({ metrics: [{ name: 'sessions' }, { name: 'totalUsers' }, { name: 'newUsers' }, { name: 'engagementRate' }] })),
+    ]);
+    // Stats
+    if (totals.rows) {
+      const m = totals.rows[0].metricValues;
+      document.getElementById('traffic-stats').innerHTML = statHTML([
+        { v: num(m[0].value), l: 'Sessions', c: 'blue' },
+        { v: num(m[1].value), l: 'Users', c: 'navy' },
+        { v: num(m[2].value), l: 'New Users', c: 'coral' },
+        { v: (parseFloat(m[3].value) * 100).toFixed(1) + '%', l: 'Engagement Rate', c: 'sage' },
+      ]);
+    }
+    // Bookings map by source/medium
+    const bookMap = {};
+    if (bookBySrc.rows) bookBySrc.rows.forEach(r => {
+      bookMap[r.dimensionValues[0].value + '|' + r.dimensionValues[1].value] = num(r.metricValues[0].value);
+    });
+    // Table data
+    trafficData = [];
+    if (srcMed.rows) srcMed.rows.forEach(r => {
+      const src = r.dimensionValues[0].value;
+      const med = r.dimensionValues[1].value;
+      const sessions = num(r.metricValues[0].value);
+      const users = num(r.metricValues[1].value);
+      const engRate = (parseFloat(r.metricValues[2].value) * 100);
+      const bookings = bookMap[src + '|' + med] || 0;
+      trafficData.push({ src, med, sessions, users, engRate, bookings, cvr: sessions > 0 ? (bookings / sessions) * 100 : 0 });
+    });
+    renderTrafficTable();
+    const ins = document.getElementById('traffic-insight');
+    const topConv = trafficData.filter(r => r.bookings > 0).sort((a, b) => b.bookings - a.bookings)[0];
+    if (topConv) ins.innerHTML = `Top converting source: <strong>${esc(topConv.src)} / ${esc(topConv.med)}</strong> with ${fmtN(topConv.bookings)} bookings (${topConv.cvr.toFixed(1)}% of its sessions).`;
+    // Campaign doughnut
+    const cpLabels = [], cpVals = [];
+    if (byCampaign.rows) byCampaign.rows.forEach(r => {
+      cpLabels.push(r.dimensionValues[0].value); cpVals.push(num(r.metricValues[0].value));
+    });
+    safeChart('campaign', 'chart-campaign', {
+      type: 'doughnut',
+      data: { labels: cpLabels, datasets: [{ data: cpVals, backgroundColor: PALETTE.slice(0, cpLabels.length) }] },
+      options: { responsive: true, plugins: { legend: { position: 'right' } } },
+    });
+    // Device doughnut
+    const dLabels = [], dVals = [];
+    if (byDevice.rows) byDevice.rows.forEach(r => {
+      dLabels.push(r.dimensionValues[0].value); dVals.push(num(r.metricValues[0].value));
+    });
+    safeChart('device', 'chart-device', {
+      type: 'doughnut',
+      data: { labels: dLabels, datasets: [{ data: dVals, backgroundColor: PALETTE.slice(0, dLabels.length) }] },
+      options: { responsive: true, plugins: { legend: { position: 'right' } } },
+    });
+    // Referrers bar
+    const rLabels = [], rVals = [];
+    if (byReferrer.rows) byReferrer.rows.forEach(r => {
+      let ref = r.dimensionValues[0].value;
+      if (!ref) ref = '(direct)';
+      ref = ref.replace(/^https?:\/\//, '').replace(/\/$/, '');
+      rLabels.push(ref.length > 35 ? ref.substring(0, 32) + '...' : ref);
+      rVals.push(num(r.metricValues[0].value));
+    });
+    safeChart('referrer', 'chart-referrer', {
+      type: 'bar',
+      data: { labels: rLabels, datasets: [{ label: 'Sessions', data: rVals, backgroundColor: PALETTE[2] + '99', borderColor: PALETTE[2], borderWidth: 1 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+    // Sessions trend line
+    const tLabels = [], sVals = [], uVals = [];
+    if (trend.rows) trend.rows.forEach(r => {
+      tLabels.push(r.dimensionValues[0].value.replace(/(\d{4})(\d{2})(\d{2})/, '$2/$3'));
+      sVals.push(num(r.metricValues[0].value));
+      uVals.push(num(r.metricValues[1].value));
+    });
+    safeChart('sessionsTrend', 'chart-sessions-trend', {
+      type: 'line',
+      data: { labels: tLabels, datasets: [
+        { label: 'Sessions', data: sVals, borderColor: PALETTE[0], backgroundColor: 'rgba(67,123,194,0.12)', fill: true, tension: 0.3, pointRadius: 2 },
+        { label: 'Users', data: uVals, borderColor: PALETTE[2], backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 2 },
+      ] },
+      options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+  } catch (e) {
+    console.error('Traffic:', e);
+    tEl.innerHTML = '<div class="empty">Failed to load traffic data.</div>';
+  }
+}
+function renderTrafficTable() {
+  const el = document.getElementById('traffic-table');
+  if (!trafficData.length) { el.innerHTML = '<div class="empty">No traffic data.</div>'; return; }
+  if (trafficSortCol >= 0) {
+    const cols = ['src', 'med', 'sessions', 'users', 'engRate', 'bookings', 'cvr'];
+    const key = cols[trafficSortCol];
+    trafficData.sort((a, b) => {
+      const av = a[key], bv = b[key];
+      if (typeof av === 'number') return trafficSortAsc ? av - bv : bv - av;
+      return trafficSortAsc ? String(av).localeCompare(String(bv)) : String(bv).localeCompare(String(av));
+    });
+  }
+  const headers = ['Source', 'Medium', 'Sessions', 'Users', 'Eng. Rate', 'Bookings', 'Booking CVR'];
+  let html = '<div class="table-wrap"><table class="dt"><thead><tr>';
+  headers.forEach((h, i) => {
+    const cls = i === trafficSortCol ? (trafficSortAsc ? 'sorted-asc' : 'sorted-desc') : '';
+    html += `<th class="${cls}" onclick="sortTraffic(${i})">${h}</th>`;
+  });
+  html += '</tr></thead><tbody>';
+  trafficData.forEach(r => {
+    html += `<tr>
+      <td>${esc(r.src)}</td>
+      <td>${esc(r.med)}</td>
+      <td class="num">${fmtN(r.sessions)}</td>
+      <td class="num">${fmtN(r.users)}</td>
+      <td class="num">${r.engRate.toFixed(1)}%</td>
+      <td class="num">${fmtN(r.bookings)}</td>
+      <td class="num">${r.cvr.toFixed(1)}%</td>
+    </tr>`;
+  });
+  html += '</tbody></table></div>';
+  el.innerHTML = html;
+}
+function sortTraffic(col) {
+  if (trafficSortCol === col) trafficSortAsc = !trafficSortAsc;
+  else { trafficSortCol = col; trafficSortAsc = true; }
+  renderTrafficTable();
+}
+</script>
+</body>
+</html>

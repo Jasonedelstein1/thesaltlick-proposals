@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brookside Dental — Ad Campaign Scripts</title>
+<style>
+  @import url('https://use.typekit.net/csj2hfl.css');
+  :root {
+    --bg-surround: #e0dbd3;
+    --bg-panel: #f0ebe2;
+    --bg-card: #ffffff;
+    --bg-dark: #1a1a1a;
+    --bg-muted: #e8e3db;
+    --coral: #c85c4f;
+    --coral-dark: #9e4535;
+    --text-primary: #1a1a1a;
+    --text-secondary: #3d3d3d;
+    --text-muted: rgba(0,0,0,0.45);
+    --text-faint: rgba(0,0,0,0.35);
+    --border: rgba(0,0,0,0.08);
+    --border-medium: rgba(0,0,0,0.12);
+    --shadow: 0 0 40px rgba(0,0,0,0.06);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'neue-haas-grotesk-text', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text-primary);
+    background: var(--bg-surround);
+    -webkit-font-smoothing: antialiased;
+  }
+  .panel {
+    background: var(--bg-panel);
+    max-width: 860px;
+    margin: 0 auto;
+    box-shadow: var(--shadow);
+    min-height: 100vh;
+  }
+  .container { padding: 0 48px; }
+  @media (max-width: 680px) {
+    .container { padding: 0 24px; }
+  }
+  /* ── NAVBAR ── */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border-medium);
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .navbar-inner {
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+  }
+  @media (max-width: 680px) {
+    .navbar-inner { padding: 0 24px; }
+  }
+  .nav-brand {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-right: auto;
+    padding: 18px 0;
+  }
+  /* ── TYPOGRAPHY ── */
+  h1 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(30px, 4vw, 40px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text-primary);
+  }
+  h2 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(22px, 3vw, 28px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text-primary);
+  }
+  h3 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(17px, 2.2vw, 20px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-primary);
+  }
+  h4 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  p { color: var(--text-secondary); }
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+    margin-bottom: 12px;
+  }
+  /* ── HERO ── */
+  .hero {
+    padding: 72px 0 64px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 32px;
+  }
+  .hero-meta span {
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+  }
+  .hero h1 { margin-bottom: 12px; }
+  .coral-bar {
+    width: 48px;
+    height: 3px;
+    background: var(--coral);
+    margin: 16px 0 24px;
+  }
+  .hero-subtitle {
+    font-size: clamp(16px, 2vw, 19px);
+    font-weight: 400;
+    color: var(--coral);
+    margin-bottom: 24px;
+    line-height: 1.45;
+  }
+  .hero-body {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 680px;
+    line-height: 1.7;
+  }
+  /* ── SECTIONS ── */
+  .section {
+    padding: 64px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-child { border-bottom: none; }
+  .section-header { margin-bottom: 40px; }
+  .section-header h2 { margin-top: 8px; }
+  /* ── SCRIPT CARDS ── */
+  .script-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-medium);
+    border-radius: 8px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+  .script-card:last-child { margin-bottom: 0; }
+  .script-card-header {
+    padding: 28px 36px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  .script-card-header-left h3 { margin-bottom: 6px; }
+  .script-role {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+  .script-runtime {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--coral);
+    background: rgba(200,92,79,0.08);
+    border: 1px solid rgba(200,92,79,0.15);
+    border-radius: 20px;
+    padding: 4px 14px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .script-body { padding: 32px 36px; }
+  .script-beat { margin-bottom: 28px; }
+  .script-beat:last-child { margin-bottom: 0; }
+  .beat-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+  }
+  .beat-text {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-primary);
+    font-weight: 400;
+  }
+  /* ── FOOTER ── */
+  .footer {
+    padding: 40px 0 48px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+  .footer-brand {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .footer-meta { font-size: 13px; color: var(--text-muted); text-align: right; }
+  @media (max-width: 500px) {
+    .footer { flex-direction: column; align-items: flex-start; }
+    .footer-meta { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<div class="panel">
+  <!-- ── NAVBAR ── -->
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="nav-brand">The Salt Lick Denver</div>
+    </div>
+  </div>
+  <div class="container">
+    <!-- ── HERO ── -->
+    <header class="hero">
+      <div class="hero-meta">
+        <span>Prepared for Dr. Jared Christopherson — Brookside Dental Care</span>
+        <span>Prepared by The Salt Lick Denver &nbsp;·&nbsp; June 26, 2026</span>
+      </div>
+      <h1>Brookside Dental — Ad Campaign Scripts</h1>
+      <div class="coral-bar"></div>
+      <p class="hero-subtitle">Four video ad scripts for review</p>
+      <p class="hero-body">Four scripts for the next round of Brookside Dental video ads — one for new patients, two for implants, and one for dentures. Each is written to be read straight to camera. Take a look and let me know if they're good to go, and I'll load them into the teleprompter.</p>
+    </header>
+
+    <section class="section">
+      <div class="section-header">
+        <div class="section-label">Scripts for Review</div>
+        <h2>The Four Scripts</h2>
+      </div>
+
+      <!-- Script 1 — New Patient -->
+      <div class="script-card">
+        <div class="script-card-header">
+          <div class="script-card-header-left">
+            <h3>Script 1 — New Patient</h3>
+            <div class="script-role">Cleaning + free Sonicare for new patients</div>
+          </div>
+          <div class="script-runtime">~30 seconds</div>
+        </div>
+        <div class="script-body">
+          <div class="script-beat">
+            <div class="beat-label">Hook — No Shame</div>
+            <div class="beat-text">If it's been a while since you've been to the dentist, a couple years or longer, that's okay. I'm Dr. Christopherson, from Brookside Dental here in Cheyenne, Wyoming, and I'm not gonna give you a hard time about it. Nobody here is. We're just glad you came in.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">Offer + Cost</div>
+            <div class="beat-text">Oh, and new patients get a Sonicare toothbrush, the electric one, just for coming in. There's a new-patient exam and cleaning, and we'll tell you the cost up front. No surprise bills.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">First Visit</div>
+            <div class="beat-text">First visit, it's just a look and a cleaning. Nothing you don't agree to. We go at your pace, and we tell you what we're doing as we go. That's it.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">CTA</div>
+            <div class="beat-text">Booking takes no time at all, you can do it right here. So if you've been putting it off, click Book Now. I'd like to meet you.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Script 2 — Implants, Direct -->
+      <div class="script-card">
+        <div class="script-card-header">
+          <div class="script-card-header-left">
+            <h3>Script 2 — Implants</h3>
+            <div class="script-role">Direct — for anyone considering implants</div>
+          </div>
+          <div class="script-runtime">~35 seconds</div>
+        </div>
+        <div class="script-body">
+          <div class="script-beat">
+            <div class="beat-label">Hook — Name the Reason</div>
+            <div class="beat-text">If you've been thinking about implants, the thing holding you back is probably the cost. Or you're worried it's going to hurt. Or you just haven't gotten around to it yet. All of that's normal.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">Cost</div>
+            <div class="beat-text">On cost, you'll know what it runs before you commit to anything, and we've got ways to break up the payments so it's not all at once. You're not going to get hit with a bill you didn't expect.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">Pain</div>
+            <div class="beat-text">On the pain, we sedate you, we numb you, and most people tell me it was a lot easier than they thought.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">Putting It Off</div>
+            <div class="beat-text">And if you've just been putting it off, the longer you wait, the more bone you lose. That doesn't mean we can't fix it. It just means the sooner we take a look, the more options you've got. No rush to decide anything, but it's worth coming in sooner than later.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">CTA</div>
+            <div class="beat-text">You don't have to commit to anything to come in. Just come find out where you stand. Click Book Now.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Script 3 — Implants, Myth-Busting -->
+      <div class="script-card">
+        <div class="script-card-header">
+          <div class="script-card-header-left">
+            <h3>Script 3 — Implants</h3>
+            <div class="script-role">Myth-busting — clears the reasons people talk themselves out of it</div>
+          </div>
+          <div class="script-runtime">~40 seconds</div>
+        </div>
+        <div class="script-body">
+          <div class="script-beat">
+            <div class="beat-label">Hook — The Five Myths</div>
+            <div class="beat-text">There are a lot of myths out there about full mouth dental implants. And if you've been putting it off because of something you heard, you're not the only one. So let me clear up the five biggest ones I hear all the time.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">Myth 1 — They're Painful</div>
+            <div class="beat-text">First one is that implants hurt. That used to be more true, years back. But the way we do it now, we numb you up and we can sedate you so you're relaxed the whole time. Most folks tell me afterward it was a lot easier than they thought it'd be.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">Myth 2 — They're Too Expensive</div>
+            <div class="beat-text">Second one is they cost too much. I won't pretend it's cheap. It's an investment. But think about dentures, you're replacing those every five to seven years, plus the glue and the refits. That keeps adding up. So over time, implants can actually end up costing you less.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">Myth 3 — I'm Too Old</div>
+            <div class="beat-text">Third one, people figure they're too old for it. There's no age cutoff on this. What matters is your health, not the number. A lot of my implant patients are in their sixties and seventies, doing just fine.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">Myth 4 — It Takes Too Long</div>
+            <div class="beat-text">Fourth, folks think it drags on forever. Not anymore. The process is a lot quicker than it used to be, and most people walk out with a new smile sooner than they were expecting.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">Myth 5 — I'm Not Able to Do It</div>
+            <div class="beat-text">And the last one, somebody figures they already waited too long, or maybe another office told them no. Even then, there are things we can do, like bone grafting, to build it back up. Most people who come get a second look find out they can still do this after all.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">CTA</div>
+            <div class="beat-text">You come in, I take a look, and you walk out knowing the real cost before you decide anything. No pressure either way. Click Book Now.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Script 4 — Dentures -->
+      <div class="script-card">
+        <div class="script-card-header">
+          <div class="script-card-header-left">
+            <h3>Script 4 — Dentures</h3>
+            <div class="script-role">For people who need first-time dentures, full or partial</div>
+          </div>
+          <div class="script-runtime">~40 seconds</div>
+        </div>
+        <div class="script-body">
+          <div class="script-beat">
+            <div class="beat-label">Hook — Name the Feeling</div>
+            <div class="beat-text">If somebody just told you that you need dentures, that's a hard thing to hear. A lot of people feel like they're getting old when they hear it. That's normal.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">You May Keep Your Teeth</div>
+            <div class="beat-text">Dentures doesn't always mean losing all your teeth. If you've still got healthy ones, a lot of times we can keep those and just fill in the gaps. That's called a partial.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">No Judgment</div>
+            <div class="beat-text">You don't have to be embarrassed about the shape your teeth are in. I've seen all of it. Nobody here is going to make a face or give you a lecture. And it's not too late, and needing this doesn't make you old or mean you did something wrong.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">They Look Like You</div>
+            <div class="beat-text">The dentures we make now don't have to look fake or shift around when you talk. We fit them to you, so they look like your teeth and you can chew your food again.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">Cost</div>
+            <div class="beat-text">On the cost, you'll know exactly what it's going to run you before you commit to anything, and we offer financing to help you take on the payments. I'm not going to push you toward implants you didn't come in for.</div>
+          </div>
+          <div class="script-beat">
+            <div class="beat-label">CTA</div>
+            <div class="beat-text">If you want to just come sit down and ask questions, that's fine. Click Book Now.</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </div><!-- /container -->
+  <!-- FOOTER -->
+  <div class="container">
+    <footer class="footer">
+      <div class="footer-brand">The Salt Lick Denver</div>
+      <div class="footer-meta">
+        Prepared for Dr. Jared Christopherson — Brookside Dental Care<br>
+        June 26, 2026
+      </div>
+    </footer>
+  </div>
+</div><!-- /panel -->
+</body>
+</html>

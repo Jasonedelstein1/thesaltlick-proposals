@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vanlife Customs — Ads Landing Page Analytics</title>
+<script>
+const CONFIG = {
+  GA4_PROPERTY:  'properties/544318560',   // Vanlife Customs - Ads Landing Pages (G-KMH0HXH62V)
+  CLIENT_ID:     '747535226184-qhv035vqnf1solb61mvu5rspkrvimsn4.apps.googleusercontent.com',
+};
+</script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── VARIABLES — Vanlife Customs dark editorial theme ─ */
+:root {
+  --bg: #14130f;
+  --bg-raised: #1a1917;
+  --bg-card: #1e1d1a;
+  --bg-card-hover: #232220;
+  --bg-input: #2a2926;
+  --bg-tint: #24221e;
+  --border: #35332e;
+  --border-light: #2b2925;
+  --text: #e8e3dc;
+  --text-secondary: #a39e96;
+  --text-muted: #6b6660;
+  --brass: #b8924a;
+  --brass-light: #d4b06a;
+  --brass-dim: rgba(184,146,74,0.12);
+  --brass-glow: rgba(184,146,74,0.25);
+  --ivory: #faf8f5;
+  --sage: #7fa88a;
+  --sage-dim: rgba(127,168,138,0.12);
+  --blue: #6f92b8;
+  --blue-dim: rgba(111,146,184,0.12);
+  --red: #c96b5c;
+  --red-dim: rgba(201,107,92,0.12);
+  --green: #6faf7f;
+  --green-dim: rgba(111,175,127,0.12);
+  --purple: #9a8fc0;
+  --radius: 14px;
+  --radius-sm: 8px;
+  --radius-xs: 5px;
+  --shadow: 0 2px 10px rgba(0,0,0,0.35);
+  --shadow-lg: 0 10px 36px rgba(0,0,0,0.5);
+  --font: 'Outfit', -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.5; min-height:100vh; -webkit-font-smoothing:antialiased; }
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:#3d3b37; border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:#4d4a44; }
+/* ── GATES ─────────────────────────────────────────── */
+.gate-screen {
+  display:flex; align-items:center; justify-content:center; min-height:100vh;
+  background: radial-gradient(ellipse at 30% 20%, rgba(184,146,74,0.10) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 80%, rgba(184,146,74,0.05) 0%, transparent 50%),
+              var(--bg);
+}
+.gate-screen.hidden { display:none; }
+.gate-box {
+  background:var(--bg-card); border-radius:20px; padding:48px 40px; text-align:center;
+  max-width:400px; width:92%; box-shadow:var(--shadow-lg); border:1px solid var(--border);
+}
+.gate-box .logo { font-family:var(--font-display); font-size:22px; letter-spacing:0.04em; color:var(--ivory); margin-bottom:6px; }
+.gate-box .logo .accent { color:var(--brass); }
+.gate-box .sub-logo { font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:var(--brass); margin-bottom:28px; }
+.gate-box h1 { font-family:var(--font-display); font-size:26px; font-weight:500; margin-bottom:6px; color:var(--ivory); }
+.gate-box p { font-size:13px; color:var(--text-secondary); margin-bottom:24px; }
+.btn {
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  width:100%; padding:13px; border:none; border-radius:var(--radius-sm);
+  background:var(--brass); color:#14130f; font-size:12px; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.12em;
+  font-family:var(--font); cursor:pointer; transition:0.2s var(--ease);
+}
+.btn:hover { background:var(--brass-light); box-shadow:0 4px 20px var(--brass-glow); }
+/* ── LAYOUT ────────────────────────────────────────── */
+#dashboard { display:none; }
+.dash-header {
+  display:flex; align-items:center; justify-content:space-between; padding:14px 24px;
+  background:var(--bg-raised); border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:100; flex-wrap:wrap; gap:10px;
+}
+.dash-header-left { display:flex; align-items:center; gap:12px; }
+.dash-header-left .logo-mark { font-family:var(--font-display); font-size:18px; color:var(--ivory); white-space:nowrap; }
+.dash-header-left .logo-mark .accent { color:var(--brass); }
+.dash-header-left h1 { font-size:12px; font-weight:400; color:var(--text-secondary); border-left:1px solid var(--border); padding-left:12px; letter-spacing:0.05em; }
+.dash-controls { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.dash-controls label { font-size:10px; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.05em; }
+input[type="date"], select {
+  padding:7px 10px; border:1px solid var(--border); border-radius:var(--radius-xs);
+  background:var(--bg-input); color:var(--text); font-family:var(--font); font-size:12px; transition:0.2s;
+  color-scheme: dark;
+}
+input[type="date"]:focus, select:focus { outline:none; border-color:var(--brass); }
+.btn-sm {
+  padding:7px 16px; border:none; border-radius:var(--radius-xs);
+  background:var(--brass); color:#14130f; font-size:11px; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.08em;
+  font-family:var(--font); cursor:pointer; transition:0.15s;
+}
+.btn-sm:hover { background:var(--brass-light); }
+/* ── FILTER BAR ────────────────────────────────────── */
+.filters-bar {
+  display:flex; align-items:center; gap:10px; padding:10px 24px;
+  background:var(--bg-raised); border-bottom:1px solid var(--border); flex-wrap:wrap;
+}
+.filters-bar label { font-size:10px; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.05em; }
+/* ── SIDEBAR ───────────────────────────────────────── */
+.dash-body { display:flex; }
+.sidebar {
+  width:210px; flex-shrink:0; background:var(--bg-raised); border-right:1px solid var(--border);
+  padding:16px 0; position:sticky; top:92px; height:calc(100vh - 92px); overflow-y:auto;
+}
+.sidebar a {
+  display:flex; align-items:center; gap:8px; padding:9px 20px; font-size:12px; font-weight:500;
+  color:var(--text-secondary); text-decoration:none; transition:0.15s; cursor:pointer;
+}
+.sidebar a:hover { color:var(--text); background:var(--bg-tint); }
+.sidebar a.active { color:var(--brass-light); background:var(--brass-dim); border-right:2px solid var(--brass); font-weight:600; }
+.sidebar .nav-group { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-muted); padding:16px 20px 6px; }
+.main-content { flex:1; min-width:0; padding:20px 24px; min-height:calc(100vh - 92px); }
+/* ── MOBILE NAV ────────────────────────────────────── */
+.mobile-nav-toggle {
+  display:none; background:none; border:1px solid var(--border); color:var(--text);
+  border-radius:var(--radius-xs); width:36px; height:36px; cursor:pointer;
+  font-size:18px; align-items:center; justify-content:center; flex-shrink:0;
+}
+.sidebar-overlay {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55);
+  backdrop-filter:blur(2px); z-index:199;
+}
+.sidebar-overlay.active { display:block; }
+@media (max-width:900px) {
+  .mobile-nav-toggle { display:flex; }
+  .sidebar {
+    position:fixed; left:-260px; top:0; height:100vh; z-index:200;
+    width:240px; transition:left 0.25s var(--ease); box-shadow:var(--shadow-lg);
+  }
+  .sidebar.open { left:0; }
+  .main-content { padding:16px; }
+  .dash-header { padding:10px 16px; }
+  .filters-bar { padding:8px 16px; }
+  .dash-header-left h1 { display:none; }
+}
+/* ── SECTIONS ──────────────────────────────────────── */
+.section { display:none; }
+.section.active { display:block; }
+.section-title { font-family:var(--font-display); font-size:26px; font-weight:500; margin-bottom:4px; color:var(--ivory); }
+.section-desc { font-size:13px; color:var(--text-secondary); margin-bottom:20px; }
+/* ── GRID ──────────────────────────────────────────── */
+.grid { display:grid; gap:16px; }
+.grid-2 { grid-template-columns:1fr 1fr; }
+.grid-3 { grid-template-columns:1fr 1fr 1fr; }
+.grid-4 { grid-template-columns:repeat(4,1fr); }
+.grid-5 { grid-template-columns:repeat(5,1fr); }
+.grid-full { grid-column:1/-1; }
+@media (max-width:900px) { .grid-2,.grid-3,.grid-4,.grid-5 { grid-template-columns:1fr 1fr; } }
+@media (min-width:901px) and (max-width:1200px) { .grid-3,.grid-4,.grid-5 { grid-template-columns:1fr 1fr; } }
+/* ── CARD ──────────────────────────────────────────── */
+.card {
+  background:var(--bg-card); border-radius:var(--radius); padding:20px;
+  border:1px solid var(--border); box-shadow:var(--shadow); transition:0.2s var(--ease);
+}
+.card:hover { border-color:#45423b; }
+.card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.card-header h3 { font-size:13px; font-weight:600; color:var(--ivory); display:flex; align-items:center; gap:6px; letter-spacing:0.02em; }
+.card-header .tag { font-size:10px; font-weight:600; padding:2px 8px; border-radius:20px; }
+.tag-brass { background:var(--brass-dim); color:var(--brass-light); }
+.tag-blue { background:var(--blue-dim); color:var(--blue); }
+.tag-sage { background:var(--sage-dim); color:var(--sage); }
+.tag-red { background:var(--red-dim); color:var(--red); }
+.tag-green { background:var(--green-dim); color:var(--green); }
+.card-insight {
+  font-size:12px; color:var(--text-secondary); line-height:1.5;
+  padding:10px 14px; background:var(--bg-tint); border-radius:var(--radius-sm);
+  margin-bottom:14px; border-left:2px solid var(--brass);
+}
+.card-insight:empty { display:none; }
+.card-insight strong { color:var(--brass-light); }
+/* ── STAT CARDS ────────────────────────────────────── */
+.stat {
+  padding:16px; border-radius:var(--radius-sm); text-align:center;
+  background:var(--bg-card); border:1px solid var(--border); box-shadow:var(--shadow);
+}
+.stat .stat-val { font-family:var(--font-display); font-size:30px; font-weight:500; letter-spacing:-0.01em; color:var(--ivory); }
+.stat .stat-label { font-size:10px; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.08em; margin-top:2px; }
+.stat.brass .stat-val { color:var(--brass-light); }
+.stat.blue .stat-val { color:var(--blue); }
+.stat.sage .stat-val { color:var(--sage); }
+.stat.green .stat-val { color:var(--green); }
+.stat.red .stat-val { color:var(--red); }
+/* ── REALTIME ──────────────────────────────────────── */
+.rt-big-number { text-align:center; padding:24px; }
+.rt-big-number .number { font-family:var(--font-display); font-size:58px; font-weight:500; color:var(--green); letter-spacing:-0.02em; line-height:1; }
+.rt-big-number .label { font-size:12px; color:var(--text-secondary); margin-top:6px; font-weight:500; }
+.rt-pulse { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; color:var(--green); margin-bottom:12px; letter-spacing:0.1em; }
+.rt-dot { width:7px; height:7px; border-radius:50%; background:var(--green); animation:pulse 2s ease infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.4)} }
+.rt-page-list { font-size:12px; }
+.rt-page-row { display:flex; align-items:center; gap:10px; padding:6px 0; border-bottom:1px solid var(--border-light); }
+.rt-page-row:last-child { border:none; }
+.rt-page-count { font-weight:700; min-width:28px; color:var(--green); }
+.rt-page-path { color:var(--text-secondary); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.rt-events { max-height:300px; overflow-y:auto; }
+.rt-event-row { display:flex; align-items:center; gap:10px; padding:5px 0; border-bottom:1px solid var(--border-light); font-size:11px; }
+.rt-event-name { font-weight:600; color:var(--brass-light); min-width:150px; }
+.rt-event-count { font-weight:700; min-width:36px; text-align:right; }
+/* ── FUNNEL ────────────────────────────────────────── */
+.funnel { display:flex; flex-direction:column; gap:3px; }
+.funnel-step { display:flex; align-items:center; gap:10px; padding:4px 0; }
+.funnel-num {
+  font-size:10px; font-weight:800; color:#14130f; background:var(--brass);
+  width:20px; height:20px; border-radius:50%; display:flex; align-items:center;
+  justify-content:center; flex-shrink:0;
+}
+.funnel-label { font-size:12px; font-weight:500; min-width:130px; }
+.funnel-bar-wrap { flex:1; height:28px; background:var(--bg-tint); border-radius:var(--radius-xs); overflow:hidden; }
+.funnel-bar {
+  height:100%; border-radius:var(--radius-xs); transition:width 0.8s var(--ease);
+  display:flex; align-items:center; justify-content:flex-end; padding-right:8px; min-width:3px;
+}
+.funnel-bar span { font-size:11px; font-weight:700; color:#fff; text-shadow:0 1px 3px rgba(0,0,0,0.5); }
+.funnel-meta { text-align:right; min-width:55px; }
+.funnel-val { font-size:14px; font-weight:700; color:var(--ivory); }
+.funnel-drop { font-size:10px; color:var(--red); font-weight:600; display:block; }
+.funnel-drop.ok { color:var(--sage); }
+/* ── TABLES ────────────────────────────────────────── */
+.table-wrap { overflow-x:auto; }
+table.dt { width:100%; border-collapse:collapse; font-size:12px; }
+table.dt th {
+  text-align:left; padding:8px 10px; font-weight:600; font-size:10px;
+  text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted);
+  border-bottom:1px solid var(--border); white-space:nowrap; cursor:pointer; user-select:none;
+}
+table.dt th:hover { color:var(--brass-light); }
+table.dt th.sorted-asc::after { content:' ▲'; font-size:8px; }
+table.dt th.sorted-desc::after { content:' ▼'; font-size:8px; }
+table.dt td { padding:8px 10px; border-bottom:1px solid var(--border-light); }
+table.dt tr:hover td { background:var(--brass-dim); }
+table.dt .num { text-align:right; font-variant-numeric:tabular-nums; font-weight:500; }
+.chart-wrap { position:relative; width:100%; }
+.chart-wrap canvas { width:100% !important; }
+/* ── LOADING / EMPTY ───────────────────────────────── */
+.loading { text-align:center; padding:40px; color:var(--text-muted); font-size:13px; }
+.loading::after { content:''; display:inline-block; width:16px; height:16px; border:2px solid var(--brass); border-top-color:transparent; border-radius:50%; animation:spin 0.6s linear infinite; margin-left:8px; vertical-align:middle; }
+@keyframes spin { to{transform:rotate(360deg)} }
+.empty { text-align:center; padding:32px; color:var(--text-muted); font-size:12px; }
+</style>
+</head>
+<body>
+<!-- ═══ OAUTH GATE ═══ -->
+<div class="gate-screen" id="oauth-screen">
+  <div class="gate-box">
+    <div class="logo">Vanlife <span class="accent">Customs</span></div>
+    <div class="sub-logo">Ads Analytics</div>
+    <h1>Connect Analytics</h1>
+    <p>Sign in with Google to access GA4 data for ads.vanlifecustoms.com.</p>
+    <button class="btn" onclick="initOAuth()">
+      <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.9 33.4 29.4 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 3l5.7-5.7C34 5.9 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.2-2.7-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.5 18.8 12 24 12c3 0 5.8 1.1 7.9 3l5.7-5.7C34 5.9 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.8 13.4-5l-6.2-5.2C29.2 35.2 26.7 36 24 36c-5.3 0-9.9-3.6-11.3-8.5l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4.1 5.5l6.2 5.2C36.8 39.2 44 34 44 24c0-1.3-.2-2.7-.4-3.9z"/></svg>
+      Sign in with Google
+    </button>
+    <p id="oauth-error" style="color:var(--red);font-size:12px;margin-top:10px;display:none"></p>
+  </div>
+</div>
+<!-- ═══ DASHBOARD ═══ -->
+<div id="dashboard">
+  <div class="dash-header">
+    <div class="dash-header-left">
+      <button class="mobile-nav-toggle" onclick="toggleMobileNav()" aria-label="Menu">&#9776;</button>
+      <span class="logo-mark">Vanlife <span class="accent">Customs</span></span>
+      <h1>ADS LANDING PAGE ANALYTICS</h1>
+    </div>
+    <div class="dash-controls">
+      <label>From</label><input type="date" id="date-start">
+      <label>To</label><input type="date" id="date-end">
+      <button class="btn-sm" onclick="refreshAll()">Refresh</button>
+    </div>
+  </div>
+  <div class="filters-bar">
+    <label>Source</label><select id="filter-source"><option value="">All</option></select>
+    <label>Medium</label><select id="filter-medium"><option value="">All</option></select>
+    <label>Campaign</label><select id="filter-campaign"><option value="">All</option></select>
+    <label>Device</label>
+    <select id="filter-device"><option value="">All</option><option value="desktop">Desktop</option><option value="mobile">Mobile</option><option value="tablet">Tablet</option></select>
+  </div>
+  <div class="dash-body">
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleMobileNav()"></div>
+    <nav class="sidebar" id="sidebar-nav">
+      <div class="nav-group">Overview</div>
+      <a class="active" data-section="sec-realtime" onclick="showSection(this)">Live Activity</a>
+      <a data-section="sec-overview" onclick="showSection(this)">Bookings Overview</a>
+      <div class="nav-group">Conversion</div>
+      <a data-section="sec-gate" onclick="showSection(this)">Qualification Gate</a>
+      <a data-section="sec-builds" onclick="showSection(this)">Builds Gallery</a>
+      <div class="nav-group">Engagement</div>
+      <a data-section="sec-engage" onclick="showSection(this)">CTA, Scroll &amp; Sections</a>
+      <div class="nav-group">Acquisition</div>
+      <a data-section="sec-traffic" onclick="showSection(this)">Ads &amp; Traffic</a>
+    </nav>
+    <div class="main-content">
+      <!-- ═══ 1. LIVE ACTIVITY ═══ -->
+      <div class="section active" id="sec-realtime">
+        <div class="section-title">Live Activity</div>
+        <div class="section-desc">What's happening on ads.vanlifecustoms.com right now. Updates every 30 seconds.</div>
+        <div class="grid grid-2" style="margin-bottom:16px">
+          <div class="card">
+            <div class="rt-big-number">
+              <div class="rt-pulse"><div class="rt-dot"></div> LIVE NOW</div>
+              <div class="number" id="rt-users">&mdash;</div>
+              <div class="label">active users on site</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Active Pages</h3></div>
+            <div class="rt-page-list" id="rt-pages"><div class="loading">Loading&hellip;</div></div>
+          </div>
+        </div>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><h3>Live Events</h3><span class="tag tag-brass">30min</span></div>
+            <div class="rt-events" id="rt-events"><div class="loading">Loading&hellip;</div></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Devices</h3></div>
+            <div id="rt-sources"><div class="loading">Loading&hellip;</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- ═══ 2. BOOKINGS OVERVIEW ═══ -->
+      <div class="section" id="sec-overview">
+        <div class="section-title">Bookings Overview</div>
+        <div class="section-desc">schedule (full-build booking, the Meta optimization event) and generate_lead (all bookings). Trend and full conversion path.</div>
+        <div class="grid grid-5" id="overview-stats" style="margin-bottom:16px"></div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><h3>Bookings Trend</h3><span class="tag tag-brass">Daily</span></div>
+          <div class="card-insight" id="overview-insight">Loading booking data&hellip;</div>
+          <div class="chart-wrap"><canvas id="chart-bookings-trend"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Full Conversion Path — Sessions to Booked</h3><span class="tag tag-blue">Unique users</span></div>
+          <div id="overview-funnel"><div class="loading">Loading&hellip;</div></div>
+        </div>
+      </div>
+      <!-- ═══ 3. QUALIFICATION GATE ═══ -->
+      <div class="section" id="sec-gate">
+        <div class="section-title">Qualification Gate Funnel</div>
+        <div class="section-desc">Where visitors drop inside the gate: viewed &rarr; Q1 chassis &rarr; Q2 project type &rarr; Q3 timeline &rarr; calendar &rarr; booked. Answer-level detail shows exactly which options kill momentum.</div>
+        <div class="grid grid-5" id="gate-stats" style="margin-bottom:16px"></div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><h3>Gate Step Funnel</h3><span class="tag tag-brass">gate_step</span></div>
+          <div class="card-insight" id="gate-insight">Unique users reaching each step of the gate.</div>
+          <div id="gate-funnel"><div class="loading">Loading&hellip;</div></div>
+        </div>
+        <div class="grid grid-2" style="margin-bottom:16px">
+          <div class="card">
+            <div class="card-header"><h3>Q2 Outcome — Full vs Partial vs Disqualified</h3><span class="tag tag-sage">build_type</span></div>
+            <div class="chart-wrap"><canvas id="chart-gate-outcome"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Gate Answers Breakdown</h3><span class="tag tag-blue">gate_answer</span></div>
+            <div class="chart-wrap"><canvas id="chart-gate-answers"></canvas></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>All Gate Answers</h3><span class="tag tag-brass">Sortable</span></div>
+          <div id="gate-table"><div class="loading">Loading&hellip;</div></div>
+        </div>
+      </div>
+      <!-- ═══ 4. BUILDS GALLERY ═══ -->
+      <div class="section" id="sec-builds">
+        <div class="section-title">Builds Gallery</div>
+        <div class="section-desc">Which of the 13 build pages people visit most (build_view), and which landing pages produce bookings — feeds directly into which builds to feature in ads.</div>
+        <div class="grid grid-4" id="builds-stats" style="margin-bottom:16px"></div>
+        <div class="grid grid-2" style="margin-bottom:16px">
+          <div class="card">
+            <div class="card-header"><h3>Build Page Views</h3><span class="tag tag-brass">build_name</span></div>
+            <div class="card-insight" id="builds-insight"></div>
+            <div class="chart-wrap"><canvas id="chart-builds"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Gallery Image Clicks (home)</h3><span class="tag tag-blue">gallery_image_click</span></div>
+            <div class="chart-wrap"><canvas id="chart-gallery"></canvas></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Landing Page Performance</h3><span class="tag tag-sage">Sessions &rarr; Leads</span></div>
+          <div class="card-insight">Which entry pages produce leads. A build page that lands sessions AND leads is ad-feature material.</div>
+          <div id="landing-table"><div class="loading">Loading&hellip;</div></div>
+        </div>
+      </div>
+      <!-- ═══ 5. ENGAGEMENT ═══ -->
+      <div class="section" id="sec-engage">
+        <div class="section-title">CTA, Scroll &amp; Sections</div>
+        <div class="section-desc">cta_click by position and text, scroll depth, and how far down the page sections visitors actually reach.</div>
+        <div class="grid grid-4" id="engage-stats" style="margin-bottom:16px"></div>
+        <div class="grid grid-2" style="margin-bottom:16px">
+          <div class="card">
+            <div class="card-header"><h3>CTA Clicks by Position</h3><span class="tag tag-brass">cta_position</span></div>
+            <div class="chart-wrap"><canvas id="chart-cta-position"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>CTA Clicks by Text</h3><span class="tag tag-blue">button_text</span></div>
+            <div class="chart-wrap"><canvas id="chart-cta-text"></canvas></div>
+          </div>
+        </div>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><h3>Scroll Depth</h3><span class="tag tag-blue">scroll_threshold</span></div>
+            <div class="card-insight" id="scroll-insight"></div>
+            <div class="chart-wrap"><canvas id="chart-scroll"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Section Reach</h3><span class="tag tag-brass">section_view</span></div>
+            <div class="card-insight" id="section-insight">Unique users who reached each page section (30% visible).</div>
+            <div id="section-funnel"><div class="loading">Loading&hellip;</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- ═══ 6. ADS & TRAFFIC ═══ -->
+      <div class="section" id="sec-traffic">
+        <div class="section-title">Ads &amp; Traffic</div>
+        <div class="section-desc">Which sources, campaigns, and individual ads (utm_content) drive engaged, qualified traffic — not just cheap clicks.</div>
+        <div class="grid grid-4" id="traffic-stats" style="margin-bottom:16px"></div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><h3>Source / Medium — Sessions vs Qualified vs Booked</h3><span class="tag tag-brass">Sortable</span></div>
+          <div class="card-insight" id="traffic-insight">Click any column header to sort.</div>
+          <div id="traffic-table"><div class="loading">Loading&hellip;</div></div>
+        </div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><h3>By Ad (utm_content)</h3><span class="tag tag-sage">Qualified traffic per ad</span></div>
+          <div class="card-insight" id="ads-insight">Requires utm_content={{ad name}} on Meta ad URLs. If empty, add URL parameters to the ads.</div>
+          <div class="chart-wrap"><canvas id="chart-ads"></canvas></div>
+        </div>
+        <div class="grid grid-3" style="margin-bottom:16px">
+          <div class="card">
+            <div class="card-header"><h3>By Campaign</h3></div>
+            <div class="chart-wrap"><canvas id="chart-campaign"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>By Device</h3></div>
+            <div class="chart-wrap"><canvas id="chart-device"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Top Referrers</h3></div>
+            <div class="chart-wrap"><canvas id="chart-referrer"></canvas></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Sessions Trend</h3><span class="tag tag-blue">Daily</span></div>
+          <div class="chart-wrap"><canvas id="chart-sessions-trend"></canvas></div>
+        </div>
+      </div>
+    </div><!-- /main-content -->
+  </div><!-- /dash-body -->
+</div>
+<script>
+// ═══════════════════════════════════════════════════════════
+// VANLIFE CUSTOMS — ADS LANDING PAGE ANALYTICS
+// GA4 property 544318560 (G-KMH0HXH62V) — ads.vanlifecustoms.com
+//
+// Registered event-scoped custom dimensions (exact parameter names):
+//   gate_step, gate_answer, gate_question, build_type, build_name,
+//   section_name, scroll_threshold, cta_position, button_text,
+//   link_url, calendar_action
+// Events:
+//   schedule (key event, full builds), generate_lead (all bookings),
+//   gate_step_view (gate_view / disqualified), gate_answer,
+//   gate_qualified, calendar_view, build_view, booking_view,
+//   cta_click, nav_click, scroll_depth, section_view,
+//   gallery_image_click, consent_update, schedule_booked (dataLayer only)
+// ═══════════════════════════════════════════════════════════
+let accessToken = null;
+let charts = {};
+let trafficData = [];
+let trafficSortCol = -1;
+let trafficSortAsc = true;
+let gateTableData = [];
+let gateSortCol = -1;
+let gateSortAsc = true;
+let rtInterval = null;
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function num(v) { return parseInt(v) || 0; }
+function pct(a, b) { return b > 0 ? ((a / b) * 100).toFixed(1) + '%' : '0%'; }
+function fmtN(n) { return n.toLocaleString(); }
+// Gate step order + labels (normalized in the GTM gate tracker tag)
+const GATE_STEPS = [
+  { key: 'gate_view',        label: 'Gate Viewed' },
+  { key: 'q1_chassis',       label: 'Q1 · Chassis' },
+  { key: 'q2_project_type',  label: 'Q2 · Project Type' },
+  { key: 'q3_timeline',      label: 'Q3 · Timeline' },
+  { key: 'to_calendar',      label: 'To Calendar' },
+  { key: 'calendar_view',    label: 'Calendar Viewed' },
+];
+// Section order as instrumented by the VLC Master Tracker
+const SECTION_ORDER = ['Hero','Stats Ticker','Booking','What To Expect','How It Works','Gallery','Lifestyle','Reviews','Final CTA','Trust Bar','Footer'];
+function sectionOrder(k) { const i = SECTION_ORDER.indexOf(k); return i === -1 ? 99 : i; }
+// ═══ NAV ═══
+function showSection(el) {
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(el.dataset.section).classList.add('active');
+  const sidebar = document.getElementById('sidebar-nav');
+  if (sidebar.classList.contains('open')) toggleMobileNav();
+}
+function toggleMobileNav() {
+  document.getElementById('sidebar-nav').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('active');
+}
+// ═══ AUTH ═══
+function saveToken(token) {
+  accessToken = token;
+  sessionStorage.setItem('vlc_ga4_token', token);
+  sessionStorage.setItem('vlc_ga4_token_ts', Date.now().toString());
+}
+function loadCachedToken() {
+  const token = sessionStorage.getItem('vlc_ga4_token');
+  const ts = parseInt(sessionStorage.getItem('vlc_ga4_token_ts') || '0');
+  if (token && (Date.now() - ts) < 50 * 60 * 1000) return token;
+  sessionStorage.removeItem('vlc_ga4_token');
+  sessionStorage.removeItem('vlc_ga4_token_ts');
+  return null;
+}
+function initOAuth() {
+  const client = google.accounts.oauth2.initTokenClient({
+    client_id: CONFIG.CLIENT_ID,
+    scope: 'https://www.googleapis.com/auth/analytics.readonly',
+    callback: (resp) => {
+      if (resp.error) {
+        document.getElementById('oauth-error').textContent = 'Auth failed: ' + resp.error;
+        document.getElementById('oauth-error').style.display = 'block';
+        return;
+      }
+      saveToken(resp.access_token);
+      document.getElementById('oauth-screen').classList.add('hidden');
+      document.getElementById('dashboard').style.display = 'block';
+      initDashboard();
+    },
+  });
+  client.requestAccessToken();
+}
+function tryAutoLogin() {
+  const cached = loadCachedToken();
+  if (cached) {
+    accessToken = cached;
+    document.getElementById('oauth-screen').classList.add('hidden');
+    document.getElementById('dashboard').style.display = 'block';
+    initDashboard();
+    return true;
+  }
+  return false;
+}
+window.addEventListener('load', () => { tryAutoLogin(); });
+// ═══ DATE RANGE & API ═══
+function initDateRange() {
+  const end = new Date(), start = new Date();
+  start.setDate(end.getDate() - 30);
+  document.getElementById('date-start').value = fmtDate(start);
+  document.getElementById('date-end').value = fmtDate(end);
+}
+function fmtDate(d) { return d.toISOString().split('T')[0]; }
+function getDR() { return { startDate: document.getElementById('date-start').value, endDate: document.getElementById('date-end').value }; }
+function handleAuthExpired() {
+  sessionStorage.removeItem('vlc_ga4_token');
+  sessionStorage.removeItem('vlc_ga4_token_ts');
+  accessToken = null;
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('oauth-screen').classList.remove('hidden');
+  if (rtInterval) { clearInterval(rtInterval); rtInterval = null; }
+}
+async function ga4(body) {
+  const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/${CONFIG.GA4_PROPERTY}:runReport`, {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (r.status === 401) { handleAuthExpired(); throw new Error('Token expired'); }
+  if (!r.ok) { const t = await r.text(); console.error('GA4 error:', r.status, t); throw new Error('GA4 ' + r.status); }
+  return r.json();
+}
+async function ga4RT(body) {
+  const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/${CONFIG.GA4_PROPERTY}:runRealtimeReport`, {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (r.status === 401) { handleAuthExpired(); throw new Error('Token expired'); }
+  if (!r.ok) { const t = await r.text(); console.error('RT error:', r.status, t); throw new Error('RT ' + r.status); }
+  return r.json();
+}
+// ═══ FILTERS ═══
+function buildFilters() {
+  const f = [];
+  const sv = document.getElementById('filter-source').value;
+  const mv = document.getElementById('filter-medium').value;
+  const cv = document.getElementById('filter-campaign').value;
+  const dv = document.getElementById('filter-device').value;
+  if (sv) f.push({ filter: { fieldName: 'sessionSource', stringFilter: { value: sv, matchType: 'EXACT' } } });
+  if (mv) f.push({ filter: { fieldName: 'sessionMedium', stringFilter: { value: mv, matchType: 'EXACT' } } });
+  if (cv) f.push({ filter: { fieldName: 'sessionCampaignName', stringFilter: { value: cv, matchType: 'EXACT' } } });
+  if (dv) f.push({ filter: { fieldName: 'deviceCategory', stringFilter: { value: dv, matchType: 'EXACT' } } });
+  if (!f.length) return undefined;
+  if (f.length === 1) return f[0];
+  return { andGroup: { expressions: f } };
+}
+function mergeFilters(a, b) {
+  if (!a && !b) return undefined;
+  if (!a) return b;
+  if (!b) return a;
+  const e = [];
+  if (a.andGroup) e.push(...a.andGroup.expressions); else e.push(a);
+  if (b.andGroup) e.push(...b.andGroup.expressions); else e.push(b);
+  return { andGroup: { expressions: e } };
+}
+function evFilter(name) {
+  return { filter: { fieldName: 'eventName', stringFilter: { value: name, matchType: 'EXACT' } } };
+}
+function baseReq(overrides) {
+  const r = { dateRanges: [getDR()], ...overrides };
+  const f = buildFilters();
+  if (f) r.dimensionFilter = mergeFilters(r.dimensionFilter, f);
+  return r;
+}
+// ═══ CHART DEFAULTS — dark theme ═══
+Chart.defaults.color = '#a39e96';
+Chart.defaults.borderColor = '#2b2925';
+Chart.defaults.font.family = "'Outfit',-apple-system,sans-serif";
+Chart.defaults.font.size = 11;
+Object.assign(Chart.defaults.datasets.bar, { maxBarThickness: 40, barPercentage: 0.7, categoryPercentage: 0.8 });
+// VLC palette: brass, sage, blue, ivory-gray, red, purple, green, brass-light
+const PALETTE = ['#b8924a', '#7fa88a', '#6f92b8', '#8a857e', '#c96b5c', '#9a8fc0', '#6faf7f', '#d4b06a'];
+function dc(key) { if (charts[key]) { charts[key].destroy(); delete charts[key]; } }
+function safeChart(key, canvasId, config) {
+  dc(key);
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const existing = Chart.getChart(canvas);
+  if (existing) existing.destroy();
+  const hasData = config.data && config.data.labels && config.data.labels.length > 0;
+  if (!hasData) {
+    canvas.style.display = 'none';
+    let el = canvas.parentElement.querySelector('.chart-empty');
+    if (!el) { el = document.createElement('div'); el.className = 'chart-empty empty'; canvas.parentElement.appendChild(el); }
+    el.textContent = 'No data available for this date range.';
+    return;
+  }
+  canvas.style.display = '';
+  const el = canvas.parentElement.querySelector('.chart-empty');
+  if (el) el.remove();
+  charts[key] = new Chart(canvas, config);
+}
+function statHTML(items) {
+  return items.map(s => `<div class="stat ${s.c}"><div class="stat-val">${typeof s.v === 'string' ? s.v : fmtN(s.v)}</div><div class="stat-label">${s.l}</div></div>`).join('');
+}
+function renderFunnel(steps, maxVal) {
+  const max = maxVal || Math.max(...steps.map(s => s.users), 1);
+  let html = '<div class="funnel">';
+  steps.forEach((s, i) => {
+    const w = Math.max((s.users / max) * 100, 2);
+    const drop = i > 0 && steps[0].users > 0 ? pct(s.users, steps[0].users) : '';
+    html += `<div class="funnel-step">
+      <span class="funnel-num">${i + 1}</span>
+      <span class="funnel-label">${esc(s.label)}</span>
+      <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:${w}%;background:${s.color || PALETTE[i % PALETTE.length]}"><span>${fmtN(s.users)}</span></div></div>
+      <div class="funnel-meta"><span class="funnel-val">${fmtN(s.events)}</span><span class="funnel-drop ${i === 0 ? 'ok' : ''}">${drop}</span></div>
+    </div>`;
+  });
+  html += '</div>';
+  return html;
+}
+// ═══ INIT & REFRESH ═══
+function initDashboard() {
+  initDateRange();
+  refreshAll();
+  startRT();
+}
+async function refreshAll() {
+  // GA4 API concurrent quota (~10). Batch small groups to avoid 429s.
+  async function batch(...fns) { await Promise.allSettled(fns.map(f => f())); }
+  await batch(loadRT, populateFilters);
+  await batch(loadGate, loadEngage);   // gate first so its step-user cache feeds the overview funnel
+  await batch(loadOverview, loadBuilds);
+  await batch(loadTraffic);
+}
+['filter-source', 'filter-medium', 'filter-campaign', 'filter-device'].forEach(id => {
+  document.getElementById(id).addEventListener('change', refreshAll);
+});
+// ═══ FILTER DROPDOWNS ═══
+async function populateFilters() {
+  try {
+    const [srcs, meds, camps] = await Promise.allSettled([
+      ga4(baseReq({ dimensions: [{ name: 'sessionSource' }], metrics: [{ name: 'sessions' }], orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: 25 })),
+      ga4(baseReq({ dimensions: [{ name: 'sessionMedium' }], metrics: [{ name: 'sessions' }], orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: 25 })),
+      ga4(baseReq({ dimensions: [{ name: 'sessionCampaignName' }], metrics: [{ name: 'sessions' }], orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: 50 })),
+    ]);
+    fillSelect('filter-source', srcs);
+    fillSelect('filter-medium', meds);
+    fillSelect('filter-campaign', camps);
+  } catch (e) { console.error('Filters:', e); }
+}
+function fillSelect(id, result) {
+  const sel = document.getElementById(id);
+  const cur = sel.value;
+  while (sel.options.length > 1) sel.remove(1);
+  if (result.status !== 'fulfilled' || !result.value.rows) return;
+  result.value.rows.forEach(r => {
+    const v = r.dimensionValues[0].value;
+    if (!v || v === '(not set)') return;
+    const opt = document.createElement('option');
+    opt.value = v;
+    opt.textContent = v;
+    sel.appendChild(opt);
+  });
+  sel.value = cur;
+}
+// ═══ 1. REALTIME ═══
+function startRT() { loadRT(); rtInterval = setInterval(loadRT, 30000); }
+async function loadRT() {
+  try {
+    try {
+      const pages = await ga4RT({ dimensions: [{ name: 'unifiedScreenName' }], metrics: [{ name: 'activeUsers' }] });
+      let total = 0;
+      const pageList = [];
+      if (pages.rows) pages.rows.forEach(r => {
+        const c = num(r.metricValues[0].value);
+        total += c;
+        pageList.push({ page: r.dimensionValues[0].value, users: c });
+      });
+      document.getElementById('rt-users').textContent = total;
+      pageList.sort((a, b) => b.users - a.users);
+      document.getElementById('rt-pages').innerHTML = pageList.length
+        ? pageList.map(p => `<div class="rt-page-row"><span class="rt-page-count">${p.users}</span><span class="rt-page-path">${esc(p.page)}</span></div>`).join('')
+        : '<div class="empty">No active pages right now</div>';
+    } catch (e) {
+      try {
+        const simple = await ga4RT({ metrics: [{ name: 'activeUsers' }] });
+        document.getElementById('rt-users').textContent = simple.rows ? num(simple.rows[0].metricValues[0].value) : 0;
+      } catch (e2) { document.getElementById('rt-users').textContent = '—'; }
+      document.getElementById('rt-pages').innerHTML = '<div class="empty">Page breakdown unavailable</div>';
+    }
+    try {
+      const events = await ga4RT({ dimensions: [{ name: 'eventName' }], metrics: [{ name: 'eventCount' }] });
+      const evList = [];
+      if (events.rows) events.rows.forEach(r => evList.push({ name: r.dimensionValues[0].value, count: num(r.metricValues[0].value) }));
+      evList.sort((a, b) => b.count - a.count);
+      document.getElementById('rt-events').innerHTML = evList.length
+        ? evList.map(e => `<div class="rt-event-row"><span class="rt-event-name">${esc(e.name)}</span><span class="rt-event-count">${e.count}</span></div>`).join('')
+        : '<div class="empty">No events in last 30 min</div>';
+    } catch (e) {
+      document.getElementById('rt-events').innerHTML = '<div class="empty">Events unavailable</div>';
+    }
+    try {
+      const devices = await ga4RT({ dimensions: [{ name: 'deviceCategory' }], metrics: [{ name: 'activeUsers' }] });
+      const srcList = [];
+      if (devices.rows) devices.rows.forEach(r => srcList.push({ src: r.dimensionValues[0].value, users: num(r.metricValues[0].value) }));
+      srcList.sort((a, b) => b.users - a.users);
+      document.getElementById('rt-sources').innerHTML = srcList.length
+        ? srcList.map(s => `<div class="rt-page-row"><span class="rt-page-count">${s.users}</span><span class="rt-page-path">${esc(s.src)}</span></div>`).join('')
+        : '<div class="empty">No active devices</div>';
+    } catch (e) {
+      document.getElementById('rt-sources').innerHTML = '<div class="empty">Devices unavailable</div>';
+    }
+  } catch (e) {
+    console.error('RT fatal:', e);
+    document.getElementById('rt-users').textContent = '—';
+  }
+}
+// ═══ 2. BOOKINGS OVERVIEW ═══
+async function loadOverview() {
+  try {
+    const [totals, eventTotals, trend] = await Promise.all([
+      ga4(baseReq({ metrics: [{ name: 'sessions' }, { name: 'totalUsers' }, { name: 'screenPageViews' }] })),
+      ga4(baseReq({
+        dimensions: [{ name: 'eventName' }],
+        metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'date' }, { name: 'eventName' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: { orGroup: { expressions: [evFilter('schedule'), evFilter('generate_lead')] } },
+        orderBys: [{ dimension: { dimensionName: 'date' } }],
+        limit: 800,
+      })),
+    ]);
+    const sessions = totals.rows ? num(totals.rows[0].metricValues[0].value) : 0;
+    const users = totals.rows ? num(totals.rows[0].metricValues[1].value) : 0;
+    const ev = {}, us = {};
+    if (eventTotals.rows) eventTotals.rows.forEach(r => {
+      ev[r.dimensionValues[0].value] = num(r.metricValues[0].value);
+      us[r.dimensionValues[0].value] = num(r.metricValues[1].value);
+    });
+    const fullBookings = ev.schedule || 0;
+    const allLeads = ev.generate_lead || 0;
+    document.getElementById('overview-stats').innerHTML = statHTML([
+      { v: fullBookings, l: 'Full-Build Bookings', c: 'brass' },
+      { v: allLeads, l: 'All Bookings (leads)', c: 'sage' },
+      { v: sessions, l: 'Sessions', c: 'blue' },
+      { v: users, l: 'Users', c: '' },
+      { v: pct(fullBookings, sessions), l: 'Booking Rate / Session', c: 'green' },
+    ]);
+    const ins = document.getElementById('overview-insight');
+    const parts = [];
+    if (sessions > 0) parts.push(`<strong>${pct(fullBookings, sessions)}</strong> of sessions → full-build booking`);
+    if (allLeads > fullBookings) parts.push(`<strong>${fmtN(allLeads - fullBookings)}</strong> partial-build bookings`);
+    if (us.gate_qualified > 0) parts.push(`<strong>${pct(us.schedule || 0, us.gate_qualified)}</strong> of gate-qualified users booked`);
+    ins.innerHTML = parts.join(' · ') || 'Waiting for booking data…';
+    // Trend: two lines
+    const byDate = {};
+    if (trend.rows) trend.rows.forEach(r => {
+      const d = r.dimensionValues[0].value, e = r.dimensionValues[1].value;
+      byDate[d] = byDate[d] || { schedule: 0, generate_lead: 0 };
+      byDate[d][e] = num(r.metricValues[0].value);
+    });
+    const dates = Object.keys(byDate).sort();
+    safeChart('bookingsTrend', 'chart-bookings-trend', {
+      type: 'line',
+      data: { labels: dates.map(d => d.replace(/(\d{4})(\d{2})(\d{2})/, '$2/$3')), datasets: [
+        { label: 'Full-build (schedule)', data: dates.map(d => byDate[d].schedule), borderColor: PALETTE[0], backgroundColor: 'rgba(184,146,74,0.15)', fill: true, tension: 0.3, pointRadius: 3 },
+        { label: 'All bookings (generate_lead)', data: dates.map(d => byDate[d].generate_lead), borderColor: PALETTE[1], backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 3 },
+      ] },
+      options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+    // Full path funnel (unique users)
+    const funnelSteps = [
+      { label: 'Sessions', users: sessions, events: sessions, color: PALETTE[2] },
+      { label: 'Saw Booking Section', users: us.booking_view || 0, events: ev.booking_view || 0, color: PALETTE[3] },
+      { label: 'Gate Viewed', users: (function(){ return usGate('gate_view'); })() || us.gate_step_view || 0, events: ev.gate_step_view || 0, color: PALETTE[0] },
+      { label: 'Gate Qualified', users: us.gate_qualified || 0, events: ev.gate_qualified || 0, color: PALETTE[1] },
+      { label: 'Calendar Viewed', users: us.calendar_view || 0, events: ev.calendar_view || 0, color: PALETTE[7] },
+      { label: 'Booked (any)', users: us.generate_lead || 0, events: allLeads, color: PALETTE[6] },
+      { label: 'Booked Full Build', users: us.schedule || 0, events: fullBookings, color: PALETTE[4] },
+    ];
+    document.getElementById('overview-funnel').innerHTML = renderFunnel(funnelSteps);
+  } catch (e) {
+    console.error('Overview:', e);
+    document.getElementById('overview-funnel').innerHTML = '<div class="empty">Failed to load.</div>';
+  }
+}
+// cache of gate step users, set by loadGate; overview uses it opportunistically
+let _gateStepUsers = {};
+function usGate(step) { return _gateStepUsers[step] || 0; }
+// ═══ 3. QUALIFICATION GATE ═══
+async function loadGate() {
+  const fEl = document.getElementById('gate-funnel');
+  try {
+    const [stepViews, answers, outcomes, eventTotals] = await Promise.all([
+      // gate_step_view: gate_view / disqualified / calendar_view come via own events too
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:gate_step' }, { name: 'eventName' }],
+        metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+        dimensionFilter: { orGroup: { expressions: [evFilter('gate_step_view'), evFilter('gate_answer'), evFilter('calendar_view')] } },
+        limit: 100,
+      })),
+      // answer-level detail
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:gate_step' }, { name: 'customEvent:gate_answer' }],
+        metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+        dimensionFilter: evFilter('gate_answer'),
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }],
+        limit: 100,
+      })),
+      // qualified outcomes by build_type
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:build_type' }],
+        metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+        dimensionFilter: evFilter('gate_qualified'),
+        limit: 10,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'eventName' }],
+        metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+        dimensionFilter: { orGroup: { expressions: [evFilter('gate_qualified'), evFilter('calendar_view'), evFilter('generate_lead'), evFilter('schedule')] } },
+      })),
+    ]);
+    // step users map: key -> {events, users} (combine gate_step across events)
+    const stepMap = {};
+    if (stepViews.rows) stepViews.rows.forEach(r => {
+      const step = r.dimensionValues[0].value;
+      if (!step || step === '(not set)') return;
+      stepMap[step] = stepMap[step] || { events: 0, users: 0 };
+      stepMap[step].events += num(r.metricValues[0].value);
+      stepMap[step].users = Math.max(stepMap[step].users, num(r.metricValues[1].value));
+    });
+    _gateStepUsers = {};
+    Object.keys(stepMap).forEach(k => _gateStepUsers[k] = stepMap[k].users);
+    const ev = {}, us = {};
+    if (eventTotals.rows) eventTotals.rows.forEach(r => {
+      ev[r.dimensionValues[0].value] = num(r.metricValues[0].value);
+      us[r.dimensionValues[0].value] = num(r.metricValues[1].value);
+    });
+    const gv = (stepMap.gate_view || {}).users || 0;
+    const dq = (stepMap.disqualified || {}).users || 0;
+    document.getElementById('gate-stats').innerHTML = statHTML([
+      { v: gv, l: 'Viewed Gate', c: 'blue' },
+      { v: us.gate_qualified || 0, l: 'Qualified', c: 'sage' },
+      { v: dq, l: 'Disqualified', c: 'red' },
+      { v: us.calendar_view || 0, l: 'Saw Calendar', c: 'brass' },
+      { v: us.generate_lead || 0, l: 'Booked', c: 'green' },
+    ]);
+    // funnel of ordered steps
+    const steps = GATE_STEPS
+      .map((s, i) => ({ label: s.label, users: (stepMap[s.key] || {}).users || 0, events: (stepMap[s.key] || {}).events || 0, color: PALETTE[i % PALETTE.length] }))
+      .filter(s => s.users > 0 || s.events > 0);
+    if (us.generate_lead) steps.push({ label: 'Booked', users: us.generate_lead, events: ev.generate_lead || 0, color: PALETTE[6] });
+    fEl.innerHTML = steps.length ? renderFunnel(steps) : '<div class="empty">No gate data yet — publish the GTM container and wait for traffic.</div>';
+    const gi = document.getElementById('gate-insight');
+    if (gv > 0) {
+      const q2 = (stepMap.q2_project_type || {}).users || 0;
+      const cal = us.calendar_view || 0;
+      const booked = us.generate_lead || 0;
+      const biggest = [];
+      if (q2 && gv) biggest.push(['Gate → Q2', 1 - q2 / gv]);
+      if (cal && q2) biggest.push(['Q2 → Calendar', 1 - cal / q2]);
+      if (booked && cal) biggest.push(['Calendar → Booked', 1 - booked / cal]);
+      biggest.sort((a, b) => b[1] - a[1]);
+      if (biggest.length) gi.innerHTML = `Biggest drop-off: <strong>${biggest[0][0]}</strong> (${(biggest[0][1] * 100).toFixed(0)}% lost). ` + (dq ? `<strong>${fmtN(dq)}</strong> users hit the disqualified screen.` : '');
+    } else { gi.innerHTML = 'Unique users reaching each step of the gate.'; }
+    // outcome doughnut
+    const oLabels = [], oVals = [];
+    if (outcomes.rows) outcomes.rows.forEach(r => {
+      const v = r.dimensionValues[0].value;
+      if (!v || v === '(not set)') return;
+      oLabels.push(v.replace('_', ' ')); oVals.push(num(r.metricValues[1].value));
+    });
+    if (dq) { oLabels.push('disqualified'); oVals.push(dq); }
+    safeChart('gateOutcome', 'chart-gate-outcome', {
+      type: 'doughnut',
+      data: { labels: oLabels, datasets: [{ data: oVals, backgroundColor: [PALETTE[0], PALETTE[1], PALETTE[4], PALETTE[2]].slice(0, oLabels.length), borderColor: '#1e1d1a' }] },
+      options: { responsive: true, plugins: { legend: { position: 'right' } } },
+    });
+    // answers bar (top 12)
+    const aLabels = [], aVals = [];
+    gateTableData = [];
+    if (answers.rows) answers.rows.forEach(r => {
+      const step = r.dimensionValues[0].value, ans = r.dimensionValues[1].value;
+      if (!ans || ans === '(not set)') return;
+      gateTableData.push({ step, answer: ans, events: num(r.metricValues[0].value), users: num(r.metricValues[1].value) });
+      if (aLabels.length < 12) {
+        aLabels.push(ans.length > 42 ? ans.substring(0, 39) + '...' : ans);
+        aVals.push(num(r.metricValues[0].value));
+      }
+    });
+    safeChart('gateAnswers', 'chart-gate-answers', {
+      type: 'bar',
+      data: { labels: aLabels, datasets: [{ label: 'Clicks', data: aVals, backgroundColor: PALETTE[2] + '99', borderColor: PALETTE[2], borderWidth: 1 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+    renderGateTable();
+  } catch (e) { console.error('Gate:', e); fEl.innerHTML = '<div class="empty">Failed to load.</div>'; }
+}
+function renderGateTable() {
+  const el = document.getElementById('gate-table');
+  if (!gateTableData.length) { el.innerHTML = '<div class="empty">No gate answers recorded yet.</div>'; return; }
+  if (gateSortCol >= 0) {
+    const cols = ['step', 'answer', 'events', 'users'];
+    const key = cols[gateSortCol];
+    gateTableData.sort((a, b) => {
+      const av = a[key], bv = b[key];
+      if (typeof av === 'number') return gateSortAsc ? av - bv : bv - av;
+      return gateSortAsc ? String(av).localeCompare(String(bv)) : String(bv).localeCompare(String(av));
+    });
+  }
+  const headers = ['Step', 'Answer', 'Clicks', 'Users'];
+  let html = '<div class="table-wrap"><table class="dt"><thead><tr>';
+  headers.forEach((h, i) => {
+    const cls = i === gateSortCol ? (gateSortAsc ? 'sorted-asc' : 'sorted-desc') : '';
+    html += `<th class="${cls}" onclick="sortGate(${i})">${h}</th>`;
+  });
+  html += '</tr></thead><tbody>';
+  gateTableData.forEach(r => {
+    html += `<tr><td>${esc(r.step)}</td><td>${esc(r.answer)}</td><td class="num">${fmtN(r.events)}</td><td class="num">${fmtN(r.users)}</td></tr>`;
+  });
+  html += '</tbody></table></div>';
+  el.innerHTML = html;
+}
+function sortGate(col) {
+  if (gateSortCol === col) gateSortAsc = !gateSortAsc;
+  else { gateSortCol = col; gateSortAsc = col < 2; }
+  renderGateTable();
+}
+// ═══ 4. BUILDS ═══
+async function loadBuilds() {
+  try {
+    const [builds, gallery, landing, buildTotals] = await Promise.all([
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:build_name' }],
+        metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+        dimensionFilter: evFilter('build_view'),
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 20,
+      })),
+      ga4(baseReq({
+        metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+        dimensionFilter: evFilter('gallery_image_click'),
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'landingPage' }],
+        metrics: [{ name: 'sessions' }, { name: 'keyEvents' }, { name: 'engagementRate' }],
+        orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: 20,
+      })),
+      ga4(baseReq({
+        metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+        dimensionFilter: evFilter('build_view'),
+      })),
+    ]);
+    const bvEvents = buildTotals.rows ? num(buildTotals.rows[0].metricValues[0].value) : 0;
+    const bvUsers = buildTotals.rows ? num(buildTotals.rows[0].metricValues[1].value) : 0;
+    const gEvents = gallery.rows ? num(gallery.rows[0].metricValues[0].value) : 0;
+    let topBuild = '—';
+    const bLabels = [], bVals = [];
+    if (builds.rows) builds.rows.forEach(r => {
+      const b = r.dimensionValues[0].value;
+      if (!b || b === '(not set)') return;
+      if (topBuild === '—') topBuild = b;
+      bLabels.push(b); bVals.push(num(r.metricValues[1].value));
+    });
+    document.getElementById('builds-stats').innerHTML = statHTML([
+      { v: bvEvents, l: 'Build Page Views', c: 'brass' },
+      { v: bvUsers, l: 'Users Viewing Builds', c: 'blue' },
+      { v: topBuild, l: 'Top Build', c: 'sage' },
+      { v: gEvents, l: 'Gallery Img Clicks', c: '' },
+    ]);
+    const bi = document.getElementById('builds-insight');
+    if (bLabels.length) bi.innerHTML = `<strong>${esc(topBuild)}</strong> is the most viewed build. Feature it (or its style) in ad creative.`;
+    safeChart('builds', 'chart-builds', {
+      type: 'bar',
+      data: { labels: bLabels, datasets: [{ label: 'Users', data: bVals, backgroundColor: PALETTE[0] + '99', borderColor: PALETTE[0], borderWidth: 1 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+    safeChart('gallery', 'chart-gallery', {
+      type: 'bar',
+      data: { labels: gEvents ? ['Gallery image clicks'] : [], datasets: [{ label: 'Clicks', data: gEvents ? [gEvents] : [], backgroundColor: PALETTE[2] + '99', borderColor: PALETTE[2], borderWidth: 1 }] },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+    // landing page table
+    const el = document.getElementById('landing-table');
+    if (landing.rows && landing.rows.length) {
+      let html = '<div class="table-wrap"><table class="dt"><thead><tr><th>Landing Page</th><th>Sessions</th><th>Key Events</th><th>Eng. Rate</th></tr></thead><tbody>';
+      landing.rows.forEach(r => {
+        html += `<tr><td>${esc(r.dimensionValues[0].value || '/')}</td>
+          <td class="num">${fmtN(num(r.metricValues[0].value))}</td>
+          <td class="num">${fmtN(num(r.metricValues[1].value))}</td>
+          <td class="num">${(parseFloat(r.metricValues[2].value) * 100).toFixed(1)}%</td></tr>`;
+      });
+      html += '</tbody></table></div>';
+      el.innerHTML = html;
+    } else { el.innerHTML = '<div class="empty">No landing page data yet.</div>'; }
+  } catch (e) { console.error('Builds:', e); }
+}
+// ═══ 5. ENGAGEMENT ═══
+async function loadEngage() {
+  try {
+    const [counts, byPosition, byText, scrolls, sections] = await Promise.all([
+      ga4(baseReq({
+        dimensions: [{ name: 'eventName' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: { orGroup: { expressions: [evFilter('cta_click'), evFilter('nav_click'), evFilter('booking_view'), evFilter('section_view')] } },
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:cta_position' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: evFilter('cta_click'),
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 15,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:button_text' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: evFilter('cta_click'),
+        orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 15,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:scroll_threshold' }],
+        metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+        dimensionFilter: evFilter('scroll_depth'),
+        limit: 20,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'customEvent:section_name' }],
+        metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+        dimensionFilter: evFilter('section_view'),
+        limit: 25,
+      })),
+    ]);
+    const ev = {};
+    if (counts.rows) counts.rows.forEach(r => ev[r.dimensionValues[0].value] = num(r.metricValues[0].value));
+    document.getElementById('engage-stats').innerHTML = statHTML([
+      { v: ev.cta_click || 0, l: 'CTA Clicks', c: 'brass' },
+      { v: ev.nav_click || 0, l: 'Nav Clicks', c: 'blue' },
+      { v: ev.booking_view || 0, l: 'Booking Section Views', c: 'sage' },
+      { v: ev.section_view || 0, l: 'Section Views', c: '' },
+    ]);
+    const pLabels = [], pVals = [];
+    if (byPosition.rows) byPosition.rows.forEach(r => {
+      const v = r.dimensionValues[0].value;
+      if (!v || v === '(not set)') return;
+      pLabels.push(v); pVals.push(num(r.metricValues[0].value));
+    });
+    safeChart('ctaPosition', 'chart-cta-position', {
+      type: 'bar',
+      data: { labels: pLabels, datasets: [{ label: 'Clicks', data: pVals, backgroundColor: PALETTE[0] + '99', borderColor: PALETTE[0], borderWidth: 1 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+    const tLabels = [], tVals = [];
+    if (byText.rows) byText.rows.forEach(r => {
+      const txt = r.dimensionValues[0].value;
+      if (!txt || txt === '(not set)') return;
+      tLabels.push(txt.length > 40 ? txt.substring(0, 37) + '...' : txt);
+      tVals.push(num(r.metricValues[0].value));
+    });
+    safeChart('ctaText', 'chart-cta-text', {
+      type: 'bar',
+      data: { labels: tLabels, datasets: [{ label: 'Clicks', data: tVals, backgroundColor: PALETTE[2] + '99', borderColor: PALETTE[2], borderWidth: 1 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+    // scroll
+    const depthUs = {};
+    if (scrolls.rows) scrolls.rows.forEach(r => {
+      const d = r.dimensionValues[0].value;
+      depthUs[d] = (depthUs[d] || 0) + num(r.metricValues[1].value);
+    });
+    const depths = ['25', '50', '75', '90'];
+    const si = document.getElementById('scroll-insight');
+    if (depthUs['90']) si.innerHTML = `<strong>${fmtN(depthUs['90'])}</strong> users scrolled past 90% — deep engagement.`;
+    else if (depthUs['50']) si.innerHTML = `<strong>${fmtN(depthUs['50'])}</strong> users reached the halfway point.`;
+    else si.innerHTML = 'Waiting for scroll data…';
+    safeChart('scroll', 'chart-scroll', {
+      type: 'bar',
+      data: { labels: depths.map(d => d + '%'), datasets: [{ label: 'Users', data: depths.map(d => depthUs[d] || 0), backgroundColor: PALETTE[2] + '99', borderColor: PALETTE[2], borderWidth: 1 }] },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+    // sections funnel
+    const el = document.getElementById('section-funnel');
+    const rows = [];
+    if (sections.rows) sections.rows.forEach(r => {
+      const key = r.dimensionValues[0].value;
+      if (!key || key === '(not set)') return;
+      rows.push({ key, events: num(r.metricValues[0].value), users: num(r.metricValues[1].value) });
+    });
+    if (!rows.length) { el.innerHTML = '<div class="empty">No section_view data in this date range.</div>'; }
+    else {
+      rows.sort((a, b) => sectionOrder(a.key) - sectionOrder(b.key) || b.users - a.users);
+      const steps = rows.map((r, i) => ({ label: r.key, users: r.users, events: r.events, color: PALETTE[i % PALETTE.length] }));
+      el.innerHTML = renderFunnel(steps);
+    }
+  } catch (e) { console.error('Engage:', e); }
+}
+// ═══ 6. ADS & TRAFFIC ═══
+async function loadTraffic() {
+  const tEl = document.getElementById('traffic-table');
+  try {
+    const [srcMed, leadsBySrc, qualBySrc, byCampaign, byAd, adLeads, byDevice, byReferrer, trend, totals] = await Promise.all([
+      ga4(baseReq({
+        dimensions: [{ name: 'sessionSource' }, { name: 'sessionMedium' }],
+        metrics: [{ name: 'sessions' }, { name: 'totalUsers' }, { name: 'engagementRate' }],
+        orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: 50,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'sessionSource' }, { name: 'sessionMedium' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: evFilter('generate_lead'), limit: 50,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'sessionSource' }, { name: 'sessionMedium' }],
+        metrics: [{ name: 'totalUsers' }],
+        dimensionFilter: evFilter('gate_qualified'), limit: 50,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'sessionCampaignName' }],
+        metrics: [{ name: 'sessions' }],
+        orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: 10,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'sessionManualAdContent' }],
+        metrics: [{ name: 'sessions' }],
+        orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: 15,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'sessionManualAdContent' }],
+        metrics: [{ name: 'eventCount' }],
+        dimensionFilter: { orGroup: { expressions: [evFilter('generate_lead'), evFilter('gate_qualified')] } },
+        limit: 30,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'deviceCategory' }],
+        metrics: [{ name: 'sessions' }],
+        orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: 5,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'pageReferrer' }],
+        metrics: [{ name: 'sessions' }],
+        orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: 12,
+      })),
+      ga4(baseReq({
+        dimensions: [{ name: 'date' }],
+        metrics: [{ name: 'sessions' }, { name: 'totalUsers' }],
+        orderBys: [{ dimension: { dimensionName: 'date' } }],
+        limit: 400,
+      })),
+      ga4(baseReq({ metrics: [{ name: 'sessions' }, { name: 'totalUsers' }, { name: 'newUsers' }, { name: 'engagementRate' }] })),
+    ]);
+    if (totals.rows) {
+      const m = totals.rows[0].metricValues;
+      document.getElementById('traffic-stats').innerHTML = statHTML([
+        { v: num(m[0].value), l: 'Sessions', c: 'blue' },
+        { v: num(m[1].value), l: 'Users', c: '' },
+        { v: num(m[2].value), l: 'New Users', c: 'brass' },
+        { v: (parseFloat(m[3].value) * 100).toFixed(1) + '%', l: 'Engagement Rate', c: 'sage' },
+      ]);
+    }
+    const leadMap = {}, qualMap = {};
+    if (leadsBySrc.rows) leadsBySrc.rows.forEach(r => leadMap[r.dimensionValues[0].value + '|' + r.dimensionValues[1].value] = num(r.metricValues[0].value));
+    if (qualBySrc.rows) qualBySrc.rows.forEach(r => qualMap[r.dimensionValues[0].value + '|' + r.dimensionValues[1].value] = num(r.metricValues[0].value));
+    trafficData = [];
+    if (srcMed.rows) srcMed.rows.forEach(r => {
+      const src = r.dimensionValues[0].value, med = r.dimensionValues[1].value;
+      const sessions = num(r.metricValues[0].value);
+      const users = num(r.metricValues[1].value);
+      const engRate = parseFloat(r.metricValues[2].value) * 100;
+      const key = src + '|' + med;
+      const leads = leadMap[key] || 0;
+      const qualified = qualMap[key] || 0;
+      trafficData.push({ src, med, sessions, users, engRate, qualified, leads, cvr: sessions > 0 ? (leads / sessions) * 100 : 0 });
+    });
+    renderTrafficTable();
+    const ins = document.getElementById('traffic-insight');
+    const topConv = trafficData.filter(r => r.leads > 0).sort((a, b) => b.leads - a.leads)[0];
+    if (topConv) ins.innerHTML = `Top converting source: <strong>${esc(topConv.src)} / ${esc(topConv.med)}</strong> — ${fmtN(topConv.leads)} bookings, ${fmtN(topConv.qualified)} gate-qualified (${topConv.cvr.toFixed(1)}% booking CVR).`;
+    // ads (utm_content)
+    const adSessions = {}, adConv = {};
+    if (byAd.rows) byAd.rows.forEach(r => {
+      const v = r.dimensionValues[0].value;
+      if (!v || v === '(not set)') return;
+      adSessions[v] = num(r.metricValues[0].value);
+    });
+    if (adLeads.rows) adLeads.rows.forEach(r => {
+      const v = r.dimensionValues[0].value;
+      if (!v || v === '(not set)') return;
+      adConv[v] = (adConv[v] || 0) + num(r.metricValues[0].value);
+    });
+    const adNames = Object.keys(adSessions);
+    const adsIns = document.getElementById('ads-insight');
+    if (adNames.length) adsIns.innerHTML = 'Sessions vs qualified+bookings per ad (utm_content).';
+    safeChart('ads', 'chart-ads', {
+      type: 'bar',
+      data: { labels: adNames.map(n => n.length > 45 ? n.substring(0, 42) + '...' : n), datasets: [
+        { label: 'Sessions', data: adNames.map(n => adSessions[n]), backgroundColor: PALETTE[2] + '99', borderColor: PALETTE[2], borderWidth: 1 },
+        { label: 'Qualified + Booked', data: adNames.map(n => adConv[n] || 0), backgroundColor: PALETTE[0] + '99', borderColor: PALETTE[0], borderWidth: 1 },
+      ] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { position: 'top' } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+    // campaign / device / referrer
+    const cpLabels = [], cpVals = [];
+    if (byCampaign.rows) byCampaign.rows.forEach(r => { cpLabels.push(r.dimensionValues[0].value); cpVals.push(num(r.metricValues[0].value)); });
+    safeChart('campaign', 'chart-campaign', {
+      type: 'doughnut',
+      data: { labels: cpLabels, datasets: [{ data: cpVals, backgroundColor: PALETTE.slice(0, cpLabels.length), borderColor: '#1e1d1a' }] },
+      options: { responsive: true, plugins: { legend: { position: 'right' } } },
+    });
+    const dLabels = [], dVals = [];
+    if (byDevice.rows) byDevice.rows.forEach(r => { dLabels.push(r.dimensionValues[0].value); dVals.push(num(r.metricValues[0].value)); });
+    safeChart('device', 'chart-device', {
+      type: 'doughnut',
+      data: { labels: dLabels, datasets: [{ data: dVals, backgroundColor: PALETTE.slice(0, dLabels.length), borderColor: '#1e1d1a' }] },
+      options: { responsive: true, plugins: { legend: { position: 'right' } } },
+    });
+    const rLabels = [], rVals = [];
+    if (byReferrer.rows) byReferrer.rows.forEach(r => {
+      let ref = r.dimensionValues[0].value;
+      if (!ref) ref = '(direct)';
+      ref = ref.replace(/^https?:\/\//, '').replace(/\/$/, '');
+      rLabels.push(ref.length > 35 ? ref.substring(0, 32) + '...' : ref);
+      rVals.push(num(r.metricValues[0].value));
+    });
+    safeChart('referrer', 'chart-referrer', {
+      type: 'bar',
+      data: { labels: rLabels, datasets: [{ label: 'Sessions', data: rVals, backgroundColor: PALETTE[5] + '99', borderColor: PALETTE[5], borderWidth: 1 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+    const tLabels = [], sVals = [], uVals = [];
+    if (trend.rows) trend.rows.forEach(r => {
+      tLabels.push(r.dimensionValues[0].value.replace(/(\d{4})(\d{2})(\d{2})/, '$2/$3'));
+      sVals.push(num(r.metricValues[0].value));
+      uVals.push(num(r.metricValues[1].value));
+    });
+    safeChart('sessionsTrend', 'chart-sessions-trend', {
+      type: 'line',
+      data: { labels: tLabels, datasets: [
+        { label: 'Sessions', data: sVals, borderColor: PALETTE[0], backgroundColor: 'rgba(184,146,74,0.12)', fill: true, tension: 0.3, pointRadius: 2 },
+        { label: 'Users', data: uVals, borderColor: PALETTE[2], backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 2 },
+      ] },
+      options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
+    });
+  } catch (e) {
+    console.error('Traffic:', e);
+    tEl.innerHTML = '<div class="empty">Failed to load traffic data.</div>';
+  }
+}
+function renderTrafficTable() {
+  const el = document.getElementById('traffic-table');
+  if (!trafficData.length) { el.innerHTML = '<div class="empty">No traffic data.</div>'; return; }
+  if (trafficSortCol >= 0) {
+    const cols = ['src', 'med', 'sessions', 'users', 'engRate', 'qualified', 'leads', 'cvr'];
+    const key = cols[trafficSortCol];
+    trafficData.sort((a, b) => {
+      const av = a[key], bv = b[key];
+      if (typeof av === 'number') return trafficSortAsc ? av - bv : bv - av;
+      return trafficSortAsc ? String(av).localeCompare(String(bv)) : String(bv).localeCompare(String(av));
+    });
+  }
+  const headers = ['Source', 'Medium', 'Sessions', 'Users', 'Eng. Rate', 'Qualified', 'Bookings', 'Booking CVR'];
+  let html = '<div class="table-wrap"><table class="dt"><thead><tr>';
+  headers.forEach((h, i) => {
+    const cls = i === trafficSortCol ? (trafficSortAsc ? 'sorted-asc' : 'sorted-desc') : '';
+    html += `<th class="${cls}" onclick="sortTraffic(${i})">${h}</th>`;
+  });
+  html += '</tr></thead><tbody>';
+  trafficData.forEach(r => {
+    html += `<tr>
+      <td>${esc(r.src)}</td>
+      <td>${esc(r.med)}</td>
+      <td class="num">${fmtN(r.sessions)}</td>
+      <td class="num">${fmtN(r.users)}</td>
+      <td class="num">${r.engRate.toFixed(1)}%</td>
+      <td class="num">${fmtN(r.qualified)}</td>
+      <td class="num">${fmtN(r.leads)}</td>
+      <td class="num">${r.cvr.toFixed(1)}%</td>
+    </tr>`;
+  });
+  html += '</tbody></table></div>';
+  el.innerHTML = html;
+}
+function sortTraffic(col) {
+  if (trafficSortCol === col) trafficSortAsc = !trafficSortAsc;
+  else { trafficSortCol = col; trafficSortAsc = true; }
+  renderTrafficTable();
+}
+</script>
+</body>
+</html>

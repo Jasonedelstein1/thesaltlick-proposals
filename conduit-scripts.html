@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conduit — Ad Campaign Scripts</title>
+<style>
+  @import url('https://use.typekit.net/csj2hfl.css');
+  :root {
+    --bg-surround: #e0dbd3;
+    --bg-panel: #f0ebe2;
+    --bg-card: #ffffff;
+    --coral: #c85c4f;
+    --text-primary: #1a1a1a;
+    --text-secondary: #3d3d3d;
+    --text-muted: rgba(0,0,0,0.45);
+    --text-faint: rgba(0,0,0,0.35);
+    --border: rgba(0,0,0,0.08);
+    --border-medium: rgba(0,0,0,0.12);
+    --shadow: 0 0 40px rgba(0,0,0,0.06);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'neue-haas-grotesk-text', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text-primary);
+    background: var(--bg-surround);
+    -webkit-font-smoothing: antialiased;
+  }
+  .panel {
+    background: var(--bg-panel);
+    max-width: 860px;
+    margin: 0 auto;
+    box-shadow: var(--shadow);
+    min-height: 100vh;
+  }
+  .container { padding: 0 48px; }
+  @media (max-width: 680px) { .container { padding: 0 24px; } }
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border-medium);
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .navbar-inner { padding: 0 48px; display: flex; align-items: center; }
+  @media (max-width: 680px) { .navbar-inner { padding: 0 24px; } }
+  .nav-brand {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-right: auto;
+    padding: 18px 0;
+  }
+  h1 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(30px, 4vw, 40px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text-primary);
+  }
+  h2 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(22px, 3vw, 28px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text-primary);
+  }
+  h3 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(17px, 2.2vw, 20px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-primary);
+  }
+  p { color: var(--text-secondary); }
+  .hero { padding: 72px 0 64px; border-bottom: 1px solid var(--border); }
+  .hero-meta { display: flex; flex-direction: column; gap: 4px; margin-bottom: 32px; }
+  .hero-meta span { font-size: 13px; color: var(--text-muted); letter-spacing: 0.02em; }
+  .hero h1 { margin-bottom: 12px; }
+  .coral-bar { width: 48px; height: 3px; background: var(--coral); margin: 16px 0 24px; }
+  .hero-subtitle {
+    font-size: clamp(16px, 2vw, 19px);
+    font-weight: 400;
+    color: var(--coral);
+    line-height: 1.45;
+  }
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+  .section-header { margin-bottom: 40px; }
+  .script-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-medium);
+    border-radius: 8px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+  .script-card:last-child { margin-bottom: 0; }
+  .script-card-header {
+    padding: 28px 36px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  .script-card-header-left h3 { margin-bottom: 6px; }
+  .script-role { font-size: 13px; color: var(--text-muted); font-style: italic; }
+  .script-body { padding: 32px 36px; }
+  .script-beat { margin-bottom: 20px; }
+  .script-beat:last-child { margin-bottom: 0; }
+  .beat-text { font-size: 17px; line-height: 1.7; color: var(--text-primary); font-weight: 400; }
+  .footer {
+    padding: 40px 0 48px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+  .footer-brand {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .footer-meta { font-size: 13px; color: var(--text-muted); text-align: right; }
+  @media (max-width: 500px) {
+    .footer { flex-direction: column; align-items: flex-start; }
+    .footer-meta { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<div class="panel">
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="nav-brand">The Salt Lick Denver</div>
+    </div>
+  </div>
+  <div class="container">
+    <header class="hero">
+      <div class="hero-meta">
+        <span>Prepared for Conduit</span>
+        <span>Prepared by The Salt Lick Denver</span>
+      </div>
+      <h1>Conduit — Ad Campaign Scripts</h1>
+      <div class="coral-bar"></div>
+      <p class="hero-subtitle">Three video ad scripts for review</p>
+    </header>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>The Three Scripts</h2>
+      </div>
+
+      <div class="script-card">
+        <div class="script-card-header">
+          <div class="script-card-header-left">
+            <h3>Script 1</h3>
+            <div class="script-role">Avery</div>
+          </div>
+        </div>
+        <div class="script-body">
+          <div class="script-beat"><div class="beat-text">Have you ever thought about how much it's costing your business to collect a payment from a customer?</div></div>
+          <div class="script-beat"><div class="beat-text">Let's think about it together. Say you just did a $10,000 project. The card fee alone — three percent — is $300. Then there's your monthly software bill on top: the seats for your guys, the separate takeoff program if you bid off plans.</div></div>
+          <div class="script-beat"><div class="beat-text">From this one project alone, you're losing $550 on fees and software costs, month after month. And that adds up. That could be a new truck wrap. That could be marketing that brings in new customers. That could be a pay raise for your employees. But instead of growing your business, that money is going to credit card companies and software companies.</div></div>
+          <div class="script-beat"><div class="beat-text">Conduit invoices show your customer two prices, the bank transfer price and the card price, and they pick. A bank transfer costs you six bucks, even on a fifty-thousand-dollar invoice. And when your team grows, you're not buying another seat every single month — plans are priced by team size, at a fraction of what the big guys charge.</div></div>
+          <div class="script-beat"><div class="beat-text">Migrating to Conduit isn't the project you think it is, either. Conduit connects to your old software and imports your customers, jobs, and invoices, while your old account just sits there untouched. You're just importing your stuff — you're not committing to anything.</div></div>
+          <div class="script-beat"><div class="beat-text">Sign up for the free trial and migrate today. Next month, that $550 stays in your business.</div></div>
+        </div>
+      </div>
+
+      <div class="script-card">
+        <div class="script-card-header">
+          <div class="script-card-header-left">
+            <h3>Script 2</h3>
+            <div class="script-role">Isaac</div>
+          </div>
+        </div>
+        <div class="script-body">
+          <div class="script-beat"><div class="beat-text">At Conduit, we profit off of your longevity, not your growth. That means you get to profit off of your growth. And we provide you the tools to get there.</div></div>
+          <div class="script-beat"><div class="beat-text">Here's what I mean. The other guys charge you by the seat. A five-person team on ServiceTitan is running you somewhere between $1,200 and $2,500 a month, and that's after a setup fee just to get started. Every time you hire somebody, that bill gets bigger.</div></div>
+          <div class="script-beat"><div class="beat-text">That same five-person team on Conduit would be $65 a month, and there's no setup fee. All of our plans are all-inclusive, so you're never paying extra to unlock a feature, and it never costs you more than about six bucks to collect a payment.</div></div>
+          <div class="script-beat"><div class="beat-text">And your new hire can learn it on their phone the same day you hire them.</div></div>
+          <div class="script-beat"><div class="beat-text">Sign up for a free trial today, and your whole team can be up and running by this afternoon.</div></div>
+        </div>
+      </div>
+
+      <div class="script-card">
+        <div class="script-card-header">
+          <div class="script-card-header-left">
+            <h3>Script 3</h3>
+            <div class="script-role">Avery</div>
+          </div>
+        </div>
+        <div class="script-body">
+          <div class="script-beat"><div class="beat-text">Every field service software says that their software does everything. But what they really mean is, it does everything that every other field service software already does.</div></div>
+          <div class="script-beat"><div class="beat-text">Conduit does everything the other software does too. But we do a whole lot more, and we're constantly adding new features based on feedback from the contractors who use it.</div></div>
+          <div class="script-beat"><div class="beat-text">Hi, I'm Avery. I'm a master electrician in Arvada, Colorado. I helped build Conduit because I wanted software that solves my problems, and I found that most of the field service software out there was built by people who've never actually done the work.</div></div>
+          <div class="script-beat"><div class="beat-text">One of my favorite features that I added: I can load plans directly into Conduit and spec out the electrical right on the sheet. My material costs carry straight through to the bid and then the invoice. Everywhere else, that's a whole separate takeoff program. Last week I sent a nine-thousand-dollar invoice from the truck, and the fee to collect it was only six dollars.</div></div>
+          <div class="script-beat"><div class="beat-text">And one of the coolest things about my job with Conduit is seeing how contractors in other trades use the software, and then adapting it around how they actually work. Somebody tells us what would make their week easier, and we build it. We never want to stop figuring out what this thing can do.</div></div>
+          <div class="script-beat"><div class="beat-text">I always figured admin should be the easiest part of this job. Before Conduit, it never felt that way.</div></div>
+          <div class="script-beat"><div class="beat-text">So if you run a service business, take a hard look at Conduit. Try it free — on your own jobs, not a sales guy's.</div></div>
+        </div>
+      </div>
+
+    </section>
+  </div>
+  <div class="container">
+    <footer class="footer">
+      <div class="footer-brand">The Salt Lick Denver</div>
+      <div class="footer-meta">Prepared for Conduit</div>
+    </footer>
+  </div>
+</div>
+</body>
+</html>

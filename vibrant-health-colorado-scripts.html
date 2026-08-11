@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibrant Health of Colorado — Ad Campaign Scripts</title>
+<style>
+  @import url('https://use.typekit.net/csj2hfl.css');
+  :root {
+    --bg-surround: #e0dbd3;
+    --bg-panel: #f0ebe2;
+    --bg-card: #ffffff;
+    --coral: #c85c4f;
+    --text-primary: #1a1a1a;
+    --text-secondary: #3d3d3d;
+    --text-muted: rgba(0,0,0,0.45);
+    --text-faint: rgba(0,0,0,0.35);
+    --border: rgba(0,0,0,0.08);
+    --border-medium: rgba(0,0,0,0.12);
+    --shadow: 0 0 40px rgba(0,0,0,0.06);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'neue-haas-grotesk-text', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text-primary);
+    background: var(--bg-surround);
+    -webkit-font-smoothing: antialiased;
+  }
+  .panel {
+    background: var(--bg-panel);
+    max-width: 860px;
+    margin: 0 auto;
+    box-shadow: var(--shadow);
+    min-height: 100vh;
+  }
+  .container { padding: 0 48px; }
+  @media (max-width: 680px) { .container { padding: 0 24px; } }
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border-medium);
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .navbar-inner { padding: 0 48px; display: flex; align-items: center; }
+  @media (max-width: 680px) { .navbar-inner { padding: 0 24px; } }
+  .nav-brand {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-right: auto;
+    padding: 18px 0;
+  }
+  h1 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(30px, 4vw, 40px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text-primary);
+  }
+  h2 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(22px, 3vw, 28px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text-primary);
+  }
+  h3 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(17px, 2.2vw, 20px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-primary);
+  }
+  p { color: var(--text-secondary); }
+  .hero { padding: 72px 0 64px; border-bottom: 1px solid var(--border); }
+  .hero-meta { display: flex; flex-direction: column; gap: 4px; margin-bottom: 32px; }
+  .hero-meta span { font-size: 13px; color: var(--text-muted); letter-spacing: 0.02em; }
+  .hero h1 { margin-bottom: 12px; }
+  .coral-bar { width: 48px; height: 3px; background: var(--coral); margin: 16px 0 24px; }
+  .hero-subtitle {
+    font-size: clamp(16px, 2vw, 19px);
+    font-weight: 400;
+    color: var(--coral);
+    line-height: 1.45;
+  }
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+  .section-header { margin-bottom: 40px; }
+  .script-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-medium);
+    border-radius: 8px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+  .script-card:last-child { margin-bottom: 0; }
+  .script-card-header {
+    padding: 28px 36px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  .script-card-header-left h3 { margin-bottom: 6px; }
+  .script-role { font-size: 13px; color: var(--text-muted); font-style: italic; }
+  .script-body { padding: 32px 36px; }
+  .script-beat { margin-bottom: 20px; }
+  .script-beat:last-child { margin-bottom: 0; }
+  .beat-text { font-size: 17px; line-height: 1.7; color: var(--text-primary); font-weight: 400; }
+  .footer {
+    padding: 40px 0 48px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+  .footer-brand {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .footer-meta { font-size: 13px; color: var(--text-muted); text-align: right; }
+  @media (max-width: 500px) {
+    .footer { flex-direction: column; align-items: flex-start; }
+    .footer-meta { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<div class="panel">
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="nav-brand">The Salt Lick Denver</div>
+    </div>
+  </div>
+  <div class="container">
+    <header class="hero">
+      <div class="hero-meta">
+        <span>Prepared for Vibrant Health of Colorado</span>
+        <span>Prepared by The Salt Lick Denver</span>
+      </div>
+      <h1>Vibrant Health of Colorado — Ad Campaign Scripts</h1>
+      <div class="coral-bar"></div>
+      <p class="hero-subtitle">Three video ad scripts for review</p>
+    </header>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>The Three Scripts</h2>
+      </div>
+
+      <div class="script-card">
+        <div class="script-card-header">
+          <div class="script-card-header-left">
+            <h3>Script 1 — Why We Switched</h3>
+            <div class="script-role">Deanna</div>
+          </div>
+        </div>
+        <div class="script-body">
+          <div class="script-beat"><div class="beat-text">Earlier this year, we cut our practice from almost seven thousand patients down to a maximum of one thousand. I want to tell you why we did that.</div></div>
+          <div class="script-beat"><div class="beat-text">For years, we ran a traditional insurance-based practice. If you've ever been a patient at one, you know exactly what that feels like. Your appointment is rushed. It takes weeks or months to get in. And when you message your doctor, you wonder whether anyone actually read it. We saw what that was doing to our patients, and we saw what it was doing to us.</div></div>
+          <div class="script-beat"><div class="beat-text">So in March, we became a direct primary care practice. Our patients pay one flat monthly fee, and that fee covers their care with us — their primary care, their gynecology, their hormone care, and their weight loss support. Every provider in our office practices functional medicine, so even when you come in for something simple, we're looking at your whole health.</div></div>
+          <div class="script-beat"><div class="beat-text">My favorite part is what this does for our patients. When I tell someone I want to see them again in two weeks, they never have to wonder what that visit is going to cost, because it's all included. Nobody here rations their own healthcare anymore.</div></div>
+          <div class="script-beat"><div class="beat-text">Today we can usually see you the same day. When you message us, someone answers you. And our longtime patients tell us they can feel the difference.</div></div>
+          <div class="script-beat"><div class="beat-text">Every provider's panel at our practice is capped, and both of our offices are filling. If you want to be cared for this way, tap Contact Us below and fill out your information, and we'll be in touch. We're in Lone Tree and up in Eagle.</div></div>
+        </div>
+      </div>
+
+      <div class="script-card">
+        <div class="script-card-header">
+          <div class="script-card-header-left">
+            <h3>Script 2 — Hormones</h3>
+            <div class="script-role">Deanna</div>
+          </div>
+        </div>
+        <div class="script-body">
+          <div class="script-beat"><div class="beat-text">If you've been dealing with hot flashes, night sweats, fatigue, brain fog, insomnia, or low libido — and you've been told your labs look normal — I want you to know something. These symptoms are really common in women in their 40s to 50s, but we shouldn't accept them as normal.</div></div>
+          <div class="script-beat"><div class="beat-text">We see this all the time. Women come to us with symptoms that are genuinely disrupting their lives, and they keep hearing that everything looks fine. It is so frustrating to know something is wrong and be told that it's okay.</div></div>
+          <div class="script-beat"><div class="beat-text">I've been helping patients balance their hormones for twenty years, and I built this practice around the one thing most offices can't give you, which is time. My patient panel is capped at a fraction of what I used to carry, so we can run complete testing, sit down with your full history, and actually figure out what's going on. Sometimes that's perimenopause. Sometimes it's menopause. And sometimes it's something else entirely.</div></div>
+          <div class="script-beat"><div class="beat-text">Every provider in our office is a functional medicine provider. That means the care you'd normally be referred out to a specialist for, like hormone therapy or weight management, is included in your membership, right alongside your primary care and your gynecology. You'll see a provider who knows you by name, and you'll never get a separate bill for us looking deeper.</div></div>
+          <div class="script-beat"><div class="beat-text">We're in Lone Tree and up in Eagle, and our panels are filling. If this sounds like you, tap Contact Us below and fill out your information, and we'll be in touch. You've waited long enough.</div></div>
+        </div>
+      </div>
+
+      <div class="script-card">
+        <div class="script-card-header">
+          <div class="script-card-header-left">
+            <h3>Script 3 — Men &amp; Couples</h3>
+            <div class="script-role">Erin</div>
+          </div>
+        </div>
+        <div class="script-body">
+          <div class="script-beat"><div class="beat-text">Here's something that happens at our office almost every week. A woman calls about her hormones. A month later, her husband is our patient too.</div></div>
+          <div class="script-beat"><div class="beat-text">I'm Erin, and I usually take those calls. They almost always start with her. We're talking about perimenopause, or her energy, or her sleep. And then she finds out that we see men as well, and we start talking about his testosterone, his weight, or just finding him a doctor who has time to know him and understand how his health history affects him.</div></div>
+          <div class="script-beat"><div class="beat-text">Because we're a direct primary care practice, the whole household can be here. Every provider in our office practices functional medicine, so things like hormone therapy and weight loss are part of your membership instead of a referral to another office. Your entire family can come to one place for your primary care, your hormones, and your annual visits, and you'll be seen by providers who carry a fraction of the patients a traditional practice does. We have same-day appointments when you need them, and our providers personally answer the messages on our portal.</div></div>
+          <div class="script-beat"><div class="beat-text">And to make it even easier, we offer family memberships, so everyone stays on one plan.</div></div>
+          <div class="script-beat"><div class="beat-text">Both of our offices in Lone Tree and Eagle are capped, and they're filling. Tap Contact Us below, fill out your contact information, and I'll give you a call. Tell me what's going on, and I'll get you set up with the right provider.</div></div>
+        </div>
+      </div>
+
+    </section>
+  </div>
+  <div class="container">
+    <footer class="footer">
+      <div class="footer-brand">The Salt Lick Denver</div>
+      <div class="footer-meta">Prepared for Vibrant Health of Colorado</div>
+    </footer>
+  </div>
+</div>
+</body>
+</html>

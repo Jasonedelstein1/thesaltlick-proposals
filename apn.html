@@ -436,7 +436,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:10px 40px;justify-content:space-bet
 
     <div class="totals">
       <div class="total"><div class="k">One-time total</div><div class="v" id="t-onetime">$85,000</div><div class="d">Foundation plus the landing page videos and options selected.</div></div>
-      <div class="total"><div class="k">First six months</div><div class="v" id="t-six">$145,000</div><div class="d">One-time total plus six months of management, which begins at campaign launch. Ad spend is separate and paid directly to Meta; see the next section.</div></div>
+      <div class="total"><div class="k">Management fee</div><div class="v">$10,000<span style="font-size:18px;color:var(--text-2);font-weight:400"> per month</span></div><div class="d">From campaign launch. Six-month initial term with a formal 90-day review, then month to month. Ad spend is separate and paid directly to Meta; see the next section.</div></div>
     </div>
 
     <div class="pblock" style="padding-bottom:0"><div class="phead"><div><h3>Payment and terms</h3><small>Fees paid to The Salt Lick Denver</small></div></div></div>
@@ -623,7 +623,6 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:10px 40px;justify-content:space-bet
     document.getElementById('sum-videos').textContent=fmt(videos);
     document.getElementById('sum-optional').textContent=fmt(optional);
     document.getElementById('t-onetime').textContent=fmt(one);
-    document.getElementById('t-six').textContent=fmt(one+M*N);
     var p1=Math.round(one*.35),p2=p1,p3=one-p1-p2;
     document.getElementById('p1').textContent=fmt(p1);
     document.getElementById('p2').textContent=fmt(p2);

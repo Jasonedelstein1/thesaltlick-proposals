@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Señor Cell Scripts</title>
+<style>
+  @import url('https://use.typekit.net/csj2hfl.css');
+  :root {
+    --bg-surround: #e0dbd3;
+    --bg-panel: #f0ebe2;
+    --bg-card: #ffffff;
+    --coral: #c85c4f;
+    --text-primary: #1a1a1a;
+    --text-secondary: #3d3d3d;
+    --text-muted: rgba(0,0,0,0.45);
+    --border: rgba(0,0,0,0.08);
+    --border-medium: rgba(0,0,0,0.12);
+    --shadow: 0 0 40px rgba(0,0,0,0.06);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'neue-haas-grotesk-text', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text-primary);
+    background: var(--bg-surround);
+    -webkit-font-smoothing: antialiased;
+  }
+  .panel {
+    background: var(--bg-panel);
+    max-width: 860px;
+    margin: 0 auto;
+    box-shadow: var(--shadow);
+    min-height: 100vh;
+  }
+  .container { padding: 0 48px; }
+  @media (max-width: 680px) {
+    .container { padding: 0 24px; }
+  }
+  /* ── NAVBAR ── */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border-medium);
+  }
+  .navbar-inner {
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  @media (max-width: 680px) {
+    .navbar-inner { padding: 0 24px; }
+  }
+  .nav-brand {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-right: auto;
+    padding: 18px 0;
+  }
+  /* ── LANGUAGE TOGGLE ── */
+  .lang-toggle {
+    display: inline-flex;
+    border: 1px solid var(--border-medium);
+    border-radius: 20px;
+    padding: 3px;
+    background: var(--bg-card);
+  }
+  .lang-toggle button {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    min-height: 36px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 16px;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .lang-toggle button[aria-pressed="true"] {
+    background: var(--coral);
+    color: #ffffff;
+  }
+  .lang-toggle button:focus-visible {
+    outline: 2px solid var(--coral);
+    outline-offset: 2px;
+  }
+  /* ── TYPOGRAPHY ── */
+  h1 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(30px, 4vw, 40px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text-primary);
+  }
+  h3 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(17px, 2.2vw, 20px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-primary);
+  }
+  /* ── HERO ── */
+  .hero {
+    padding: 72px 0 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  .coral-bar {
+    width: 48px;
+    height: 3px;
+    background: var(--coral);
+    margin-top: 16px;
+  }
+  /* ── SCRIPTS ── */
+  .section { padding: 64px 0; }
+  .script-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-medium);
+    border-radius: 8px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+  .script-card:last-child { margin-bottom: 0; }
+  .script-card-header {
+    padding: 28px 36px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .script-body { padding: 32px 36px; }
+  .script-lines {
+    list-style: none;
+  }
+  .script-lines li {
+    position: relative;
+    padding-left: 22px;
+    margin-bottom: 16px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-primary);
+  }
+  .script-lines li:last-child { margin-bottom: 0; }
+  .script-lines li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--coral);
+  }
+  @media (max-width: 680px) {
+    .script-card-header { padding: 22px 24px 18px; }
+    .script-body { padding: 24px; }
+    .script-lines li { font-size: 16px; }
+  }
+  [data-lang] { display: none; }
+  body.lang-en [data-lang="en"],
+  body.lang-es [data-lang="es"] { display: block; }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body class="lang-en">
+<div class="panel">
+  <!-- ── NAVBAR ── -->
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="nav-brand">The Salt Lick Denver</div>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-set-lang="en" aria-pressed="true">English</button>
+        <button type="button" data-set-lang="es" aria-pressed="false">Español</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- ── HERO ── -->
+    <header class="hero">
+      <h1 id="page-title">Señor Cell Scripts</h1>
+      <div class="coral-bar"></div>
+    </header>
+
+    <section class="section">
+
+      <!-- Script 1 -->
+      <div class="script-card">
+        <div class="script-card-header">
+          <h3 class="script-title">Script 1</h3>
+        </div>
+        <div class="script-body">
+          <ul class="script-lines" data-lang="en">
+            <li>You want the new iPhone 18 Pro Max, but you don't have fifteen hundred dollars?</li>
+            <li>You don't need it. Here at Señor Cell you take it home today with a first payment of just $50, and you pay the rest little by little.</li>
+            <li>It comes unlocked, so it works with any phone company, here or in your country.</li>
+            <li>We're right here in Plaza Colorado, close to you.</li>
+            <li>Want to know how much each payment is? Ask me on WhatsApp. Write or send a voice note, and I'll answer you myself.</li>
+          </ul>
+          <ul class="script-lines" data-lang="es" lang="es">
+            <li>¿Quieres el nuevo iPhone 18 Pro Max, pero no tienes mil quinientos dólares?</li>
+            <li>No los necesitas. Aquí en Señor Cell te lo llevas hoy con un primer pago de solo 50 dólares, y lo demás lo pagas poco a poco.</li>
+            <li>Viene liberado, así que funciona con cualquier compañía, aquí o en tu país.</li>
+            <li>Estamos aquí en la Plaza Colorado, cerquita de ti.</li>
+            <li>¿Quieres saber de cuánto es cada pago? Pregúntame por WhatsApp. Escríbeme o mándame un audio, y yo mismo te contesto.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Script 2 -->
+      <div class="script-card">
+        <div class="script-card-header">
+          <h3 class="script-title">Script 2</h3>
+        </div>
+        <div class="script-body">
+          <ul class="script-lines" data-lang="en">
+            <li>The new iPhone 18 Pro Max is here at Señor Cell.</li>
+            <li>Don't have $1,500? Take it home with $50 today.</li>
+            <li>That's only the first payment. The rest, little by little.</li>
+            <li>Big store phones work with one company. Ours works with any, here or back home.</li>
+            <li>We're in Plaza Colorado, close to you.</li>
+            <li>Ask on WhatsApp how much each payment is.</li>
+          </ul>
+          <ul class="script-lines" data-lang="es" lang="es">
+            <li>Ya llegó el nuevo iPhone 18 Pro Max a Señor Cell.</li>
+            <li>¿No tienes 1,500 dólares? Llévatelo hoy con 50 dólares.</li>
+            <li>Ese es solo el primer pago. Lo demás, poco a poco.</li>
+            <li>Los teléfonos de las tiendas grandes funcionan con una sola compañía. El nuestro viene liberado y funciona con cualquiera, aquí o en tu país.</li>
+            <li>Estamos en la Plaza Colorado, cerquita de ti.</li>
+            <li>Pregunta por WhatsApp de cuánto es cada pago.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Script 3 -->
+      <div class="script-card">
+        <div class="script-card-header">
+          <h3 class="script-title">Script 3</h3>
+        </div>
+        <div class="script-body">
+          <ul class="script-lines" data-lang="en">
+            <li>Hello my Latino people! Welcome to Señor Cell, inside Plaza Colorado.</li>
+            <li>You don't need $1,500 for the newest iPhone or Samsung. Pay $50 today as your first payment, and the rest little by little.</li>
+            <li>New and used phones, all unlocked. They work with any phone company, here or back in your country.</li>
+            <li>Is your phone broken? We fix it here too.</li>
+            <li>Send a message or a voice note, and I'll answer you myself. Ask on WhatsApp how much each payment is.</li>
+          </ul>
+          <ul class="script-lines" data-lang="es" lang="es">
+            <li>¡Hola mi gente latina! Bienvenidos a Señor Cell, adentro de la Plaza Colorado.</li>
+            <li>No necesitas 1,500 dólares para el iPhone o el Samsung más nuevo. Paga hoy 50 dólares como tu primer pago, y lo demás poco a poco.</li>
+            <li>Teléfonos nuevos y usados, todos liberados. Funcionan con cualquier compañía, aquí o en tu país.</li>
+            <li>¿Se te descompuso el teléfono? Aquí también lo arreglamos.</li>
+            <li>Escríbeme o mándame un audio, y yo mismo te contesto. Pregunta por WhatsApp de cuánto es cada pago.</li>
+          </ul>
+        </div>
+      </div>
+
+    </section>
+  </div><!-- /container -->
+</div><!-- /panel -->
+
+<script>
+(function () {
+  var buttons = document.querySelectorAll('[data-set-lang]');
+  var title = document.getElementById('page-title');
+  var scriptTitles = document.querySelectorAll('.script-title');
+  var titles = { en: 'Señor Cell Scripts', es: 'Guiones de Señor Cell' };
+
+  function setLang(lang) {
+    document.body.classList.remove('lang-en', 'lang-es');
+    document.body.classList.add('lang-' + lang);
+    document.documentElement.lang = lang;
+    title.textContent = titles[lang];
+    scriptTitles.forEach(function (h, i) {
+      h.textContent = (lang === 'es' ? 'Guion ' : 'Script ') + (i + 1);
+    });
+    buttons.forEach(function (b) {
+      b.setAttribute('aria-pressed', b.dataset.setLang === lang ? 'true' : 'false');
+    });
+  }
+
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () { setLang(b.dataset.setLang); });
+  });
+})();
+</script>
+</body>
+</html>

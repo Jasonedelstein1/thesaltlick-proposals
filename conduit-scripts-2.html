@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conduit — Ad Campaign Scripts</title>
+<style>
+  @import url('https://use.typekit.net/csj2hfl.css');
+  :root {
+    --bg-surround: #e0dbd3;
+    --bg-panel: #f0ebe2;
+    --bg-card: #ffffff;
+    --coral: #c85c4f;
+    --text-primary: #1a1a1a;
+    --text-secondary: #3d3d3d;
+    --text-muted: rgba(0,0,0,0.45);
+    --border: rgba(0,0,0,0.08);
+    --border-medium: rgba(0,0,0,0.12);
+    --shadow: 0 0 40px rgba(0,0,0,0.06);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'neue-haas-grotesk-text', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text-primary);
+    background: var(--bg-surround);
+    -webkit-font-smoothing: antialiased;
+  }
+  .panel {
+    background: var(--bg-panel);
+    max-width: 860px;
+    margin: 0 auto;
+    box-shadow: var(--shadow);
+    min-height: 100vh;
+  }
+  .container { padding: 0 48px; }
+  @media (max-width: 680px) { .container { padding: 0 24px; } }
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border-medium);
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .navbar-inner { padding: 0 48px; display: flex; align-items: center; }
+  @media (max-width: 680px) { .navbar-inner { padding: 0 24px; } }
+  .nav-brand {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-right: auto;
+    padding: 18px 0;
+  }
+  h1 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(30px, 4vw, 40px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text-primary);
+  }
+  h2 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(22px, 3vw, 28px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text-primary);
+  }
+  h3 {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(17px, 2.2vw, 20px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-primary);
+  }
+  .hero { padding: 72px 0 64px; border-bottom: 1px solid var(--border); }
+  .hero-meta { display: flex; flex-direction: column; gap: 4px; margin-bottom: 32px; }
+  .hero-meta span { font-size: 13px; color: var(--text-muted); letter-spacing: 0.02em; }
+  .hero h1 { margin-bottom: 12px; }
+  .coral-bar { width: 48px; height: 3px; background: var(--coral); margin: 16px 0 24px; }
+  .hero-subtitle {
+    font-size: clamp(16px, 2vw, 19px);
+    font-weight: 400;
+    color: var(--coral);
+    line-height: 1.45;
+  }
+  .section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+  .section-header { margin-bottom: 40px; }
+  .script-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-medium);
+    border-radius: 8px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+  .script-card:last-child { margin-bottom: 0; }
+  .script-card-header {
+    padding: 28px 36px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .script-body { padding: 32px 36px; }
+  .script-beat { margin-bottom: 20px; }
+  .script-beat:last-child { margin-bottom: 0; }
+  .beat-text { font-size: 17px; line-height: 1.7; color: var(--text-primary); font-weight: 400; }
+  .footer {
+    padding: 40px 0 48px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+  .footer-brand {
+    font-family: 'neue-haas-grotesk-display', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .footer-meta { font-size: 13px; color: var(--text-muted); text-align: right; }
+  @media (max-width: 500px) {
+    .footer { flex-direction: column; align-items: flex-start; }
+    .footer-meta { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<div class="panel">
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="nav-brand">The Salt Lick Denver</div>
+    </div>
+  </div>
+  <div class="container">
+    <header class="hero">
+      <div class="hero-meta">
+        <span>Prepared for Conduit</span>
+        <span>Prepared by The Salt Lick Denver</span>
+      </div>
+      <h1>Conduit — Ad Campaign Scripts</h1>
+      <div class="coral-bar"></div>
+    </header>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>The Four Scripts</h2>
+      </div>
+
+      <div class="script-card">
+        <div class="script-card-header"><h3>Script 1</h3></div>
+        <div class="script-body">
+          <div class="script-beat"><div class="beat-text">Yesterday I spent the whole day jackhammering out a slab of concrete, and then I drove across town to finish another job. When I got home, the last thing I wanted to do was build a website. I’d been telling myself I needed one for years, and I’d bet you have too.</div></div>
+          <div class="script-beat"><div class="beat-text">Conduit is the software I use to run my business. I send my bids from it, I schedule my jobs in it, and I send my invoices from it. Now Conduit builds you a website for a $200 one-time fee. You pick a template, answer a few questions, and the site plugs directly into Conduit. That means customers can pay your invoices, request estimates, and see a gallery of your best jobs right from your website, and every one of those lands in the same place you run the rest of your business.</div></div>
+          <div class="script-beat"><div class="beat-text">A lot of guys pay an agency every month to keep their site up, and the day they stop paying, the site goes away. With Conduit, you pay for the site once. Conduit itself is thirty-five bucks a month, and that covers your bids, your scheduling, and your invoicing too.</div></div>
+          <div class="script-beat"><div class="beat-text">If you’ve been putting your website off as long as I did, start a free trial and we’ll build it for you.</div></div>
+        </div>
+      </div>
+
+      <div class="script-card">
+        <div class="script-card-header"><h3>Script 2</h3></div>
+        <div class="script-body">
+          <div class="script-beat"><div class="beat-text">Check this out. I’m in a house we’re wiring up right now, and I’m going to write a bid while you watch this ad.</div></div>
+          <div class="script-beat"><div class="beat-text">“[Scope for the wall]”</div></div>
+          <div class="script-beat"><div class="beat-text">And it’s done. Conduit took what I just said and wrote it up as a bid with every line item on it, and I can send that to the customer before I’m back in my truck. I used to write these late at night at my kitchen table. Now I write them on my phone, and I can share the bid with the customer while I’m still there for their estimate.</div></div>
+          <div class="script-beat"><div class="beat-text">As a bonus, if you have an iPhone, which I don’t, you can walk the room and Conduit uses LiDAR to draw the floor plan for you.</div></div>
+          <div class="script-beat"><div class="beat-text">Start a free trial and send your next bid from the job site.</div></div>
+        </div>
+      </div>
+
+      <div class="script-card">
+        <div class="script-card-header"><h3>Script 3</h3></div>
+        <div class="script-body">
+          <div class="script-beat"><div class="beat-text">As a contractor, getting paid is supposed to be the easiest part of the job, and for a lot of us it’s the hardest. I’ve chased people down for money on work I already finished, and I hate having that conversation because it’s always awkward. Now with Conduit, I don’t even have to think about it. It’s like magic. I just get paid.</div></div>
+          <div class="script-beat"><div class="beat-text">Well, it’s not really magic. Here’s what Conduit is doing while Avery’s working. If you have a maintenance contract or a job that bills every month, your customer saves their card or bank account once, and Conduit charges them on schedule. You set a start date and an end date, so a five-month remodel bills for five months and then stops. When you send the invoice, Conduit works out the local sales tax from your customer’s address. The invoice also shows up in QuickBooks or Xero on its own, so you never have to create it twice.</div></div>
+          <div class="script-beat"><div class="beat-text">I do the work, and the money comes in. Start a free trial and set up your first autopay today.</div></div>
+        </div>
+      </div>
+
+      <div class="script-card">
+        <div class="script-card-header"><h3>Script 4</h3></div>
+        <div class="script-body">
+          <div class="script-beat"><div class="beat-text">I just found out I’m going to be a dad, which is crazy and exciting, AND as an electrician and a small business owner, I know my time is about to get even more precious. Wiring up a new build isn’t going to get any faster, but on the admin side— anywhere I can cut hours is time I get to spend with my kid.</div></div>
+          <div class="script-beat"><div class="beat-text">I think a lot of software companies assume we have somebody else doing the admin, and most of us don’t. What I like about building Conduit is that we’re building it for contractors and small business owners who do it all themselves. A lot of them are like me. They’ve got their first kid on the way, they’re doing five site visits a week, and they’re handling every bit of the paperwork on their own. We’re building Conduit in a way so that all that extra admin work, like writing bids, collecting payments, and keeping projects on track, just happens in the background.</div></div>
+          <div class="script-beat"><div class="beat-text">If you’re running your business and your life at the same time, start a free trial and get some of those hours back.</div></div>
+        </div>
+      </div>
+
+    </section>
+  </div>
+  <div class="container">
+    <footer class="footer">
+      <div class="footer-brand">The Salt Lick Denver</div>
+      <div class="footer-meta">Prepared for Conduit</div>
+    </footer>
+  </div>
+</div>
+</body>
+</html>
